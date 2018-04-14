@@ -1,0 +1,11 @@
+Library/
+Temp/
+.vscode/
+.vs/
+obj/
+Assets/AssetStoreTools/
+Assets/AssetStoreTools.meta
+Assets/Calligraphy/
+Assets/Calligraphy.meta
+Assets/Plugins/
+Assets/Plugins.meta

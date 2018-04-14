@@ -1,0 +1,6 @@
+#!/bin/bash
+
+readonly BUILD_PATH=Assets/NatShare/Plugins/WebGL
+
+# Copy
+cp WebGL/NatShare.js $BUILD_PATH/NatShare.jslib
