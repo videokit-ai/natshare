@@ -5,33 +5,33 @@
 
 namespace NatShareU.Core {
 
-	using UnityEngine;
-	using System;
+    using UnityEngine;
+    using System;
 
-	public class NatShareNull : INatShare {
+    public class NatShareNull : INatShare {
 
-		bool INatShare.Share (Texture2D image) {
+        bool INatShare.Share (Texture2D image) {
             Debug.LogError("NatShare Error: This platform does not support sharing");
-			return false;
-		}
+            return false;
+        }
 
-		bool INatShare.Share (string path) {
+        bool INatShare.Share (string path) {
             Debug.LogError("NatShare Error: This platform does not support sharing");
-			return false;
-		}
+            return false;
+        }
 
-		bool INatShare.SaveToCameraRoll (Texture2D image) {
+        bool INatShare.SaveToCameraRoll (Texture2D image) {
             Debug.LogError("NatShare Error: This platform does not support saving to camera roll");
-			return false;
-		}
+            return false;
+        }
 
-		bool INatShare.SaveToCameraRoll (string videoPath) {
+        bool INatShare.SaveToCameraRoll (string videoPath) {
             Debug.LogError("NatShare Error: This platform does not support saving to camera roll");
-			return false;
-		}
+            return false;
+        }
 
-		void INatShare.GetThumbnail (string videoPath, Action<Texture2D> callback, float time) {
+        void INatShare.GetThumbnail (string videoPath, Action<Texture2D> callback, float time) {
             Debug.LogError("NatShare Error: This platform does not support retrieving thumbnails");
-		}
-	}
+        }
+    }
 }
