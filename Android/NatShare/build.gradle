@@ -16,10 +16,27 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    libraryVariants.all { variant ->
+        variant.outputs.each { output ->
+            if (variant.name == android.buildTypes.release.name) {
+                def file = output.outputFile;
+                def fileName = "NatShare.aar"
+                output.outputFile = new File(file.parent, fileName)
+            }
+        }
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.4.0'
+    compile project(':Unity')
 }
+
+task copyToNatShare(type: Copy) {
+    from 'build/outputs/aar/NatShare.aar'
+    into '/Users/yusuf/OneDrive/Documents/Projects/NatShare/Assets/NatShare/Plugins/Android'
+}
+
+assemble.finalizedBy (copyToNatShare)

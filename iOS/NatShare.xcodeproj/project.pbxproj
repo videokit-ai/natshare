@@ -8,17 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		886F163E2082485000C3FA2D /* NatShare.m in Sources */ = {isa = PBXBuildFile; fileRef = 886F163D2082485000C3FA2D /* NatShare.m */; };
-		886F163F2082485000C3FA2D /* NatShare.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 886F163C2082485000C3FA2D /* NatShare.h */; };
+		888F3F4A2084E2900019E011 /* libNatShare.a in CopyFiles */ = {isa = PBXBuildFile; fileRef = 886F16392082485000C3FA2D /* libNatShare.a */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		886F16372082484F00C3FA2D /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolderSpec = 16;
+			dstPath = /Users/yusuf/OneDrive/Documents/Projects/NatShare/Assets/NatShare/Plugins/iOS;
+			dstSubfolderSpec = 0;
 			files = (
-				886F163F2082485000C3FA2D /* NatShare.h in CopyFiles */,
+				888F3F4A2084E2900019E011 /* libNatShare.a in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -26,8 +26,10 @@
 
 /* Begin PBXFileReference section */
 		886F16392082485000C3FA2D /* libNatShare.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNatShare.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		886F163C2082485000C3FA2D /* NatShare.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NatShare.h; sourceTree = "<group>"; };
 		886F163D2082485000C3FA2D /* NatShare.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NatShare.m; sourceTree = "<group>"; };
+		888F3F472084E19B0019E011 /* UnityInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnityInterface.h; sourceTree = "<group>"; };
+		888F3F482084E1B90019E011 /* UnityRendering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnityRendering.h; sourceTree = "<group>"; };
+		888F3F492084E1BA0019E011 /* UnityForwardDecls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnityForwardDecls.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +46,7 @@
 		886F16302082484F00C3FA2D = {
 			isa = PBXGroup;
 			children = (
+				888F3F462084E15F0019E011 /* include */,
 				886F163B2082485000C3FA2D /* NatShare */,
 				886F163A2082485000C3FA2D /* Products */,
 			);
@@ -60,10 +63,19 @@
 		886F163B2082485000C3FA2D /* NatShare */ = {
 			isa = PBXGroup;
 			children = (
-				886F163C2082485000C3FA2D /* NatShare.h */,
 				886F163D2082485000C3FA2D /* NatShare.m */,
 			);
 			path = NatShare;
+			sourceTree = "<group>";
+		};
+		888F3F462084E15F0019E011 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				888F3F492084E1BA0019E011 /* UnityForwardDecls.h */,
+				888F3F482084E1B90019E011 /* UnityRendering.h */,
+				888F3F472084E19B0019E011 /* UnityInterface.h */,
+			);
+			path = include;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

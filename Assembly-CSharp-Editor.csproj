@@ -130,6 +130,12 @@
  <Reference Include="UnityEditor.OSXStandalone.Extensions">
  <HintPath>/Applications/Unity/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll</HintPath>
  </Reference>
+ <Reference Include="CalligraphyClient">
+ <HintPath>/Users/yusuf/OneDrive/Documents/Projects/NatShare/Assets/Calligraphy/Plugins/Managed/CalligraphyClient.dll</HintPath>
+ </Reference>
+ <Reference Include="CalligraphyCore">
+ <HintPath>/Users/yusuf/OneDrive/Documents/Projects/NatShare/Assets/Calligraphy/Editor/CalligraphyCore.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEngine.Advertisements">
  <HintPath>/Users/yusuf/Library/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.3/UnityEngine.Advertisements.dll</HintPath>
  </Reference>

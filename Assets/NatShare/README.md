@@ -11,8 +11,8 @@ NatShare is a lightweight, easy-to-use native sharing API for Unity Engine. NatS
 *INCOMPLETE*
 
 ## Requirements
-- On Android, NatCorder requires API Level 18 and up
-- On iOS, NatCorder requires iOS 7 and up
+- On Android, NatShare requires API Level 18 and up
+- On iOS, NatShare requires iOS 7 and up
 
 ## Quick Tips
 - Please peruse the included scripting reference [here]()
