@@ -21,7 +21,7 @@ namespace NatShareU.Core {
         /// <param name="image">Image to be shared</param>
         [Doc(@"ShareImage")]
 		public static bool Share (this Texture2D image) {
-			return Implementation.Share(image);
+			return Implementation.Share(image.EncodeToPNG());
 		}
 
 		/// <summary>
@@ -41,7 +41,7 @@ namespace NatShareU.Core {
         /// <param name="image">Image to be saved</param>
         [Doc(@"SaveImageToCameraRoll")]
 		public static bool SaveToCameraRoll (this Texture2D image) {
-			return Implementation.SaveToCameraRoll(image);
+			return Implementation.SaveToCameraRoll(image.EncodeToPNG());
 		}
 
 		/// <summary>

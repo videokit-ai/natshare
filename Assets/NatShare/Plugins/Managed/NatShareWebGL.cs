@@ -12,16 +12,22 @@ namespace NatShareU.Core {
 
 	public class NatShareWebGL : INatShare {
 
-		bool INatShare.Share (Texture2D image) { // INCOMPLETE
-			return false;
+		bool INatShare.Share (byte[] pngData) {
+			var handle = GCHandle.Alloc(pngData, GCHandleType.Pinned);
+			var result = NatShareBridge.Share(handle.AddrOfPinnedObject(), pngData.Length);
+			handle.Free();
+			return result;
 		}
 
 		bool INatShare.Share (string path) {
 			return NatShareBridge.Share(path);
 		}
 
-		bool INatShare.SaveToCameraRoll (Texture2D image) { // INCOMPLETE
-			return false;
+		bool INatShare.SaveToCameraRoll (byte[] pngData) {
+			var handle = GCHandle.Alloc(pngData, GCHandleType.Pinned);
+			var result = NatShareBridge.SaveToCameraRoll(handle.AddrOfPinnedObject(), pngData.Length);
+			handle.Free();
+			return result;
 		}
 
 		bool INatShare.SaveToCameraRoll (string videoPath) {

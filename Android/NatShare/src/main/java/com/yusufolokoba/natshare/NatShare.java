@@ -24,18 +24,26 @@ public class NatShare {
         StrictMode.setVmPolicy(builder.build());
     }
 
+    public static boolean shareImage (byte[] pngData) { // INCOMPLETE
+
+        return true;
+    }
+
     public static boolean shareVideo (String path) {
         File file = new File(path);
         if (!file.exists()) return false;
-        UnityPlayer.currentActivity.startActivity(Intent.createChooser(
-                new Intent()
-                        .setAction(Intent.ACTION_SEND)
-                        .setType("video/mp4")
-                        .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                        .setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                        .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file)),
-                "Share media"
-        ));
+        final Intent intent = new Intent()
+                .setAction(Intent.ACTION_SEND)
+                .setType("video/mp4")
+                .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                .setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+        UnityPlayer.currentActivity.startActivity(Intent.createChooser(intent, "Share media"));
+        return true;
+    }
+
+    public static boolean saveImageToCameraRoll (byte[] pngData) { // INCOMPLETE
+
         return true;
     }
 

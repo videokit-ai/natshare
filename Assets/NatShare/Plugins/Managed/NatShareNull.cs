@@ -10,7 +10,7 @@ namespace NatShareU.Core {
 
     public class NatShareNull : INatShare {
 
-        bool INatShare.Share (Texture2D image) {
+        bool INatShare.Share (byte[] pngData) {
             Debug.LogError("NatShare Error: This platform does not support sharing");
             return false;
         }
@@ -20,7 +20,7 @@ namespace NatShareU.Core {
             return false;
         }
 
-        bool INatShare.SaveToCameraRoll (Texture2D image) {
+        bool INatShare.SaveToCameraRoll (byte[] pngData) {
             Debug.LogError("NatShare Error: This platform does not support saving to camera roll");
             return false;
         }

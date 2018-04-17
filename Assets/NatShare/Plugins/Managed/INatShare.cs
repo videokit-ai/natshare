@@ -9,9 +9,9 @@ namespace NatShareU.Core {
 	using System;
 
 	public interface INatShare {
-		bool Share (Texture2D image);
+		bool Share (byte[] pngData);
 		bool Share (string path);
-		bool SaveToCameraRoll (Texture2D image);
+		bool SaveToCameraRoll (byte[] pngData);
         bool SaveToCameraRoll (string videoPath);
         void GetThumbnail (string videoPath, Action<Texture2D> callback, float time);
 	}

@@ -16,16 +16,16 @@ namespace NatShareU.Core {
 			natshare = new AndroidJavaClass("com.yusufolokoba.natshare.NatShare");
 		}
 
-		bool INatShare.Share (Texture2D image) {
-			return false;
+		bool INatShare.Share (byte[] pngData) {
+			return natshare.CallStatic<bool>("shareImage", pngData);
 		}
 
 		bool INatShare.Share (string videoPath) {
 			return natshare.CallStatic<bool>("shareVideo", videoPath);
 		}
 
-		bool INatShare.SaveToCameraRoll (Texture2D image) {
-			return false;
+		bool INatShare.SaveToCameraRoll (byte[] pngData) {
+			return natshare.CallStatic<bool>("saveImageToCameraRoll", pngData);
 		}
 
 		bool INatShare.SaveToCameraRoll (string videoPath) {

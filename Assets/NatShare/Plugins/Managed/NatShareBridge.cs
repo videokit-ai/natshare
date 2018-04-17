@@ -18,8 +18,12 @@ namespace NatShareU.Core {
         #endif
 
         #if UNITY_IOS && !UNITY_EDITOR
+        [DllImport(Assembly, EntryPoint = "NSShareImage")]
+        public static extern bool Share (IntPtr pngData, int dataSize);
         [DllImport(Assembly, EntryPoint = "NSShareVideo")]
         public static extern bool Share (string path);
+        [DllImport(Assembly, EntryPoint = "NSSaveImageToCameraRoll")]
+        public static extern bool SaveToCameraRoll (IntPtr pngData, int dataSize);
         [DllImport(Assembly, EntryPoint = "NSSaveVideoToCameraRoll")]
         public static extern bool SaveToCameraRoll (string path);
         [DllImport(Assembly, EntryPoint = "NSGetThumbnail")]
@@ -28,9 +32,11 @@ namespace NatShareU.Core {
         public static extern void FreeThumbnail (IntPtr pixelBuffer);
 
         #else
-        public static bool Share (string path) {return false;}
-        public static bool SaveToCameraRoll (string path) {return false;}
-        public static bool GetThumbnail (string path, float time, ref IntPtr pixelBuffer, ref int width, ref int height) {return false;}
+        public static bool Share (IntPtr pngData, int dataSize) { return false; }
+        public static bool Share (string path) { return false; }
+        public static bool SaveToCameraRoll (IntPtr pngData, int dataSize) { return false; }
+        public static bool SaveToCameraRoll (string path) { return false; }
+        public static bool GetThumbnail (string path, float time, ref IntPtr pixelBuffer, ref int width, ref int height) { return false; }
         public static void FreeThumbnail (IntPtr pixelBuffer) {}
         #endif
     }
