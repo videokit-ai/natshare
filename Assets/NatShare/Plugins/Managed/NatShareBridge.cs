@@ -3,7 +3,7 @@
 *   Copyright (c) 2018 Yusuf Olokoba
 */
 
-namespace NatShareU.Core {
+namespace NatShareU {
 
     using System;
     using System.Runtime.InteropServices;

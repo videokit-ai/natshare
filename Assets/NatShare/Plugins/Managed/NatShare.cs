@@ -3,11 +3,10 @@
 *   Copyright (c) 2018 Yusuf Olokoba
 */
 
-namespace NatShareU.Core {
+namespace NatShareU {
 
 	using UnityEngine;
 	using System;
-	using Docs;
 
 	[Doc(@"NatShare")]
 	public static class NatShare {
@@ -30,7 +29,7 @@ namespace NatShareU.Core {
         /// </summary>
         /// <param name="path">Path to recorded video</param>
         [Doc(@"ShareVideo")]
-		public static bool Share (this string videoPath) {
+		public static bool Share (string videoPath) {
 			return Implementation.Share(videoPath);
 		}
 
@@ -50,7 +49,7 @@ namespace NatShareU.Core {
         /// </summary>
         /// <param name="path">Path to recorded video</param>
         [Doc(@"SaveVideoToCameraRoll")]
-		public static bool SaveToCameraRoll (this string videoPath) {
+		public static bool SaveToCameraRoll (string videoPath) {
 			return Implementation.SaveToCameraRoll(videoPath);
 		}
 
@@ -62,7 +61,7 @@ namespace NatShareU.Core {
         /// <param name="callback">Callback that will be invoked with the thumbnail texture</param>
         /// <param name="time">Optional: Time to get thumbnail from in video</param>
         [Doc(@"GetThumbnail", @"GetThumbnailDiscussion"), Code(@"Thumbnail")]
-		public static void GetThumbnail (this string videoPath, Action<Texture2D> callback, float time = 0f) {
+		public static void GetThumbnail (string videoPath, Action<Texture2D> callback, float time = 0f) {
 			Implementation.GetThumbnail(videoPath, callback, time);
 		}
 		#endregion

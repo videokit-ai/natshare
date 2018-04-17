@@ -39,7 +39,7 @@ bool NSShareVideo (const char* videoPath) {
     return true;
 }
 
-bool NSSaveImageToCamerRoll (uint8_t* pngData, int dataSize) {
+bool NSSaveImageToCameraRoll (uint8_t* pngData, int dataSize) {
     NSData* data = [NSData dataWithBytes:pngData length:dataSize];
     UIImage* image = [UIImage imageWithData:data];
     if (PHPhotoLibrary.authorizationStatus == PHAuthorizationStatusDenied) return false;
@@ -65,7 +65,7 @@ bool NSSaveVideoToCameraRoll (const char* videoPath) {
     return true;
 }
 
-bool NCGetThumbnail (const char* videoPath, float time, void** pixelBuffer, int* width, int* height) {
+bool NSGetThumbnail (const char* videoPath, float time, void** pixelBuffer, int* width, int* height) {
     NSURL* url = [NSURL URLWithString:[NSString stringWithUTF8String:videoPath]];
     AVAssetImageGenerator* generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:[AVURLAsset assetWithURL:url]];
     generator.appliesPreferredTrackTransform = true;
@@ -88,6 +88,6 @@ bool NCGetThumbnail (const char* videoPath, float time, void** pixelBuffer, int*
     return true;
 }
 
-void NCFreeThumbnail (const intptr_t pixelBuffer) {
+void NSFreeThumbnail (const intptr_t pixelBuffer) {
     free((void*)pixelBuffer);
 }

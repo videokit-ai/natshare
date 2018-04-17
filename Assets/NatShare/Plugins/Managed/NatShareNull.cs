@@ -3,7 +3,7 @@
 *   Copyright (c) 2018 Yusuf Olokoba
 */
 
-namespace NatShareU.Core {
+namespace NatShareU {
 
     using UnityEngine;
     using System;

@@ -8,8 +8,13 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
+import android.util.Log;
+
 import com.unity3d.player.UnityPlayer;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 
 /**
@@ -24,8 +29,29 @@ public class NatShare {
         StrictMode.setVmPolicy(builder.build());
     }
 
-    public static boolean shareImage (byte[] pngData) { // INCOMPLETE
-
+    public static boolean shareImage (byte[] pngData) {
+        final File cachePath = new File(UnityPlayer.currentActivity.getCacheDir(), "NatShare");
+        final File filePath = new File(cachePath, "/share.png");
+        cachePath.mkdirs();
+        try {
+            FileOutputStream stream = new FileOutputStream(filePath);
+            stream.write(pngData);
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        Uri imageUri = FileProvider.getUriForFile(UnityPlayer.currentActivity, "com.yusufolokoba.natshare.fileprovider", filePath);
+        if (imageUri == null) {
+            Log.e("Unity", "NatShare Error: Failed to generate URI for image to be shared");
+            return false;
+        }
+        final Intent intent = new Intent()
+                .setAction(Intent.ACTION_SEND)
+                .setType("image/png")
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                .putExtra(Intent.EXTRA_STREAM, imageUri);
+        UnityPlayer.currentActivity.startActivity(Intent.createChooser(intent, "Share image"));
         return true;
     }
 
@@ -35,15 +61,29 @@ public class NatShare {
         final Intent intent = new Intent()
                 .setAction(Intent.ACTION_SEND)
                 .setType("video/mp4")
-                .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                .setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-        UnityPlayer.currentActivity.startActivity(Intent.createChooser(intent, "Share media"));
+        UnityPlayer.currentActivity.startActivity(Intent.createChooser(intent, "Share video"));
         return true;
     }
 
-    public static boolean saveImageToCameraRoll (byte[] pngData) { // INCOMPLETE
-
+    public static boolean saveImageToCameraRoll (byte[] pngData) {
+        final File cachePath = new File(UnityPlayer.currentActivity.getCacheDir(), "NatShare");
+        final File filePath = new File(cachePath, "/save.png");
+        cachePath.mkdirs();
+        try {
+            FileOutputStream stream = new FileOutputStream(filePath);
+            stream.write(pngData);
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        ContentValues values = new ContentValues(3);
+        values.put(MediaStore.Video.Media.TITLE, "Image");
+        values.put(MediaStore.Video.Media.MIME_TYPE, "image/png");
+        values.put(MediaStore.Video.Media.DATA, filePath.getAbsolutePath());
+        UnityPlayer.currentActivity.getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
         return true;
     }
 
@@ -59,7 +99,7 @@ public class NatShare {
     }
 
     public static Object getThumbnail (String path, float time) {
-        final class Thumbnail { ByteBuffer pixelBuffer; int width, height; boolean isLoaded () {return width > 0;} }
+        final class Thumbnail { ByteBuffer pixelBuffer; int width, height; boolean isLoaded () { return width > 0; } }
         // Load frame
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         retriever.setDataSource(path);
