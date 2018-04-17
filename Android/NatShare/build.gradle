@@ -5,7 +5,7 @@ android {
     buildToolsVersion "27.0.3"
 
     defaultConfig {
-        minSdkVersion 18
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -18,7 +18,7 @@ android {
     }
     libraryVariants.all { variant ->
         variant.outputs.each { output ->
-            if (variant.name == android.buildTypes.release.name) {
+            if (variant.name == android.buildTypes.debug.name) {
                 def file = output.outputFile;
                 def fileName = "NatShare.aar"
                 output.outputFile = new File(file.parent, fileName)
@@ -31,6 +31,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:support-v4:23.1.0'
     compile project(':Unity')
 }
 

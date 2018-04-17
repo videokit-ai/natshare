@@ -8,9 +8,7 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
 import android.util.Log;
-
 import com.unity3d.player.UnityPlayer;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,27 +28,22 @@ public class NatShare {
     }
 
     public static boolean shareImage (byte[] pngData) {
-        final File cachePath = new File(UnityPlayer.currentActivity.getCacheDir(), "NatShare");
-        final File filePath = new File(cachePath, "/share.png");
+        final File cachePath = new File(UnityPlayer.currentActivity.getExternalCacheDir(), "NatShare");
+        final File file = new File(cachePath, "/share.png");
         cachePath.mkdirs();
         try {
-            FileOutputStream stream = new FileOutputStream(filePath);
+            FileOutputStream stream = new FileOutputStream(file);
             stream.write(pngData);
             stream.close();
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
-        Uri imageUri = FileProvider.getUriForFile(UnityPlayer.currentActivity, "com.yusufolokoba.natshare.fileprovider", filePath);
-        if (imageUri == null) {
-            Log.e("Unity", "NatShare Error: Failed to generate URI for image to be shared");
-            return false;
-        }
         final Intent intent = new Intent()
                 .setAction(Intent.ACTION_SEND)
                 .setType("image/png")
                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                .putExtra(Intent.EXTRA_STREAM, imageUri);
+                .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
         UnityPlayer.currentActivity.startActivity(Intent.createChooser(intent, "Share image"));
         return true;
     }
@@ -68,11 +61,11 @@ public class NatShare {
     }
 
     public static boolean saveImageToCameraRoll (byte[] pngData) {
-        final File cachePath = new File(UnityPlayer.currentActivity.getCacheDir(), "NatShare");
-        final File filePath = new File(cachePath, "/save.png");
+        final File cachePath = new File(UnityPlayer.currentActivity.getExternalCacheDir(), "NatShare");
+        final File file = new File(cachePath, "/save.png");
         cachePath.mkdirs();
         try {
-            FileOutputStream stream = new FileOutputStream(filePath);
+            FileOutputStream stream = new FileOutputStream(file);
             stream.write(pngData);
             stream.close();
         } catch (IOException e) {
@@ -82,7 +75,7 @@ public class NatShare {
         ContentValues values = new ContentValues(3);
         values.put(MediaStore.Video.Media.TITLE, "Image");
         values.put(MediaStore.Video.Media.MIME_TYPE, "image/png");
-        values.put(MediaStore.Video.Media.DATA, filePath.getAbsolutePath());
+        values.put(MediaStore.Video.Media.DATA, file.getAbsolutePath());
         UnityPlayer.currentActivity.getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
         return true;
     }
