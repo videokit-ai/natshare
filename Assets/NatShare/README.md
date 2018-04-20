@@ -52,7 +52,7 @@ NatShare.GetThumbnail(videoPath, thumbnail => preview.texture = thumbnail, 5f);
 ```
 
 ## Requirements
-- On Android, NatShare requires API Level 18 and up
+- On Android, NatShare requires API Level 16 and up
 - On iOS, NatShare requires iOS 7 and up
 
 ## Quick Tips
