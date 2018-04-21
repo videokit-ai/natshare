@@ -56,7 +56,6 @@ NatShare.GetThumbnail(videoPath, thumbnail => preview.texture = thumbnail, 5f);
 - On iOS, NatShare requires iOS 7 and up
 
 ## Quick Tips
-- Please peruse the included scripting reference [here]()
 - To discuss, report an issue, or request a feature, visit [Unity forums](https://forum.unity.com/threads/natshare-free-sharing-api.527074/) or [GitHub](https://github.com/olokobayusuf/NatShare-API)
 - Contact me at [olokobayusuf@gmail.com](mailto:olokobayusuf@gmail.com)
 
