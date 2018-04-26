@@ -60,6 +60,7 @@ NatShare.GetThumbnail(videoPath, thumbnail => preview.texture = thumbnail, 5f);
 ## Quick Tips
 - To discuss, report an issue, or request a feature, visit [Unity forums](https://forum.unity.com/threads/natshare-free-sharing-api.527074/) or [GitHub](https://github.com/olokobayusuf/NatShare-API)
 - Contact me at [olokobayusuf@gmail.com](mailto:olokobayusuf@gmail.com)
+- Get NatShare [here](https://github.com/olokobayusuf/NatShare-API/releases).
 
-Get NatShare [here](https://github.com/olokobayusuf/NatShare-API/releases). Thank you very much!
+Thank you very much!
 

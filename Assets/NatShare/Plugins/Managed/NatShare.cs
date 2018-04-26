@@ -7,6 +7,8 @@ namespace NatShareU {
 
 	using UnityEngine;
 	using System;
+	using Platforms;
+	using Docs;
 
 	[Doc(@"NatShare")]
 	public static class NatShare {

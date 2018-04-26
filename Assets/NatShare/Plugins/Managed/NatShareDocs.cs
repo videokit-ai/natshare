@@ -5,7 +5,7 @@
 
 //#define DOC_GEN // Internal. Do not use
 
-namespace NatShareU {
+namespace NatShareU.Docs {
 
     using System;
     #if DOC_GEN
