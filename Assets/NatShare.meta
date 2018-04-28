@@ -1,5 +1,21 @@
 fileFormatVersion: 2
 guid: 05eccd936974345c1ad656a354ac43b7
+labels:
+- android
+- camera
+- cameraroll
+- device
+- image
+- ios
+- natcam
+- natcorder
+- natimage
+- native
+- photo
+- sharing
+- thumbnail
+- ui
+- video
 folderAsset: yes
 timeCreated: 1523645118
 licenseType: Pro
