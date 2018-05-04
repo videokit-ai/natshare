@@ -10,12 +10,12 @@ namespace NatShareU.Platforms {
 
     public class NatShareNull : INatShare {
 
-        bool INatShare.Share (byte[] pngData) {
+        bool INatShare.Share (byte[] pngData, string message) {
             Debug.LogError("NatShare Error: This platform does not support sharing");
             return false;
         }
 
-        bool INatShare.Share (string path) {
+        bool INatShare.Share (string path, string message) {
             Debug.LogError("NatShare Error: This platform does not support sharing");
             return false;
         }

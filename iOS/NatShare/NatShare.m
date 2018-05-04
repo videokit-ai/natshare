@@ -11,10 +11,10 @@
 #import <Photos/Photos.h>
 #import "UnityInterface.h"
 
-bool NSShareImage (uint8_t* pngData, int dataSize) {
+bool NSShareImage (uint8_t* pngData, int dataSize, const char* message) {
     NSData* data = [NSData dataWithBytes:pngData length:dataSize];
     UIImage* image = [UIImage imageWithData:data];
-    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[image] applicationActivities:nil];
+    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[image, [NSString stringWithUTF8String:message]] applicationActivities:nil];
     UIViewController* vc = UnityGetGLViewController();
     controller.modalPresentationStyle = UIModalPresentationPopover;
     controller.popoverPresentationController.sourceView = vc.view;
@@ -25,10 +25,10 @@ bool NSShareImage (uint8_t* pngData, int dataSize) {
     return true;
 }
 
-bool NSShareVideo (const char* videoPath) {
+bool NSShareVideo (const char* videoPath, const char* message) {
     NSString* path = [NSURL URLWithString:[NSString stringWithUTF8String:videoPath]].path;
     if (![NSFileManager.defaultManager fileExistsAtPath:path]) return false;
-    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[[NSURL fileURLWithPath:path]] applicationActivities:nil];
+    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[[NSURL fileURLWithPath:path], [NSString stringWithUTF8String:message]] applicationActivities:nil];
     UIViewController* vc = UnityGetGLViewController();
     controller.modalPresentationStyle = UIModalPresentationPopover;
     controller.popoverPresentationController.sourceView = vc.view;
