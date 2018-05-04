@@ -8,7 +8,6 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.provider.MediaStore;
-import android.util.Log;
 import com.unity3d.player.UnityPlayer;
 import java.io.File;
 import java.io.FileOutputStream;
