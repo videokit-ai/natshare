@@ -72,16 +72,24 @@ bool NSGetThumbnail (const char* videoPath, float time, void** pixelBuffer, int*
     NSError* error = nil;
     CGImageRef image = [generator copyCGImageAtTime:CMTimeMakeWithSeconds(time, 1) actualTime:NULL error:&error];
     if (error) {
-        NSLog(@"NatCorder Error: %@", error);
+        NSLog(@"NatShare Error: Unable to retrieve thumbnail with error: %@", error);
         return false;
     }
     *width = (int)CGImageGetWidth(image);
     *height = (int)CGImageGetHeight(image);
+    *pixelBuffer = malloc(*width * *height * 4);
     CFDataRef rawData = CGDataProviderCopyData(CGImageGetDataProvider(image));
-    const uint8_t* dataPtr = CFDataGetBytePtr(rawData);
-    const size_t size =  CFDataGetLength(rawData);
-    *pixelBuffer = malloc(size);
-    vImage_Buffer input = { (void*)dataPtr, (size_t)*height, (size_t)*width, size / *height }, output = { *pixelBuffer, input.height, input.width, input.rowBytes };
+    vImage_Buffer input = {
+        (void*)CFDataGetBytePtr(rawData),
+        *height,
+        *width,
+        CGImageGetBytesPerRow(image)
+    }, output = {
+        *pixelBuffer,
+        *height,
+        *width,
+        *width * *height * 4
+    };
     vImageVerticalReflect_ARGB8888(&input, &output, kvImageNoFlags);
     CFRelease(rawData);
     CGImageRelease(image);
