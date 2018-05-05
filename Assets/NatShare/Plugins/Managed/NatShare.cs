@@ -20,9 +20,10 @@ namespace NatShareU {
         /// Returns true if the image can be shared.
         /// </summary>
         /// <param name="image">Image to be shared</param>
+		/// <param name="message">Optional. Message to be shared with image</param>
         [Doc(@"ShareImage")]
-		public static bool Share (this Texture2D image) {
-			return Implementation.Share(image.EncodeToPNG());
+		public static bool Share (this Texture2D image, string message = "Share image") {
+			return Implementation.Share(image.EncodeToPNG(), message);
 		}
 
 		/// <summary>
@@ -30,9 +31,10 @@ namespace NatShareU {
         /// Returns true if video is found and can be opened for sharing.
         /// </summary>
         /// <param name="path">Path to recorded video</param>
+		/// <param name="message">Optional. Message to be shared with image</param>
         [Doc(@"ShareVideo")]
-		public static bool Share (string videoPath) {
-			return Implementation.Share(videoPath);
+		public static bool Share (string videoPath, string message = "Share video") {
+			return Implementation.Share(videoPath, message);
 		}
 
 		/// <summary>

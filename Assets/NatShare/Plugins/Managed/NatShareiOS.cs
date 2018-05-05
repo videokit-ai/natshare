@@ -11,22 +11,16 @@ namespace NatShareU.Platforms {
 
 	public class NatShareiOS : INatShare {
 
-		bool INatShare.Share (byte[] pngData) {
-			var handle = GCHandle.Alloc(pngData, GCHandleType.Pinned);
-			var result = NatShareBridge.Share(handle.AddrOfPinnedObject(), pngData.Length);
-			handle.Free();
-			return result;
+		bool INatShare.Share (byte[] pngData, string message) {
+			return NatShareBridge.Share(pngData, pngData.Length, message);
 		}
 
-		bool INatShare.Share (string path) {
-			return NatShareBridge.Share(path);
+		bool INatShare.Share (string path, string message) {
+			return NatShareBridge.Share(path, message);
 		}
 
 		bool INatShare.SaveToCameraRoll (byte[] pngData) {
-			var handle = GCHandle.Alloc(pngData, GCHandleType.Pinned);
-			var result = NatShareBridge.SaveToCameraRoll(handle.AddrOfPinnedObject(), pngData.Length);
-			handle.Free();
-			return result;
+			return NatShareBridge.SaveToCameraRoll(pngData, pngData.Length);
 		}
 
 		bool INatShare.SaveToCameraRoll (string videoPath) {

@@ -5,12 +5,12 @@
 
 const NatShare = {
 
-    NSShareImage : function (pngData, dataSize) {
+    NSShareImage : function (pngData, dataSize, message) {
         console.log("NatShare Error: Sharing is not implemented on WebGL");
         return false;
     },
     
-    NSShareVideo : function (path) {
+    NSShareVideo : function (path, message) {
         console.log("NatShare Error: Sharing is not implemented on WebGL");
         return false;
     },

@@ -8,7 +8,6 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.provider.MediaStore;
-import android.util.Log;
 import com.unity3d.player.UnityPlayer;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,7 +26,7 @@ public class NatShare {
         StrictMode.setVmPolicy(builder.build());
     }
 
-    public static boolean shareImage (byte[] pngData) {
+    public static boolean shareImage (byte[] pngData, String message) {
         final File cachePath = new File(UnityPlayer.currentActivity.getExternalCacheDir(), "NatShare");
         final File file = new File(cachePath, "/share.png");
         cachePath.mkdirs();
@@ -44,11 +43,11 @@ public class NatShare {
                 .setType("image/png")
                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-        UnityPlayer.currentActivity.startActivity(Intent.createChooser(intent, "Share image"));
+        UnityPlayer.currentActivity.startActivity(Intent.createChooser(intent, message));
         return true;
     }
 
-    public static boolean shareVideo (String path) {
+    public static boolean shareVideo (String path, String message) {
         File file = new File(path);
         if (!file.exists()) return false;
         final Intent intent = new Intent()
@@ -56,7 +55,7 @@ public class NatShare {
                 .setType("video/mp4")
                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-        UnityPlayer.currentActivity.startActivity(Intent.createChooser(intent, "Share video"));
+        UnityPlayer.currentActivity.startActivity(Intent.createChooser(intent, message));
         return true;
     }
 
