@@ -15,7 +15,7 @@
 		886F16372082484F00C3FA2D /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = /Users/yusuf/OneDrive/Documents/Projects/NatShare/Assets/NatShare/Plugins/iOS;
+			dstPath = "$(PROJECT_DIR)/../Assets/NatShare/Plugins/iOS";
 			dstSubfolderSpec = 0;
 			files = (
 				888F3F4A2084E2900019E011 /* libNatShare.a in CopyFiles */,

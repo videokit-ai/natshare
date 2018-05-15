@@ -81,14 +81,14 @@ bool NSGetThumbnail (const char* videoPath, float time, void** pixelBuffer, int*
     CFDataRef rawData = CGDataProviderCopyData(CGImageGetDataProvider(image));
     vImage_Buffer input = {
         (void*)CFDataGetBytePtr(rawData),
-        *height,
-        *width,
+        CGImageGetHeight(image),
+        CGImageGetWidth(image),
         CGImageGetBytesPerRow(image)
     }, output = {
         *pixelBuffer,
-        *height,
-        *width,
-        *width * *height * 4
+        input.height,
+        input.width,
+        input.width * 4
     };
     vImageVerticalReflect_ARGB8888(&input, &output, kvImageNoFlags);
     CFRelease(rawData);

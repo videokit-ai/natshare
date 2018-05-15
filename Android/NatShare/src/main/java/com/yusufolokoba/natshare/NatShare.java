@@ -72,10 +72,10 @@ public class NatShare {
             return false;
         }
         ContentValues values = new ContentValues(3);
-        values.put(MediaStore.Video.Media.TITLE, "Image");
-        values.put(MediaStore.Video.Media.MIME_TYPE, "image/png");
-        values.put(MediaStore.Video.Media.DATA, file.getAbsolutePath());
-        UnityPlayer.currentActivity.getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
+        values.put(MediaStore.Images.Media.TITLE, "Image");
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+        values.put(MediaStore.Images.Media.DATA, file.getAbsolutePath());
+        UnityPlayer.currentActivity.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         return true;
     }
 

@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{1DFAB565-1EED-E9B0-DE00-2A693D3E29D5}</ProjectGuid>
+    <ProjectGuid>{57BA4F3B-595C-4247-86EC-FC01808689B7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -60,7 +60,9 @@
      <Compile Include="Assets\NatShare\Plugins\Managed\NatShareNull.cs" />
      <Compile Include="Assets\NatShare\Plugins\Managed\NatShareWebGL.cs" />
      <Compile Include="Assets\Support\Docs.cs" />
-     <Compile Include="Assets\Support\Tests.cs" />
+     <Compile Include="Assets\Tests\SaveTest.cs" />
+     <Compile Include="Assets\Tests\ShareTest.cs" />
+     <Compile Include="Assets\Tests\ThumbnailTest.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -92,7 +94,7 @@
  <HintPath>/Applications/Unity/PlaybackEngines/VuforiaSupport/Managed/Runtime/Vuforia.UnityExtensions.dll</HintPath>
  </Reference>
  <Reference Include="CalligraphyClient">
- <HintPath>/Users/yusuf/OneDrive/Documents/Projects/NatShare/Assets/Calligraphy/Plugins/Managed/CalligraphyClient.dll</HintPath>
+ <HintPath>/Users/yusuf/OneDrive/Documents/Projects/NatShare-API/Assets/Calligraphy/Plugins/Managed/CalligraphyClient.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Advertisements">
  <HintPath>/Users/yusuf/Library/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.3/UnityEngine.Advertisements.dll</HintPath>
