@@ -42,7 +42,8 @@ public class NatShare {
                 .setAction(Intent.ACTION_SEND)
                 .setType("image/png")
                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+                .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file))
+                .putExtra(Intent.EXTRA_TEXT, message);
         UnityPlayer.currentActivity.startActivity(Intent.createChooser(intent, message));
         return true;
     }
@@ -54,7 +55,8 @@ public class NatShare {
                 .setAction(Intent.ACTION_SEND)
                 .setType("video/mp4")
                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+                .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file))
+                .putExtra(Intent.EXTRA_TEXT, message);
         UnityPlayer.currentActivity.startActivity(Intent.createChooser(intent, message));
         return true;
     }
