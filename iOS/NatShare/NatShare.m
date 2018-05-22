@@ -26,7 +26,7 @@ bool NSShareImage (uint8_t* pngData, int dataSize, const char* message) {
 }
 
 bool NSShareVideo (const char* videoPath, const char* message) {
-    NSString* path = [NSURL URLWithString:[NSString stringWithUTF8String:videoPath]].path;
+    NSString* path = [NSString stringWithUTF8String:videoPath];
     if (![NSFileManager.defaultManager fileExistsAtPath:path]) return false;
     UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[[NSURL fileURLWithPath:path], [NSString stringWithUTF8String:message]] applicationActivities:nil];
     UIViewController* vc = UnityGetGLViewController();
@@ -53,7 +53,7 @@ bool NSSaveImageToCameraRoll (uint8_t* pngData, int dataSize) {
 }
 
 bool NSSaveVideoToCameraRoll (const char* videoPath) {
-    NSURL* videoURL = [NSURL URLWithString:[NSString stringWithUTF8String:videoPath]];
+    NSURL* videoURL = [NSURL fileURLWithPath:[NSString stringWithUTF8String:videoPath]];
     if (![NSFileManager.defaultManager fileExistsAtPath:videoURL.path]) return false;
     if (PHPhotoLibrary.authorizationStatus == PHAuthorizationStatusDenied) return false;
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
@@ -66,7 +66,7 @@ bool NSSaveVideoToCameraRoll (const char* videoPath) {
 }
 
 bool NSGetThumbnail (const char* videoPath, float time, void** pixelBuffer, int* width, int* height) {
-    NSURL* url = [NSURL URLWithString:[NSString stringWithUTF8String:videoPath]];
+    NSURL* url = [NSURL fileURLWithPath:[NSString stringWithUTF8String:videoPath]];
     AVAssetImageGenerator* generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:[AVURLAsset assetWithURL:url]];
     generator.appliesPreferredTrackTransform = true;
     NSError* error = nil;
