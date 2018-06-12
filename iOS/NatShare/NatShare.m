@@ -79,6 +79,10 @@ bool NSGetThumbnail (const char* videoPath, float time, void** pixelBuffer, int*
     *height = (int)CGImageGetHeight(image);
     *pixelBuffer = malloc(*width * *height * 4);
     CFDataRef rawData = CGDataProviderCopyData(CGImageGetDataProvider(image));
+    if (!rawData) {
+        NSLog(@"NatShare Error: Unable to retrieve thumbnail because its data cannot be accessed");
+        return false;
+    }
     vImage_Buffer input = {
         (void*)CFDataGetBytePtr(rawData),
         CGImageGetHeight(image),

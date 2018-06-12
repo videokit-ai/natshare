@@ -23,6 +23,10 @@ namespace NatShareU {
 		/// <param name="message">Optional. Message to be shared with image</param>
         [Doc(@"ShareImage")]
 		public static bool Share (this Texture2D image, string message = "Share image") {
+			if (!image) {
+				Debug.LogError("NatShare Error: Texture being shared is null");
+				return false;
+			}
 			return Implementation.Share(image.EncodeToPNG(), message);
 		}
 
@@ -34,6 +38,10 @@ namespace NatShareU {
 		/// <param name="message">Optional. Message to be shared with image</param>
         [Doc(@"ShareVideo")]
 		public static bool Share (string videoPath, string message = "Share video") {
+			if (string.IsNullOrEmpty(videoPath)) {
+				Debug.LogError("NatShare Error: Path to video being shared is invalid");
+				return false;
+			}
 			return Implementation.Share(videoPath, message);
 		}
 
@@ -44,6 +52,10 @@ namespace NatShareU {
         /// <param name="image">Image to be saved</param>
         [Doc(@"SaveImageToCameraRoll")]
 		public static bool SaveToCameraRoll (this Texture2D image) {
+			if (!image) {
+				Debug.LogError("NatShare Error: Texture being saved is null");
+				return false;
+			}
 			return Implementation.SaveToCameraRoll(image.EncodeToPNG());
 		}
 
@@ -54,6 +66,10 @@ namespace NatShareU {
         /// <param name="path">Path to recorded video</param>
         [Doc(@"SaveVideoToCameraRoll")]
 		public static bool SaveToCameraRoll (string videoPath) {
+			if (string.IsNullOrEmpty(videoPath)) {
+				Debug.LogError("NatShare Error: Path to video being saved is invalid");
+				return false;
+			}
 			return Implementation.SaveToCameraRoll(videoPath);
 		}
 
@@ -66,6 +82,11 @@ namespace NatShareU {
         /// <param name="time">Optional: Time to get thumbnail from in video</param>
         [Doc(@"GetThumbnail", @"GetThumbnailDiscussion"), Code(@"Thumbnail")]
 		public static void GetThumbnail (string videoPath, Action<Texture2D> callback, float time = 0f) {
+			if (string.IsNullOrEmpty(videoPath)) {
+				Debug.LogError("NatShare Error: Path to video for retrieving thumbnail is invalid");
+				callback(null);
+				return;
+			}
 			Implementation.GetThumbnail(videoPath, callback, time);
 		}
 		#endregion
