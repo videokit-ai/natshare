@@ -10,6 +10,10 @@ namespace NatShareU.Platforms {
 
     public class NatShareNull : INatShare {
 
+        void INatShare.EnableCallbacks (string gameObjectName, string successMethodName, string failureMethodName) {
+            Debug.LogError("NatShare Error: This platform does not support callbacks");
+        }
+
         bool INatShare.Share (byte[] pngData, string message) {
             Debug.LogError("NatShare Error: This platform does not support sharing");
             return false;

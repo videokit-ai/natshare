@@ -18,6 +18,8 @@ namespace NatShareU.Platforms {
         #endif
 
         #if UNITY_IOS && !UNITY_EDITOR
+        [DllImport(Assembly, EntryPoint = "NSEnableCallbacks")]
+        public static extern void EnableCallbacks (string gameObjectName, string successMethodName, string failureMethodName);
         [DllImport(Assembly, EntryPoint = "NSShareImage")]
         public static extern bool Share (byte[] pngData, int dataSize, string message);
         [DllImport(Assembly, EntryPoint = "NSShareVideo")]
@@ -32,6 +34,7 @@ namespace NatShareU.Platforms {
         public static extern void FreeThumbnail (IntPtr pixelBuffer);
 
         #else
+        public static void EnableCallbacks (string gameObjectName, string successMethodName, string failureMethodName) { return; }
         public static bool Share (byte[] pngData, int dataSize, string message) { return false; }
         public static bool Share (string path, string message) { return false; }
         public static bool SaveToCameraRoll (byte[] pngData, int dataSize) { return false; }

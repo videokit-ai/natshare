@@ -1,6 +1,19 @@
 # NatShare API
 NatShare is a lightweight, easy-to-use native sharing API for Unity Engine. NatShare supports images (using a `Texture2D`) and videos (using a `string` path). Currently, you can save an image to the camera roll, open the native sharing UI, and retrieve a thumbnail for a video:
 
+## Sharing Callbacks
+If you would like to receive callbacks (currently only for native sharing), first use the `EnableCallbacks` function, passing in a game object name that has a component that implements the success and failure methods:
+```csharp
+GameObject go = ...
+// Enable callbacks that will be received on the `go` object.
+NatShare.EnableCallbacks(go.name, "NatShareSuccess", "NatShareFailure");
+// It MUST have a component that implements the success and failure functions like:
+public void NatShareSuccess(string type) { 
+    Debug.LogFormat("share success with type: {0}", type) 
+};
+// will log "share success with type: activity.share.image" when an image is successfully shared
+```
+
 ## Native Sharing
 To share an image, you can use the `Share` function:
 ```csharp

@@ -16,6 +16,10 @@ namespace NatShareU.Platforms {
 			natshare = new AndroidJavaClass("com.yusufolokoba.natshare.NatShare");
 		}
 
+		void INatShare.EnableCallbacks (string gameObjectName, string successMethodName, string failureMethodName) {
+			natshare.CallStatic("enableCallbacks", gameObjectName, successMethodName, failureMethodName);
+		}
+
 		bool INatShare.Share (byte[] pngData, string message) {
 			return natshare.CallStatic<bool>("shareImage", pngData, message);
 		}
