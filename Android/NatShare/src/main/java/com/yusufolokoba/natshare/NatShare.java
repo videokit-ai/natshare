@@ -71,7 +71,7 @@ public class NatShare {
         values.put(MediaStore.Images.Media.TITLE, "Image");
         values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
         values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1e+3);
-        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis() / 1e+3);
+        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
         ContentResolver resolver = UnityPlayer.currentActivity.getContentResolver();
         Uri url = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         try {
@@ -94,7 +94,7 @@ public class NatShare {
         values.put(MediaStore.Video.Media.TITLE, file.getName());
         values.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
         values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1e+3);
-        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis() / 1e+3);
+        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
         values.put(MediaStore.Video.Media.DATA, path);
         UnityPlayer.currentActivity.getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
         return true;
