@@ -95,6 +95,7 @@ public class NatShare {
         values.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
         values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1e+3);
         values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+		values.put(MediaStore.Video.Media.DURATION, GetDuration(path));
         values.put(MediaStore.Video.Media.DATA, path);
         UnityPlayer.currentActivity.getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
         return true;
@@ -122,4 +123,15 @@ public class NatShare {
         frame.recycle();
         return thumbnail;
     }
+	
+    static long GetDuration(String url){
+		MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+		//use one of overloaded setDataSource() functions to set your data source
+		retriever.setDataSource(url);
+		String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+		long timeInMillisec = Long.parseLong(time);
+		
+		retriever.release();
+		return timeInMillisec;
+	}
 }
