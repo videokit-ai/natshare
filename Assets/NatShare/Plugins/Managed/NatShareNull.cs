@@ -25,7 +25,7 @@ namespace NatShareU.Platforms {
             return false;
         }
 
-        bool INatShare.SaveToCameraRoll (string videoPath) {
+        bool INatShare.SaveToCameraRoll (string videoPath, bool isvideo) {
             Debug.LogError("NatShare Error: This platform does not support saving to camera roll");
             return false;
         }

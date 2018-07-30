@@ -72,6 +72,7 @@ public class NatShare {
         values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
         values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1e+3);
         values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+        values.put(MediaStore.Images.Media.DATA, pngData);
         ContentResolver resolver = UnityPlayer.currentActivity.getContentResolver();
         Uri url = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         try {
@@ -86,6 +87,20 @@ public class NatShare {
         }
         return true;
     }
+
+    public static boolean saveImageToCameraRoll (String path) { // DEPLOY
+        File file = new File(path);
+        if (!file.exists()) return false;
+        ContentValues values = new ContentValues(3);
+        values.put(MediaStore.Images.Media.TITLE, "Image");
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1e+3);
+        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+        values.put(MediaStore.Images.Media.DATA, path);
+        UnityPlayer.currentActivity.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        return true;
+    }
+
 
     public static boolean saveVideoToCameraRoll (String path) {
         File file = new File(path);
@@ -124,7 +139,7 @@ public class NatShare {
         return thumbnail;
     }
 	
-    static long GetDuration(String url){
+    static long GetDuration (String url){
 		MediaMetadataRetriever retriever = new MediaMetadataRetriever();
 		//use one of overloaded setDataSource() functions to set your data source
 		retriever.setDataSource(url);

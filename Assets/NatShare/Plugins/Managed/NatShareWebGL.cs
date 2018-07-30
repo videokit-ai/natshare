@@ -24,11 +24,17 @@ namespace NatShareU.Platforms {
 			return NatShareBridge.SaveToCameraRoll(pngData, pngData.Length);
 		}
 
-		bool INatShare.SaveToCameraRoll (string videoPath) {
-			return NatShareBridge.SaveToCameraRoll(videoPath);
-		}
+		bool INatShare.SaveToCameraRoll (string videoPath, bool isvideo) {
+            if(isvideo)
+			    return NatShareBridge.SaveToCameraRoll(videoPath, isvideo);
+            else
+            {
+                Debug.LogError("Natshare does not allow sharing images with path on WebGL!");
+                return false;
+            }
+        }
 
-		void INatShare.GetThumbnail (string videoPath, Action<Texture2D> callback, float time) {
+        void INatShare.GetThumbnail (string videoPath, Action<Texture2D> callback, float time) {
 			IntPtr[] thumbnailData = new IntPtr[3]; int unused = 0;
             var thumbnailHandle = GCHandle.Alloc(thumbnailData, GCHandleType.Pinned);
             NatShareBridge.GetThumbnail(videoPath, time, ref thumbnailData[0], ref unused, ref unused);
