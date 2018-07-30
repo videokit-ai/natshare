@@ -28,11 +28,14 @@ namespace NatShareU.Platforms {
 			return natshare.CallStatic<bool>("saveImageToCameraRoll", pngData);
 		}
 
-		bool INatShare.SaveToCameraRoll (string videoPath) {
-			return natshare.CallStatic<bool>("saveVideoToCameraRoll", videoPath);
-		}
+        bool INatShare.SaveToCameraRoll (string path, bool isvideo) {
+            if (isvideo)
+                return natshare.CallStatic<bool>("saveVideoToCameraRoll", path);
+            else
+                return natshare.CallStatic<bool>("saveImageToCameraRoll", path);
+        }
 
-		void INatShare.GetThumbnail (string videoPath, Action<Texture2D> callback, float time) {
+        void INatShare.GetThumbnail (string videoPath, Action<Texture2D> callback, float time) {
 			var thumbnail = natshare.CallStatic<AndroidJavaObject>("getThumbnail", videoPath, time);
             if (!thumbnail.Call<bool>("isLoaded")) {
                 Debug.LogError("NatShare Error: Failed to get thumbnail for video at path: "+videoPath);

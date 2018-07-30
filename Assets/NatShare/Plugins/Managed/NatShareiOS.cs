@@ -23,8 +23,15 @@ namespace NatShareU.Platforms {
 			return NatShareBridge.SaveToCameraRoll(pngData, pngData.Length);
 		}
 
-		bool INatShare.SaveToCameraRoll (string videoPath) {
-			return NatShareBridge.SaveToCameraRoll(videoPath);
+        bool INatShare.SaveToCameraRoll (string videoPath, bool isvideo) {
+            if (isvideo)
+			    return NatShareBridge.SaveToCameraRoll(videoPath, true);
+            else
+            {
+                Debug.LogError("Natshare does not allow sharing images with path on iOS!");
+                return false;
+            }
+
 		}
 
 		void INatShare.GetThumbnail (string videoPath, Action<Texture2D> callback, float time) {
