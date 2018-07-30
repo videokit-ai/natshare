@@ -12,7 +12,7 @@ namespace NatShareU {
 		bool Share (byte[] pngData, string message);
 		bool Share (string path, string message);
 		bool SaveToCameraRoll (byte[] pngData);
-        bool SaveToCameraRoll (string videoPath);
+        bool SaveToCameraRoll (string path, bool isvideo);
         void GetThumbnail (string videoPath, Action<Texture2D> callback, float time);
 	}
 }
