@@ -35,7 +35,7 @@ namespace NatShareU.Platforms {
         public static bool Share (byte[] pngData, int dataSize, string message) { return false; }
         public static bool Share (string path, string message) { return false; }
         public static bool SaveToCameraRoll (byte[] pngData, int dataSize) { return false; }
-        public static bool SaveToCameraRoll (string path) { return false; }
+        public static bool SaveToCameraRoll (string path, bool isvideo) { return false; }
         public static bool GetThumbnail (string path, float time, ref IntPtr pixelBuffer, ref int width, ref int height) { return false; }
         public static void FreeThumbnail (IntPtr pixelBuffer) {}
         #endif

@@ -65,12 +65,12 @@ namespace NatShareU {
         /// </summary>
         /// <param name="path">Path to recorded video</param>
         [Doc(@"SaveVideoToCameraRoll")]
-		public static bool SaveToCameraRoll (string videoPath) {
+		public static bool SaveToCameraRoll (string videoPath, bool isvideo) {
 			if (string.IsNullOrEmpty(videoPath)) {
 				Debug.LogError("NatShare Error: Path to video being saved is invalid");
 				return false;
 			}
-			return Implementation.SaveToCameraRoll(videoPath);
+			return Implementation.SaveToCameraRoll(videoPath, isvideo);
 		}
 
 		/// <summary>
