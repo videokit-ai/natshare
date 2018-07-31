@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		886F163E2082485000C3FA2D /* NatShare.m in Sources */ = {isa = PBXBuildFile; fileRef = 886F163D2082485000C3FA2D /* NatShare.m */; };
 		888F3F4A2084E2900019E011 /* libNatShare.a in CopyFiles */ = {isa = PBXBuildFile; fileRef = 886F16392082485000C3FA2D /* libNatShare.a */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		A92CDE012110A35500805BDE /* ActivityStringItemSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A92CDE002110A35500805BDE /* ActivityStringItemSource.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -30,6 +31,8 @@
 		888F3F472084E19B0019E011 /* UnityInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnityInterface.h; sourceTree = "<group>"; };
 		888F3F482084E1B90019E011 /* UnityRendering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnityRendering.h; sourceTree = "<group>"; };
 		888F3F492084E1BA0019E011 /* UnityForwardDecls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnityForwardDecls.h; sourceTree = "<group>"; };
+		A92CDDFF2110A35500805BDE /* ActivityStringItemSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ActivityStringItemSource.h; sourceTree = "<group>"; };
+		A92CDE002110A35500805BDE /* ActivityStringItemSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ActivityStringItemSource.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +67,8 @@
 			isa = PBXGroup;
 			children = (
 				886F163D2082485000C3FA2D /* NatShare.m */,
+				A92CDDFF2110A35500805BDE /* ActivityStringItemSource.h */,
+				A92CDE002110A35500805BDE /* ActivityStringItemSource.m */,
 			);
 			path = NatShare;
 			sourceTree = "<group>";
@@ -136,6 +141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				886F163E2082485000C3FA2D /* NatShare.m in Sources */,
+				A92CDE012110A35500805BDE /* ActivityStringItemSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,6 +10,7 @@
 #import <Accelerate/Accelerate.h>
 #import <Photos/Photos.h>
 #import "UnityInterface.h"
+#import "ActivityStringItemSource.h"
 
 static NSString *callbackGameObjectName = nil;
 static NSString *callbackSuccessMethodName = nil;
@@ -24,7 +25,8 @@ void NSEnableCallbacks(const char *gameObjectName, const char *successMethodName
 bool NSShareImage (uint8_t* pngData, int dataSize, const char* message) {
     NSData* data = [NSData dataWithBytes:pngData length:dataSize];
     UIImage* image = [UIImage imageWithData:data];
-    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[image, [NSString stringWithUTF8String:message]] applicationActivities:nil];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithUTF8String:message]];
+    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[image, [[ActivityStringItemSource alloc] initWithString:attributedString]] applicationActivities:nil];
     UIViewController* vc = UnityGetGLViewController();
     controller.modalPresentationStyle = UIModalPresentationPopover;
     controller.popoverPresentationController.sourceView = vc.view;
@@ -44,7 +46,8 @@ bool NSShareImage (uint8_t* pngData, int dataSize, const char* message) {
 bool NSShareVideo (const char* videoPath, const char* message) {
     NSString* path = [NSString stringWithUTF8String:videoPath];
     if (![NSFileManager.defaultManager fileExistsAtPath:path]) return false;
-    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[[NSURL fileURLWithPath:path], [NSString stringWithUTF8String:message]] applicationActivities:nil];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithUTF8String:message]];
+    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[[NSURL fileURLWithPath:path], [[ActivityStringItemSource alloc] initWithString:attributedString]] applicationActivities:nil];
     UIViewController* vc = UnityGetGLViewController();
     controller.modalPresentationStyle = UIModalPresentationPopover;
     controller.popoverPresentationController.sourceView = vc.view;
