@@ -15,8 +15,16 @@ namespace NatShareU {
 
 		#region --Client API--
 
+		public static bool Share (this string text) {
+			if (string.IsNullOrEmpty(text)) {
+				Debug.LogError("NatShare Error: Text being shared is null");
+				return false;
+			}
+			return Implementation.Share(text);
+		}
+
 		/// <summary>
-        /// Share an image with the native sharing UI.
+        /// Share an texture with the native sharing UI.
         /// Returns true if the image can be shared.
         /// </summary>
         /// <param name="image">Image to be shared</param>
@@ -31,18 +39,18 @@ namespace NatShareU {
 		}
 
 		/// <summary>
-        /// Share a recorded video with the native sharing UI.
+        /// Share a media file with the native sharing UI.
         /// Returns true if video is found and can be opened for sharing.
         /// </summary>
-        /// <param name="path">Path to recorded video</param>
+        /// <param name="path">Path to media file</param>
 		/// <param name="message">Optional. Message to be shared with image</param>
         [Doc(@"ShareVideo")]
-		public static bool Share (string videoPath, string message = "Share video") {
-			if (string.IsNullOrEmpty(videoPath)) {
+		public static bool Share (string path, string message = "Share media") {
+			if (string.IsNullOrEmpty(path)) {
 				Debug.LogError("NatShare Error: Path to video being shared is invalid");
 				return false;
 			}
-			return Implementation.Share(videoPath, message);
+			return Implementation.Share(path, message);
 		}
 
 		/// <summary>

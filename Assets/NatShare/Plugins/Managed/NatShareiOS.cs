@@ -11,6 +11,10 @@ namespace NatShareU.Platforms {
 
 	public class NatShareiOS : INatShare {
 
+		bool INatShare.Share (string text) {
+			return NatShareBridge.Share(text);
+		}
+
 		bool INatShare.Share (byte[] pngData, string message) {
 			return NatShareBridge.Share(pngData, pngData.Length, message);
 		}
