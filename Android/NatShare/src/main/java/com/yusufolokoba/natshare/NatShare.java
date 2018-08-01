@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
 
 import com.unity3d.player.UnityPlayer;
 import java.io.File;
@@ -29,6 +30,15 @@ public class NatShare {
         // Disable the FileUriExposedException from being thrown on Android 24+
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
+    }
+
+    public static boolean shareText (String text) {
+        final Intent intent = new Intent()
+                .setAction(Intent.ACTION_SEND)
+                .setType("text/plain")
+                .putExtra(Intent.EXTRA_TEXT, text);
+        UnityPlayer.currentActivity.startActivity(Intent.createChooser(intent, "Share"));
+        return true;
     }
 
     public static boolean shareImage (byte[] pngData, String message) {
@@ -53,12 +63,12 @@ public class NatShare {
         return true;
     }
 
-    public static boolean shareVideo (String path, String message) {
+    public static boolean shareMedia (String path, String message) {
         File file = new File(path);
         if (!file.exists()) return false;
         final Intent intent = new Intent()
                 .setAction(Intent.ACTION_SEND)
-                .setType("video/mp4")
+                .setType(getMimeType(path))
                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file))
                 .putExtra(Intent.EXTRA_TEXT, message);
@@ -70,7 +80,7 @@ public class NatShare {
         ContentValues values = new ContentValues(3);
         values.put(MediaStore.Images.Media.TITLE, "Image");
         values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
-        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1e+3);
+        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
         values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
         ContentResolver resolver = UnityPlayer.currentActivity.getContentResolver();
         Uri url = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
@@ -87,13 +97,13 @@ public class NatShare {
         return true;
     }
 
-    public static boolean saveVideoToCameraRoll (String path) {
+    public static boolean saveMediaToCameraRoll (String path) {
         File file = new File(path);
         if (!file.exists()) return false;
         ContentValues values = new ContentValues(3);
         values.put(MediaStore.Video.Media.TITLE, file.getName());
-        values.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
-        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1e+3);
+        values.put(MediaStore.Video.Media.MIME_TYPE, getMimeType(path));
+        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
         values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
         values.put(MediaStore.Video.Media.DATA, path);
         UnityPlayer.currentActivity.getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
@@ -121,5 +131,13 @@ public class NatShare {
         frame.copyPixelsToBuffer(thumbnail.pixelBuffer);
         frame.recycle();
         return thumbnail;
+    }
+
+    private static String getMimeType (String url) {
+        String type = null;
+        String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+        if (extension != null)
+            type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        return type;
     }
 }

@@ -11,10 +11,23 @@
 #import <Photos/Photos.h>
 #import "UnityInterface.h"
 
+bool NSShareText (const char* text) {
+    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[[NSString stringWithUTF8String:text]] applicationActivities:nil];
+    UIViewController* vc = UnityGetGLViewController();
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    controller.popoverPresentationController.sourceView = vc.view;
+    [vc presentViewController:controller animated:YES completion:nil];
+    return true;
+}
+
 bool NSShareImage (uint8_t* pngData, int dataSize, const char* message) {
     NSData* data = [NSData dataWithBytes:pngData length:dataSize];
     UIImage* image = [UIImage imageWithData:data];
-    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[image, [NSString stringWithUTF8String:message]] applicationActivities:nil];
+    NSMutableArray* items = [NSMutableArray arrayWithObject:image];
+    NSString* messageString = [NSString stringWithUTF8String:message];
+    if (messageString.length)
+        [items addObject:messageString];
+    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
     UIViewController* vc = UnityGetGLViewController();
     controller.modalPresentationStyle = UIModalPresentationPopover;
     controller.popoverPresentationController.sourceView = vc.view;
@@ -25,10 +38,15 @@ bool NSShareImage (uint8_t* pngData, int dataSize, const char* message) {
     return true;
 }
 
-bool NSShareVideo (const char* videoPath, const char* message) {
+bool NSShareMedia (const char* videoPath, const char* message) {
     NSString* path = [NSString stringWithUTF8String:videoPath];
-    if (![NSFileManager.defaultManager fileExistsAtPath:path]) return false;
-    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[[NSURL fileURLWithPath:path], [NSString stringWithUTF8String:message]] applicationActivities:nil];
+    if (![NSFileManager.defaultManager fileExistsAtPath:path])
+        return false;
+    NSMutableArray* items = [NSMutableArray arrayWithObject:[NSURL fileURLWithPath:path]];
+    NSString* messageString = [NSString stringWithUTF8String:message];
+    if (messageString.length)
+        [items addObject:messageString];
+    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
     UIViewController* vc = UnityGetGLViewController();
     controller.modalPresentationStyle = UIModalPresentationPopover;
     controller.popoverPresentationController.sourceView = vc.view;
@@ -52,8 +70,8 @@ bool NSSaveImageToCameraRoll (uint8_t* pngData, int dataSize) {
     return true;
 }
 
-bool NSSaveVideoToCameraRoll (const char* videoPath) {
-    NSURL* videoURL = [NSURL fileURLWithPath:[NSString stringWithUTF8String:videoPath]];
+bool NSSaveMediaToCameraRoll (const char* path) {
+    NSURL* videoURL = [NSURL fileURLWithPath:[NSString stringWithUTF8String:path]];
     if (![NSFileManager.defaultManager fileExistsAtPath:videoURL.path]) return false;
     if (PHPhotoLibrary.authorizationStatus == PHAuthorizationStatusDenied) return false;
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
