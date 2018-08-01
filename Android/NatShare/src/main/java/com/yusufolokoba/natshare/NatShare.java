@@ -100,12 +100,15 @@ public class NatShare {
     public static boolean saveMediaToCameraRoll (String path) {
         File file = new File(path);
         if (!file.exists()) return false;
+        final String mimeType = getMimeType(path);
         ContentValues values = new ContentValues(3);
         values.put(MediaStore.Video.Media.TITLE, file.getName());
-        values.put(MediaStore.Video.Media.MIME_TYPE, getMimeType(path));
+        values.put(MediaStore.Video.Media.MIME_TYPE, mimeType);
         values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
         values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
         values.put(MediaStore.Video.Media.DATA, path);
+        if (mimeType.toLowerCase().startsWith("video"))
+            values.put(MediaStore.Video.Media.DURATION, getVideoDuration(path));
         UnityPlayer.currentActivity.getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
         return true;
     }
@@ -139,5 +142,15 @@ public class NatShare {
         if (extension != null)
             type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
         return type;
+    }
+
+    private static long getVideoDuration (String url) {
+        // Source: https://github.com/furmankl/NatShare-API, thank you!
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        retriever.setDataSource(url);
+        String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        long timeInMillisec = Long.parseLong(time);
+        retriever.release();
+        return timeInMillisec;
     }
 }
