@@ -16,6 +16,22 @@ namespace NatShareU {
 		#region --Client API--
 
 		/// <summary>
+        /// Setup callbacks using UnitySendMessage. Requires an existing gameObject name to sent the callback messages to.
+        /// Currently only returns messages for sharing a image or video.
+        /// </summary>
+        /// <param name="gameObjectName">game object that where callbacks will be routed to.</param>
+		/// <param name="successMethodName">Optional. The method name on the game object that will be called in the event of success. Should take a single string parameter, which is the sharing type that succeeded.</param>
+		/// <param name="failureMethodName">Optional. The method name on the game object that will be called in the event of failure (i.e. the user cancelled the action). Should take a single string parameter, which is the sharing type that failed.</param>
+        [Doc(@"EnableCallbacks")]
+		public static void EnableCallbacks (string gameObjectName, string successMethodName = "NatShareSuccess", string failureMethodName = "NatShareFailure") {
+			if (gameObjectName == null || gameObjectName == "") {
+				Debug.LogError("NatShare Error: gameObjectName used for callbacks is null or empty!");
+				return;
+			}
+			Implementation.EnableCallbacks(gameObjectName, successMethodName, failureMethodName);
+		}
+
+		/// <summary>
         /// Share an image with the native sharing UI.
         /// Returns true if the image can be shared.
         /// </summary>

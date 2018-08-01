@@ -12,6 +12,10 @@ namespace NatShareU.Platforms {
 
 	public class NatShareWebGL : INatShare {
 
+		void INatShare.EnableCallbacks (string gameObjectName, string successMethodName, string failureMethodName) {
+			NatShareBridge.EnableCallbacks(gameObjectName, successMethodName, failureMethodName);
+		}
+
 		bool INatShare.Share (byte[] pngData, string message) {
 			return NatShareBridge.Share(pngData, pngData.Length, message);
 		}

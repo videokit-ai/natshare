@@ -31,6 +31,16 @@ public class NatShare {
         StrictMode.setVmPolicy(builder.build());
     }
 
+    private static NatShareCallbacks callbacks = null;
+
+    public static void enableCallbacks(String gameObjectName, String successMethodName, String failureMethodName) {
+        callbacks = new NatShareCallbacks();
+        callbacks.setGameObjectName(gameObjectName);
+        callbacks.setSuccessMethodName(successMethodName);
+        callbacks.setFailureMethodName(failureMethodName);
+        UnityPlayer.currentActivity.getFragmentManager().beginTransaction().add(callbacks, NatShareCallbacks.TAG).commit();
+    }
+
     public static boolean shareImage (byte[] pngData, String message) {
         final File cachePath = new File(UnityPlayer.currentActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "NatShare");
         final File file = new File(cachePath, "/share.png");
@@ -49,7 +59,11 @@ public class NatShare {
                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file))
                 .putExtra(Intent.EXTRA_TEXT, message);
-        UnityPlayer.currentActivity.startActivity(Intent.createChooser(intent, message));
+        if ( callbacks != null ) {
+            callbacks.startActivityForResult(Intent.createChooser(intent, message), NatShareCallbacks.ACTIVITY_SHARE_IMAGE);
+        } else {
+            UnityPlayer.currentActivity.startActivity(Intent.createChooser(intent, message));
+        }
         return true;
     }
 
@@ -62,7 +76,11 @@ public class NatShare {
                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file))
                 .putExtra(Intent.EXTRA_TEXT, message);
-        UnityPlayer.currentActivity.startActivity(Intent.createChooser(intent, message));
+        if ( callbacks != null ) {
+            callbacks.startActivityForResult(Intent.createChooser(intent, message), NatShareCallbacks.ACTIVITY_SHARE_VIDEO);
+        } else {
+            UnityPlayer.currentActivity.startActivity(Intent.createChooser(intent, message));
+        }
         return true;
     }
 

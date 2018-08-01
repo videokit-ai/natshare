@@ -10,14 +10,32 @@
 #import <Accelerate/Accelerate.h>
 #import <Photos/Photos.h>
 #import "UnityInterface.h"
+#import "ActivityStringItemSource.h"
+
+static NSString *callbackGameObjectName = nil;
+static NSString *callbackSuccessMethodName = nil;
+static NSString *callbackFailureMethodName = nil;
+
+void NSEnableCallbacks(const char *gameObjectName, const char *successMethodName, const char *failureMethodName) {
+    callbackGameObjectName = [NSString stringWithUTF8String:gameObjectName];
+    callbackSuccessMethodName = [NSString stringWithUTF8String:successMethodName];
+    callbackFailureMethodName = [NSString stringWithUTF8String:failureMethodName];
+}
 
 bool NSShareImage (uint8_t* pngData, int dataSize, const char* message) {
     NSData* data = [NSData dataWithBytes:pngData length:dataSize];
     UIImage* image = [UIImage imageWithData:data];
-    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[image, [NSString stringWithUTF8String:message]] applicationActivities:nil];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithUTF8String:message]];
+    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[image, [[ActivityStringItemSource alloc] initWithString:attributedString]] applicationActivities:nil];
     UIViewController* vc = UnityGetGLViewController();
     controller.modalPresentationStyle = UIModalPresentationPopover;
     controller.popoverPresentationController.sourceView = vc.view;
+    if ( callbackGameObjectName != nil ) {
+        [controller setCompletionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+            NSString *methodName = (completed ? callbackSuccessMethodName : callbackFailureMethodName);
+            UnitySendMessage([callbackGameObjectName UTF8String], [methodName UTF8String], "activity.share.image");
+        }];
+    }
     // Request save tp photos permission, if not, crash occurs (Ilya Playunov)
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
         [vc presentViewController:controller animated:YES completion:nil];
@@ -28,10 +46,17 @@ bool NSShareImage (uint8_t* pngData, int dataSize, const char* message) {
 bool NSShareVideo (const char* videoPath, const char* message) {
     NSString* path = [NSString stringWithUTF8String:videoPath];
     if (![NSFileManager.defaultManager fileExistsAtPath:path]) return false;
-    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[[NSURL fileURLWithPath:path], [NSString stringWithUTF8String:message]] applicationActivities:nil];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithUTF8String:message]];
+    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[[NSURL fileURLWithPath:path], [[ActivityStringItemSource alloc] initWithString:attributedString]] applicationActivities:nil];
     UIViewController* vc = UnityGetGLViewController();
     controller.modalPresentationStyle = UIModalPresentationPopover;
     controller.popoverPresentationController.sourceView = vc.view;
+    if ( callbackGameObjectName != nil ) {
+        [controller setCompletionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+            NSString *methodName = (completed ? callbackSuccessMethodName : callbackFailureMethodName);
+            UnitySendMessage([callbackGameObjectName UTF8String], [methodName UTF8String], "activity.share.video");
+        }];
+    }
     // Request save tp photos permission, if not, crash occurs (Ilya Playunov)
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
         [vc presentViewController:controller animated:YES completion:nil];

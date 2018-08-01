@@ -5,6 +5,11 @@
 
 const NatShare = {
 
+    NSEnableCallbacks : function (gameObjectName, successMethodName, failureMethodName) {
+        console.log("NatShare Error: callbacks are not implemented on WebGL");
+        return false;
+    },
+
     NSShareImage : function (pngData, dataSize, message) {
         console.log("NatShare Error: Sharing is not implemented on WebGL");
         return false;
