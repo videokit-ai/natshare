@@ -15,7 +15,12 @@ namespace NatShareU {
 
 		#region --Client API--
 
-		public static bool Share (this string text) {
+		/// <summary>
+        /// Share plain text with the native sharing UI.
+        /// Returns true if the text can be shared.
+        /// </summary>
+        /// <param name="text">Text to be shared</param>
+		public static bool ShareText (this string text) {
 			if (string.IsNullOrEmpty(text)) {
 				Debug.LogError("NatShare Error: Text being shared is null");
 				return false;
@@ -30,7 +35,7 @@ namespace NatShareU {
         /// <param name="image">Image to be shared</param>
 		/// <param name="message">Optional. Message to be shared with image</param>
         [Doc(@"ShareImage")]
-		public static bool Share (this Texture2D image, string message = "Share image") {
+		public static bool ShareImage (this Texture2D image, string message = "") {
 			if (!image) {
 				Debug.LogError("NatShare Error: Texture being shared is null");
 				return false;
@@ -45,7 +50,7 @@ namespace NatShareU {
         /// <param name="path">Path to media file</param>
 		/// <param name="message">Optional. Message to be shared with image</param>
         [Doc(@"ShareVideo")]
-		public static bool Share (string path, string message = "Share media") {
+		public static bool ShareMedia (string path, string message = "") {
 			if (string.IsNullOrEmpty(path)) {
 				Debug.LogError("NatShare Error: Path to video being shared is invalid");
 				return false;
@@ -59,7 +64,7 @@ namespace NatShareU {
         /// </summary>
         /// <param name="image">Image to be saved</param>
         [Doc(@"SaveImageToCameraRoll")]
-		public static bool SaveToCameraRoll (this Texture2D image) {
+		public static bool SaveImageToCameraRoll (this Texture2D image) {
 			if (!image) {
 				Debug.LogError("NatShare Error: Texture being saved is null");
 				return false;
@@ -68,17 +73,17 @@ namespace NatShareU {
 		}
 
 		/// <summary>
-        /// Save a recorded video to the camera roll.
-        /// Returns true if the video is found and can be saved to the camera roll.
+        /// Save a media file to the camera roll.
+        /// Returns true if the file is found and can be saved to the camera roll.
         /// </summary>
         /// <param name="path">Path to recorded video</param>
         [Doc(@"SaveVideoToCameraRoll")]
-		public static bool SaveToCameraRoll (string videoPath) {
-			if (string.IsNullOrEmpty(videoPath)) {
+		public static bool SaveMediaToCameraRoll (string path) {
+			if (string.IsNullOrEmpty(path)) {
 				Debug.LogError("NatShare Error: Path to video being saved is invalid");
 				return false;
 			}
-			return Implementation.SaveToCameraRoll(videoPath);
+			return Implementation.SaveToCameraRoll(path);
 		}
 
 		/// <summary>

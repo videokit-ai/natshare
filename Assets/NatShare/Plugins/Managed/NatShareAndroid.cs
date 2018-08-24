@@ -32,8 +32,8 @@ namespace NatShareU.Platforms {
 			return natshare.CallStatic<bool>("saveImageToCameraRoll", pngData);
 		}
 
-		bool INatShare.SaveToCameraRoll (string videoPath) {
-			return natshare.CallStatic<bool>("saveMediaToCameraRoll", videoPath);
+		bool INatShare.SaveToCameraRoll (string path) {
+			return natshare.CallStatic<bool>("saveMediaToCameraRoll", path);
 		}
 
 		void INatShare.GetThumbnail (string videoPath, Action<Texture2D> callback, float time) {
