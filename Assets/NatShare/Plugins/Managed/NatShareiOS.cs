@@ -36,6 +36,7 @@ namespace NatShareU.Platforms {
             if (!NatShareBridge.GetThumbnail(videoPath, time, ref pixelBuffer, ref width, ref height)) {
                 Debug.LogError("NatShare Error: Failed to get thumbnail for video at path: "+videoPath);
                 callback(null);
+		return;
             }
             var thumbnail = new Texture2D(width, height, TextureFormat.BGRA32, false);
             thumbnail.LoadRawTextureData(pixelBuffer, width * height * 4);
