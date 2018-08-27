@@ -9,6 +9,7 @@ namespace NatShareU {
 	using System;
 
 	public interface INatShare {
+		bool Share (string text);
 		bool Share (byte[] pngData, string message);
 		bool Share (string path, string message);
 		bool SaveToCameraRoll (byte[] pngData);

@@ -16,20 +16,24 @@ namespace NatShareU.Platforms {
 			natshare = new AndroidJavaClass("com.yusufolokoba.natshare.NatShare");
 		}
 
+		bool INatShare.Share (string text) {
+			return natshare.CallStatic<bool>("shareText", text);
+		}
+
 		bool INatShare.Share (byte[] pngData, string message) {
 			return natshare.CallStatic<bool>("shareImage", pngData, message);
 		}
 
-		bool INatShare.Share (string videoPath, string message) {
-			return natshare.CallStatic<bool>("shareVideo", videoPath, message);
+		bool INatShare.Share (string path, string message) {
+			return natshare.CallStatic<bool>("shareMedia", path, message);
 		}
 
 		bool INatShare.SaveToCameraRoll (byte[] pngData) {
 			return natshare.CallStatic<bool>("saveImageToCameraRoll", pngData);
 		}
 
-		bool INatShare.SaveToCameraRoll (string videoPath) {
-			return natshare.CallStatic<bool>("saveVideoToCameraRoll", videoPath);
+		bool INatShare.SaveToCameraRoll (string path) {
+			return natshare.CallStatic<bool>("saveMediaToCameraRoll", path);
 		}
 
 		void INatShare.GetThumbnail (string videoPath, Action<Texture2D> callback, float time) {

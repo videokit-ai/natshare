@@ -1,38 +1,34 @@
 # NatShare API
-![NatShare](NatShare.png)
-
-NatShare is a lightweight, easy-to-use native sharing API for Unity Engine. NatShare supports images (using a `Texture2D`) and videos (using a `string` path). Currently, you can save an image to the camera roll, open the native sharing UI, and retrieve a thumbnail for a video:
+NatShare is a lightweight, easy-to-use native sharing API for Unity Engine. NatShare supports images (using a `Texture2D`) and media files (using a `string` path). Currently, you can save media to the camera roll, open the native sharing UI, and retrieve a thumbnail for a video:
 
 ## Native Sharing
-To share an image, you can use the `Share` function:
+To share an image, you can use the `ShareImage` function:
 ```csharp
 Texture2D image = ...;
 // Share by using the `NatShare` function
-NatShare.Share(image);
-// Or use it directly on the `Texture2D`
-image.Share();
+NatShare.ShareImage(image);
 ```
 
-The `Share` function has an overload that accepts `string` paths. This can be used to share videos:
+To share a media file, use the `ShareMedia` function:
 ```csharp
 string videoPath = ...;
-NatShare.Share(videoPath);
+NatShare.ShareMedia(videoPath);
+```
+
+Finally, to share plain text, use the `ShareText` function:
+```csharp
+NatShare.ShareText("Hi there!");
 ```
 
 ## Saving to the Camera Roll
-Saving to the camera roll is very simple:
+You can save images or media files to the camera roll:
 ```csharp
-Texture2D image = ...;
 // Save to the camera roll by using the `NatShare` function
+Texture2D image = ...;
 NatShare.SaveToCameraRoll(image);
-// Or use it directly on the `Texture2D`
-image.SaveToCameraRoll();
-```
-
-The `SaveToCameraRoll` function also has an overload that accepts `string` paths. This can be used for videos:
-```csharp
-string videoPath = ...;
-NatShare.SaveToCameraRoll(videoPath);
+// Now save a video to the camera roll
+string gifPath = ...;
+NatShare.SaveToCameraRoll(gifPath);
 ```
 
 ## Retrieving a Video Thumbnail
@@ -60,7 +56,5 @@ NatShare.GetThumbnail(videoPath, thumbnail => preview.texture = thumbnail, 5f);
 ## Quick Tips
 - To discuss, report an issue, or request a feature, visit [Unity forums](https://forum.unity.com/threads/natshare-free-sharing-api.527074/) or [GitHub](https://github.com/olokobayusuf/NatShare-API)
 - Contact me at [olokobayusuf@gmail.com](mailto:olokobayusuf@gmail.com)
-- Get NatShare [here](https://github.com/olokobayusuf/NatShare-API/releases).
 
 Thank you very much!
-

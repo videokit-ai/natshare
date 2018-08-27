@@ -11,28 +11,45 @@
 #import <Photos/Photos.h>
 #import "UnityInterface.h"
 
-bool NSShareImage (uint8_t* pngData, int dataSize, const char* message) {
-    NSData* data = [NSData dataWithBytes:pngData length:dataSize];
-    UIImage* image = [UIImage imageWithData:data];
-    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[image, [NSString stringWithUTF8String:message]] applicationActivities:nil];
+bool NSShareText (const char* text) {
+    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[[NSString stringWithUTF8String:text]] applicationActivities:nil];
     UIViewController* vc = UnityGetGLViewController();
     controller.modalPresentationStyle = UIModalPresentationPopover;
     controller.popoverPresentationController.sourceView = vc.view;
-    // Request save tp photos permission, if not, crash occurs (Ilya Playunov)
+    [vc presentViewController:controller animated:YES completion:nil];
+    return true;
+}
+
+bool NSShareImage (uint8_t* pngData, int dataSize, const char* message) {
+    NSData* data = [NSData dataWithBytes:pngData length:dataSize];
+    UIImage* image = [UIImage imageWithData:data];
+    NSMutableArray* items = [NSMutableArray arrayWithObject:image];
+    NSString* messageString = [NSString stringWithUTF8String:message];
+    if (messageString.length)
+        [items addObject:messageString];
+    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
+    UIViewController* vc = UnityGetGLViewController();
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    controller.popoverPresentationController.sourceView = vc.view;
+    // Request save tp photos permission, if not, crash occurs (thanks Ilya!)
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
         [vc presentViewController:controller animated:YES completion:nil];
     }];
     return true;
 }
 
-bool NSShareVideo (const char* videoPath, const char* message) {
-    NSString* path = [NSString stringWithUTF8String:videoPath];
-    if (![NSFileManager.defaultManager fileExistsAtPath:path]) return false;
-    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[[NSURL fileURLWithPath:path], [NSString stringWithUTF8String:message]] applicationActivities:nil];
+bool NSShareMedia (const char* mediaPath, const char* message) {
+    NSString* path = [NSString stringWithUTF8String:mediaPath];
+    if (![NSFileManager.defaultManager fileExistsAtPath:path])
+        return false;
+    NSMutableArray* items = [NSMutableArray arrayWithObject:[NSURL fileURLWithPath:path]];
+    NSString* messageString = [NSString stringWithUTF8String:message];
+    if (messageString.length)
+        [items addObject:messageString];
+    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
     UIViewController* vc = UnityGetGLViewController();
     controller.modalPresentationStyle = UIModalPresentationPopover;
     controller.popoverPresentationController.sourceView = vc.view;
-    // Request save tp photos permission, if not, crash occurs (Ilya Playunov)
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
         [vc presentViewController:controller animated:YES completion:nil];
     }];
@@ -52,14 +69,14 @@ bool NSSaveImageToCameraRoll (uint8_t* pngData, int dataSize) {
     return true;
 }
 
-bool NSSaveVideoToCameraRoll (const char* videoPath) {
-    NSURL* videoURL = [NSURL fileURLWithPath:[NSString stringWithUTF8String:videoPath]];
-    if (![NSFileManager.defaultManager fileExistsAtPath:videoURL.path]) return false;
+bool NSSaveMediaToCameraRoll (const char* path) {
+    NSURL* url = [NSURL fileURLWithPath:[NSString stringWithUTF8String:path]];
+    if (![NSFileManager.defaultManager fileExistsAtPath:url.path]) return false;
     if (PHPhotoLibrary.authorizationStatus == PHAuthorizationStatusDenied) return false;
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
         if (status == PHAuthorizationStatusAuthorized)
             [PHPhotoLibrary.sharedPhotoLibrary performChanges:^{
-                [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:videoURL];
+                [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:url];
             } completionHandler:nil];
     }];
     return true;

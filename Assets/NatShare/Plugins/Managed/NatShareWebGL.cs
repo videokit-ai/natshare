@@ -12,6 +12,11 @@ namespace NatShareU.Platforms {
 
 	public class NatShareWebGL : INatShare {
 
+		bool INatShare.Share (string text) {
+            Debug.LogError("NatShare Error: This platform does not support text sharing");
+            return false;
+		}
+
 		bool INatShare.Share (byte[] pngData, string message) {
 			return NatShareBridge.Share(pngData, pngData.Length, message);
 		}
