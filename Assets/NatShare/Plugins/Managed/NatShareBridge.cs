@@ -17,7 +17,11 @@ namespace NatShareU.Platforms {
         "NatShare";
         #endif
 
+        public delegate void ShareCallback (bool completed);
+
         #if UNITY_IOS && !UNITY_EDITOR
+        [DllImport(Assembly, EntryPoint = "NSRegisterCallbacks")]
+        public static extern void RegisterCallbacks (ShareCallback callback);
         [DllImport(Assembly, EntryPoint = "NSShareText")]
         public static extern bool Share (string text);
         [DllImport(Assembly, EntryPoint = "NSShareImage")]
@@ -34,6 +38,7 @@ namespace NatShareU.Platforms {
         public static extern void FreeThumbnail (IntPtr pixelBuffer);
 
         #else
+        public static void RegisterCallbacks (ShareCallback callback) {}
         public static bool Share (string text) { return false; }
         public static bool Share (byte[] pngData, int dataSize, string message) { return false; }
         public static bool Share (string path, string message) { return false; }

@@ -44,9 +44,9 @@ dependencies {
     compile project(':Unity')
 }
 
-task copyToNatShare(type: Copy) {
+task copyToUnity(type: Copy) {
     from 'build/outputs/aar/NatShare.aar'
     into '../../Assets/NatShare/Plugins/Android'
 }
 
-assemble.finalizedBy (copyToNatShare)
+assemble.finalizedBy (copyToUnity)

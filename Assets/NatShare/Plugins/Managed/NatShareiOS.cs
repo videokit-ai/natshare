@@ -5,21 +5,31 @@
 
 namespace NatShareU.Platforms {
 
+	using AOT;
 	using UnityEngine;
 	using System;
 	using System.Runtime.InteropServices;
 
 	public class NatShareiOS : INatShare {
 
-		bool INatShare.Share (string text) {
+		private ShareCallback callback;
+
+		public NatShareiOS () {
+			NatShareBridge.RegisterCallbacks(OnShare);
+		}
+
+		bool INatShare.ShareText (string text, ShareCallback callback) {
+			this.callback = callback;
 			return NatShareBridge.Share(text);
 		}
 
-		bool INatShare.Share (byte[] pngData, string message) {
+		bool INatShare.ShareImage (byte[] pngData, string message, ShareCallback callback) {
+			this.callback = callback;
 			return NatShareBridge.Share(pngData, pngData.Length, message);
 		}
 
-		bool INatShare.Share (string path, string message) {
+		bool INatShare.ShareMedia (string path, string message, ShareCallback callback) {
+			this.callback = callback;
 			return NatShareBridge.Share(path, message);
 		}
 
@@ -35,14 +45,23 @@ namespace NatShareU.Platforms {
 			IntPtr pixelBuffer = IntPtr.Zero; int width = 0, height = 0;
             if (!NatShareBridge.GetThumbnail(videoPath, time, ref pixelBuffer, ref width, ref height)) {
                 Debug.LogError("NatShare Error: Failed to get thumbnail for video at path: "+videoPath);
-                callback(null);
-		return;
+				return;
             }
             var thumbnail = new Texture2D(width, height, TextureFormat.BGRA32, false);
             thumbnail.LoadRawTextureData(pixelBuffer, width * height * 4);
             thumbnail.Apply();
             NatShareBridge.FreeThumbnail(pixelBuffer);
             callback(thumbnail);
+		}
+
+		[MonoPInvokeCallback(typeof(NatShareBridge.ShareCallback))]
+		static void OnShare (bool completed) {
+			/**
+			 * We don't report the `completed` value to clients because we can't do so on Android.
+			 * For more info, see the note in `NatShareAndroid::onShare`.
+			 */
+			var callback = (NatShare.Implementation as NatShareiOS).callback;
+			if (callback != null) callback();
 		}
 	}
 }
