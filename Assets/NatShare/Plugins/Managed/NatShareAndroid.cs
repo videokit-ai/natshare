@@ -6,7 +6,6 @@
 namespace NatShareU.Platforms {
 
 	using UnityEngine;
-	using System;
 
 	public class NatShareAndroid : AndroidJavaProxy, INatShare {
 
@@ -40,26 +39,23 @@ namespace NatShareU.Platforms {
 			return natshare.Call<bool>("saveMediaToCameraRoll", path);
 		}
 
-		void INatShare.GetThumbnail (string videoPath, Action<Texture2D> callback, float time) {
-			var thumbnail = natshare.Call<AndroidJavaObject>("getThumbnail", videoPath, time);
-            if (!thumbnail.Call<bool>("isLoaded")) {
-                Debug.LogError("NatShare Error: Failed to get thumbnail for video at path: "+videoPath);
-                return;
-            }
-            var pixelData = AndroidJNI.FromByteArray(thumbnail
-                .Get<AndroidJavaObject>("pixelBuffer")
-                .Call<AndroidJavaObject>("array")
-                .GetRawObject()
-            );
-            var image = new Texture2D(
-                thumbnail.Get<int>("width"),
-                thumbnail.Get<int>("height"),
-                TextureFormat.RGB565,
-                false
-            );
-            image.LoadRawTextureData(pixelData);
-            image.Apply();
-            callback(image);
+		Texture2D INatShare.GetThumbnail (string videoPath, float time) {
+			using (var thumbnail = natshare.Call<AndroidJavaObject>("getThumbnail", videoPath, time)) {
+				if (!thumbnail.Call<bool>("isLoaded")) {
+					Debug.LogError("NatShare Error: Failed to get thumbnail for video at path: "+videoPath);
+					return null;
+				}
+				var width = thumbnail.Get<int>("width");
+				var height = thumbnail.Get<int>("height");
+				using (var pixelBuffer = thumbnail.Get<AndroidJavaObject>("pixelBuffer")) 
+					using (var array = pixelBuffer.Call<AndroidJavaObject>("array")) {
+						var pixelData = AndroidJNI.FromByteArray(array.GetRawObject());
+						var image = new Texture2D(width, height, TextureFormat.RGB565, false); // Weird texture format IMO
+						image.LoadRawTextureData(pixelData);
+						image.Apply();
+						return image;
+				}
+			}
 		}
 
 		void onShare (bool completed) {

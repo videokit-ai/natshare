@@ -1,6 +1,7 @@
 ## NatShare 1.1f2
 + Added callbacks to the `NatShare.Share...` functions. You can use these to know when the user has completed the sharing activity.
 + Added better error logging on iOS.
++ Changed `NatShare.GetThumbnail` to return the thumbnail texture instead of take a callback.
 + Deprecated the WebGL backend since most functions were not supported.
 
 ## NatShare 1.1f1

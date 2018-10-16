@@ -6,7 +6,6 @@
 namespace NatShareU {
 
 	using UnityEngine;
-	using System;
 
 	public interface INatShare {
 		bool ShareText (string text, ShareCallback callback);
@@ -14,6 +13,6 @@ namespace NatShareU {
 		bool ShareMedia (string path, string message, ShareCallback callback);
 		bool SaveToCameraRoll (byte[] pngData);
         bool SaveToCameraRoll (string videoPath);
-        void GetThumbnail (string videoPath, Action<Texture2D> callback, float time);
+        Texture2D GetThumbnail (string videoPath, float time);
 	}
 }

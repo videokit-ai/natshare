@@ -45,18 +45,15 @@ NatShare.SaveToCameraRoll(gifPath);
 NatShare also supports generating thumbnails for videos:
 ```csharp
 string videoPath = ...;
-NatShare.GetThumbnail(videoPath, OnThumbnail);
-
-void OnThumbnail (Texture2D thumbnail) {
-    // Do stuff with thumbnail...
-}
+var thumbnail = NatShare.GetThumbnail(videoPath);
+// Do stuff with thumbnail...
 ```
 
 You can also request the thumbnail at a specific time in the video:
 ```csharp
 string videoPath = ...;
 // Request the thumbnail at 5 seconds
-NatShare.GetThumbnail(videoPath, thumbnail => preview.texture = thumbnail, 5f);
+var thumbnail = NatShare.GetThumbnail(videoPath, 5f);
 ```
 
 ## Requirements

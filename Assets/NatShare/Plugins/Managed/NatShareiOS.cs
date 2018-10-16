@@ -41,17 +41,17 @@ namespace NatShareU.Platforms {
 			return NatShareBridge.SaveToCameraRoll(videoPath);
 		}
 
-		void INatShare.GetThumbnail (string videoPath, Action<Texture2D> callback, float time) {
+		Texture2D INatShare.GetThumbnail (string videoPath, float time) {
 			IntPtr pixelBuffer = IntPtr.Zero; int width = 0, height = 0;
             if (!NatShareBridge.GetThumbnail(videoPath, time, ref pixelBuffer, ref width, ref height)) {
                 Debug.LogError("NatShare Error: Failed to get thumbnail for video at path: "+videoPath);
-				return;
+				return null;
             }
             var thumbnail = new Texture2D(width, height, TextureFormat.BGRA32, false);
             thumbnail.LoadRawTextureData(pixelBuffer, width * height * 4);
             thumbnail.Apply();
             NatShareBridge.FreeThumbnail(pixelBuffer);
-            callback(thumbnail);
+            return thumbnail;
 		}
 
 		[MonoPInvokeCallback(typeof(NatShareBridge.ShareCallback))]

@@ -6,7 +6,6 @@
 namespace NatShareU {
 
 	using UnityEngine;
-	using System;
 	using Platforms;
 	using Docs;
 
@@ -91,18 +90,17 @@ namespace NatShareU {
 
 		/// <summary>
         /// Get a thumbnail texture for a recorded video.
-        /// If the thumbnail cannot be loaded, the callback will be invoked with null.
+        /// If the thumbnail cannot be loaded, the function will return `null`.
         /// </summary>
         /// <param name="videoPath">Path to recorded video</param>
-        /// <param name="callback">Callback that will be invoked with the thumbnail texture</param>
         /// <param name="time">Optional: Time to get thumbnail from in video</param>
         [Doc(@"GetThumbnail", @"GetThumbnailDiscussion"), Code(@"Thumbnail")]
-		public static void GetThumbnail (string videoPath, Action<Texture2D> callback, float time = 0f) {
+		public static Texture2D GetThumbnail (string videoPath, float time = 0f) {
 			if (string.IsNullOrEmpty(videoPath)) {
 				Debug.LogError("NatShare Error: Path to video file is invalid");
-				return;
+				return null;
 			}
-			Implementation.GetThumbnail(videoPath, callback, time);
+			return Implementation.GetThumbnail(videoPath, time);
 		}
 		#endregion
 
