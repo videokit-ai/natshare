@@ -6,7 +6,6 @@
 namespace NatShareU {
 
 	using UnityEngine;
-	using System;
 	using Platforms;
 	using Docs;
 
@@ -20,12 +19,13 @@ namespace NatShareU {
         /// Returns true if the text can be shared.
         /// </summary>
         /// <param name="text">Text to be shared</param>
-		public static bool ShareText (string text) {
+		/// <param name="callback">Optional. Callback to be invoked once sharing is complete</param>
+		public static bool ShareText (string text, ShareCallback callback = null) {
 			if (string.IsNullOrEmpty(text)) {
 				Debug.LogError("NatShare Error: Text being shared is null");
 				return false;
 			}
-			return Implementation.Share(text);
+			return Implementation.ShareText(text, callback);
 		}
 
 		/// <summary>
@@ -34,13 +34,14 @@ namespace NatShareU {
         /// </summary>
         /// <param name="image">Image to be shared</param>
 		/// <param name="message">Optional. Message to be shared with image</param>
+		/// <param name="callback">Optional. Callback to be invoked once sharing is complete</param>
         [Doc(@"ShareImage")]
-		public static bool ShareImage (Texture2D image, string message = "") {
+		public static bool ShareImage (Texture2D image, string message = "", ShareCallback callback = null) {
 			if (!image) {
 				Debug.LogError("NatShare Error: Texture being shared is null");
 				return false;
 			}
-			return Implementation.Share(image.EncodeToPNG(), message);
+			return Implementation.ShareImage(image.EncodeToPNG(), message, callback);
 		}
 
 		/// <summary>
@@ -49,13 +50,14 @@ namespace NatShareU {
         /// </summary>
         /// <param name="path">Path to media file</param>
 		/// <param name="message">Optional. Message to be shared with image</param>
+		/// <param name="callback">Optional. Callback to be invoked once sharing is complete</param>
         [Doc(@"ShareMedia")]
-		public static bool ShareMedia (string path, string message = "") {
+		public static bool ShareMedia (string path, string message = "", ShareCallback callback = null) {
 			if (string.IsNullOrEmpty(path)) {
 				Debug.LogError("NatShare Error: Path to media file is invalid");
 				return false;
 			}
-			return Implementation.Share(path, message);
+			return Implementation.ShareMedia(path, message, callback);
 		}
 
 		/// <summary>
@@ -88,26 +90,24 @@ namespace NatShareU {
 
 		/// <summary>
         /// Get a thumbnail texture for a recorded video.
-        /// If the thumbnail cannot be loaded, the callback will be invoked with null.
+        /// If the thumbnail cannot be loaded, the function will return `null`.
         /// </summary>
         /// <param name="videoPath">Path to recorded video</param>
-        /// <param name="callback">Callback that will be invoked with the thumbnail texture</param>
         /// <param name="time">Optional: Time to get thumbnail from in video</param>
         [Doc(@"GetThumbnail", @"GetThumbnailDiscussion"), Code(@"Thumbnail")]
-		public static void GetThumbnail (string videoPath, Action<Texture2D> callback, float time = 0f) {
+		public static Texture2D GetThumbnail (string videoPath, float time = 0f) {
 			if (string.IsNullOrEmpty(videoPath)) {
 				Debug.LogError("NatShare Error: Path to video file is invalid");
-				callback(null);
-				return;
+				return null;
 			}
-			Implementation.GetThumbnail(videoPath, callback, time);
+			return Implementation.GetThumbnail(videoPath, time);
 		}
 		#endregion
 
 
 		#region --Initializer--
 
-		private static readonly INatShare Implementation;
+		public static readonly INatShare Implementation;
 
 		static NatShare () {
 			Implementation =
@@ -117,8 +117,6 @@ namespace NatShareU {
 			new NatShareiOS();
 			#elif UNITY_ANDROID
 			new NatShareAndroid();
-			#elif UNITY_WEBGL
-			new NatShareWebGL();
 			#else
 			new NatShareNull();
 			#endif

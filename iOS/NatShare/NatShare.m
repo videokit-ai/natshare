@@ -11,6 +11,14 @@
 #import <Photos/Photos.h>
 #import "UnityInterface.h"
 
+typedef void (*ShareCallback) (bool);
+
+static ShareCallback shareCallback;
+
+void NSRegisterCallbacks (ShareCallback share) {
+    shareCallback = share;
+}
+
 bool NSShareText (const char* text) {
     UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[[NSString stringWithUTF8String:text]] applicationActivities:nil];
     UIViewController* vc = UnityGetGLViewController();
@@ -31,6 +39,10 @@ bool NSShareImage (uint8_t* pngData, int dataSize, const char* message) {
     UIViewController* vc = UnityGetGLViewController();
     controller.modalPresentationStyle = UIModalPresentationPopover;
     controller.popoverPresentationController.sourceView = vc.view;
+    // Register for completion callback (thanks srorke!)
+    [controller setCompletionWithItemsHandler:^(UIActivityType activityType, BOOL completed, NSArray* returnedItems, NSError* activityError) {
+        shareCallback(completed);
+    }];
     // Request save tp photos permission, if not, crash occurs (thanks Ilya!)
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
         [vc presentViewController:controller animated:YES completion:nil];
@@ -40,8 +52,10 @@ bool NSShareImage (uint8_t* pngData, int dataSize, const char* message) {
 
 bool NSShareMedia (const char* mediaPath, const char* message) {
     NSString* path = [NSString stringWithUTF8String:mediaPath];
-    if (![NSFileManager.defaultManager fileExistsAtPath:path])
+    if (![NSFileManager.defaultManager fileExistsAtPath:path]) {
+        NSLog(@"NatShare Error: Failed to share media because no file was found at path '%@'", path);
         return false;
+    }
     NSMutableArray* items = [NSMutableArray arrayWithObject:[NSURL fileURLWithPath:path]];
     NSString* messageString = [NSString stringWithUTF8String:message];
     if (messageString.length)
@@ -50,6 +64,9 @@ bool NSShareMedia (const char* mediaPath, const char* message) {
     UIViewController* vc = UnityGetGLViewController();
     controller.modalPresentationStyle = UIModalPresentationPopover;
     controller.popoverPresentationController.sourceView = vc.view;
+    [controller setCompletionWithItemsHandler:^(UIActivityType activityType, BOOL completed, NSArray* returnedItems, NSError* activityError) {
+        shareCallback(completed);
+    }];
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
         [vc presentViewController:controller animated:YES completion:nil];
     }];
@@ -59,7 +76,10 @@ bool NSShareMedia (const char* mediaPath, const char* message) {
 bool NSSaveImageToCameraRoll (uint8_t* pngData, int dataSize) {
     NSData* data = [NSData dataWithBytes:pngData length:dataSize];
     UIImage* image = [UIImage imageWithData:data];
-    if (PHPhotoLibrary.authorizationStatus == PHAuthorizationStatusDenied) return false;
+    if (PHPhotoLibrary.authorizationStatus == PHAuthorizationStatusDenied) {
+        NSLog(@"NatShare Error: Failed to save image to camera roll because user denied photo library permission");
+        return false;
+    }
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
         if (status == PHAuthorizationStatusAuthorized)
             [PHPhotoLibrary.sharedPhotoLibrary performChanges:^{
@@ -71,8 +91,14 @@ bool NSSaveImageToCameraRoll (uint8_t* pngData, int dataSize) {
 
 bool NSSaveMediaToCameraRoll (const char* path) {
     NSURL* url = [NSURL fileURLWithPath:[NSString stringWithUTF8String:path]];
-    if (![NSFileManager.defaultManager fileExistsAtPath:url.path]) return false;
-    if (PHPhotoLibrary.authorizationStatus == PHAuthorizationStatusDenied) return false;
+    if (![NSFileManager.defaultManager fileExistsAtPath:url.path]) {
+        NSLog(@"NatShare Error: Failed to save media to camera roll because no file was found at path '%@'", url.path);
+        return false;
+    }
+    if (PHPhotoLibrary.authorizationStatus == PHAuthorizationStatusDenied) {
+        NSLog(@"NatShare Error: Failed to save media to camera roll because user denied photo library permission");
+        return false;
+    }
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
         if (status == PHAuthorizationStatusAuthorized)
             [PHPhotoLibrary.sharedPhotoLibrary performChanges:^{

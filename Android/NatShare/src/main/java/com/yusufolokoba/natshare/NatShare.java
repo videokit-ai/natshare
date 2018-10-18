@@ -28,22 +28,28 @@ import java.nio.ByteBuffer;
  */
 public class NatShare {
 
-    static {
-        // Disable the FileUriExposedException from being thrown on Android 24+
-        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-        StrictMode.setVmPolicy(builder.build());
+    private final NatShareCallbacks callbackManager;
+
+    public NatShare (NatShareDelegate delegate) {
+        callbackManager = new NatShareCallbacks();
+        callbackManager.setDelegate(delegate);
+        UnityPlayer.currentActivity
+            .getFragmentManager()
+            .beginTransaction()
+            .add(callbackManager, NatShareCallbacks.TAG)
+            .commit();
     }
 
-    public static boolean shareText (String text) {
+    public boolean shareText (String text) {
         final Intent intent = new Intent()
                 .setAction(Intent.ACTION_SEND)
                 .setType("text/plain")
                 .putExtra(Intent.EXTRA_TEXT, text);
-        UnityPlayer.currentActivity.startActivity(Intent.createChooser(intent, "Share"));
+        callbackManager.startActivityForResult(Intent.createChooser(intent, "Share"), NatShareCallbacks.ACTIVITY_SHARE_TEXT);
         return true;
     }
 
-    public static boolean shareImage (byte[] pngData, String message) {
+    public boolean shareImage (byte[] pngData, String message) {
         final File cachePath = new File(UnityPlayer.currentActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "NatShare");
         final File file = new File(cachePath, "/share.png");
         cachePath.mkdirs();
@@ -61,11 +67,11 @@ public class NatShare {
                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file))
                 .putExtra(Intent.EXTRA_TEXT, message);
-        UnityPlayer.currentActivity.startActivity(Intent.createChooser(intent, message));
+        callbackManager.startActivityForResult(Intent.createChooser(intent, message), NatShareCallbacks.ACTIVITY_SHARE_IMAGE);
         return true;
     }
 
-    public static boolean shareMedia (String path, String message) {
+    public boolean shareMedia (String path, String message) {
         File file = new File(path);
         if (!file.exists()) return false;
         final Intent intent = new Intent()
@@ -74,11 +80,11 @@ public class NatShare {
                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file))
                 .putExtra(Intent.EXTRA_TEXT, message);
-        UnityPlayer.currentActivity.startActivity(Intent.createChooser(intent, message));
+        callbackManager.startActivityForResult(Intent.createChooser(intent, message), NatShareCallbacks.ACTIVITY_SHARE_MEDIA);
         return true;
     }
 
-    public static boolean saveImageToCameraRoll (byte[] pngData) {
+    public boolean saveImageToCameraRoll (byte[] pngData) {
         final ContentValues values = new ContentValues();
         values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
         values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
@@ -98,7 +104,7 @@ public class NatShare {
         return true;
     }
 
-    public static boolean saveMediaToCameraRoll (String path) {
+    public boolean saveMediaToCameraRoll (String path) {
         File file = new File(path);
         if (!file.exists()) return false;
         // Copy file to gallery folder
@@ -115,7 +121,7 @@ public class NatShare {
         return true;
     }
 
-    public static Object getThumbnail (String path, float time) {
+    public Object getThumbnail (String path, float time) {
         final class Thumbnail { ByteBuffer pixelBuffer; int width, height; boolean isLoaded () { return width > 0; } }
         // Load frame
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
@@ -138,7 +144,7 @@ public class NatShare {
         return thumbnail;
     }
 
-    private static String getMimeType (String url) {
+    private String getMimeType (String url) {
         String type = null;
         String extension = MimeTypeMap.getFileExtensionFromUrl(url);
         if (extension != null)
@@ -146,7 +152,7 @@ public class NatShare {
         return type;
     }
 
-    private static void copyFile (File src, File dst) throws IOException {
+    private void copyFile (File src, File dst) throws IOException {
         InputStream is = null;
         OutputStream os = null;
         try {
@@ -159,5 +165,11 @@ public class NatShare {
             if (is != null) is.close();
             if (os != null) os.close();
         }
+    }
+
+    static {
+        // Disable the FileUriExposedException from being thrown on Android 24+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
     }
 }

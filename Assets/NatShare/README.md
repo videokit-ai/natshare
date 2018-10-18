@@ -20,13 +20,23 @@ Finally, to share plain text, use the `ShareText` function:
 NatShare.ShareText("Hi there!");
 ```
 
+All sharing functions take a callback parameter. This callback can be used to know when the user has finished the sharing activity:
+```csharp
+string videoPath = ...;
+NatShare.ShareMedia(videoPath, callback: OnShare);
+
+void OnShare () {
+    Debug.Log("User shared recording!");
+}
+```
+
 ## Saving to the Camera Roll
 You can save images or media files to the camera roll:
 ```csharp
-// Save to the camera roll by using the `NatShare` function
+// Save a texture to the camera roll
 Texture2D image = ...;
 NatShare.SaveToCameraRoll(image);
-// Now save a video to the camera roll
+// Now save a media file to the camera roll
 string gifPath = ...;
 NatShare.SaveToCameraRoll(gifPath);
 ```
@@ -35,18 +45,15 @@ NatShare.SaveToCameraRoll(gifPath);
 NatShare also supports generating thumbnails for videos:
 ```csharp
 string videoPath = ...;
-NatShare.GetThumbnail(videoPath, OnThumbnail);
-
-void OnThumbnail (Texture2D thumbnail) {
-    // Do stuff with thumbnail...
-}
+var thumbnail = NatShare.GetThumbnail(videoPath);
+// Do stuff with thumbnail...
 ```
 
 You can also request the thumbnail at a specific time in the video:
 ```csharp
 string videoPath = ...;
 // Request the thumbnail at 5 seconds
-NatShare.GetThumbnail(videoPath, thumbnail => preview.texture = thumbnail, 5f);
+var thumbnail = NatShare.GetThumbnail(videoPath, 5f);
 ```
 
 ## Requirements

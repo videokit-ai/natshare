@@ -6,22 +6,24 @@
 namespace NatShareU.Platforms {
 
     using UnityEngine;
-    using System;
 
     public class NatShareNull : INatShare {
 
-        bool INatShare.Share (string text) {
+        bool INatShare.ShareText (string text, ShareCallback callback) {
             Debug.LogError("NatShare Error: This platform does not support sharing");
+            if (callback != null) callback();
             return false;
 		}
 
-        bool INatShare.Share (byte[] pngData, string message) {
+        bool INatShare.ShareImage (byte[] pngData, string message, ShareCallback callback) {
             Debug.LogError("NatShare Error: This platform does not support sharing");
+            if (callback != null) callback();
             return false;
         }
 
-        bool INatShare.Share (string path, string message) {
+        bool INatShare.ShareMedia (string path, string message, ShareCallback callback) {
             Debug.LogError("NatShare Error: This platform does not support sharing");
+            if (callback != null) callback();
             return false;
         }
 
@@ -35,8 +37,9 @@ namespace NatShareU.Platforms {
             return false;
         }
 
-        void INatShare.GetThumbnail (string videoPath, Action<Texture2D> callback, float time) {
+        Texture2D INatShare.GetThumbnail (string videoPath, float time) {
             Debug.LogError("NatShare Error: This platform does not support retrieving thumbnails");
+            return null;
         }
     }
 }
