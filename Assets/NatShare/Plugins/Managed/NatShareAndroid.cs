@@ -31,12 +31,12 @@ namespace NatShareU.Platforms {
 			return natshare.Call<bool>("shareMedia", path, message);
 		}
 
-		bool INatShare.SaveToCameraRoll (byte[] pngData) {
-			return natshare.Call<bool>("saveImageToCameraRoll", pngData);
+		bool INatShare.SaveToCameraRoll (byte[] pngData, string album) {
+			return natshare.Call<bool>("saveImageToCameraRoll", pngData, album);
 		}
 
-		bool INatShare.SaveToCameraRoll (string path) {
-			return natshare.Call<bool>("saveMediaToCameraRoll", path);
+		bool INatShare.SaveToCameraRoll (string path, string album) {
+			return natshare.Call<bool>("saveMediaToCameraRoll", path, album);
 		}
 
 		Texture2D INatShare.GetThumbnail (string videoPath, float time) {
@@ -54,7 +54,7 @@ namespace NatShareU.Platforms {
 						image.LoadRawTextureData(pixelData);
 						image.Apply();
 						return image;
-				}
+					}
 			}
 		}
 

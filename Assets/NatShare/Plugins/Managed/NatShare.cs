@@ -41,7 +41,7 @@ namespace NatShareU {
 				Debug.LogError("NatShare Error: Texture being shared is null");
 				return false;
 			}
-			return Implementation.ShareImage(image.EncodeToPNG(), message, callback);
+			return Implementation.ShareImage(image.EncodeToPNG(), message ?? "", callback);
 		}
 
 		/// <summary>
@@ -57,7 +57,7 @@ namespace NatShareU {
 				Debug.LogError("NatShare Error: Path to media file is invalid");
 				return false;
 			}
-			return Implementation.ShareMedia(path, message, callback);
+			return Implementation.ShareMedia(path, message ?? "", callback);
 		}
 
 		/// <summary>
@@ -65,13 +65,14 @@ namespace NatShareU {
         /// Returns true if the image can be saved to the camera roll.
         /// </summary>
         /// <param name="image">Image to be saved</param>
+		/// <param name="album">Optional. Album where to save image</param>
         [Doc(@"SaveToCameraRoll")]
-		public static bool SaveToCameraRoll (Texture2D image) {
+		public static bool SaveToCameraRoll (Texture2D image, string album = "") {
 			if (!image) {
 				Debug.LogError("NatShare Error: Texture being saved is null");
 				return false;
 			}
-			return Implementation.SaveToCameraRoll(image.EncodeToPNG());
+			return Implementation.SaveToCameraRoll(image.EncodeToPNG(), album ?? "");
 		}
 
 		/// <summary>
@@ -79,13 +80,14 @@ namespace NatShareU {
         /// Returns true if the file is found and can be saved to the camera roll.
         /// </summary>
         /// <param name="path">Path to media file</param>
+		/// <param name="album">Optional. Album where to save image</param>
         [Doc(@"SaveToCameraRoll")]
-		public static bool SaveToCameraRoll (string path) {
+		public static bool SaveToCameraRoll (string path, string album = "") {
 			if (string.IsNullOrEmpty(path)) {
 				Debug.LogError("NatShare Error: Path to media file is invalid");
 				return false;
 			}
-			return Implementation.SaveToCameraRoll(path);
+			return Implementation.SaveToCameraRoll(path, album ?? "");
 		}
 
 		/// <summary>
@@ -93,7 +95,7 @@ namespace NatShareU {
         /// If the thumbnail cannot be loaded, the function will return `null`.
         /// </summary>
         /// <param name="videoPath">Path to recorded video</param>
-        /// <param name="time">Optional: Time to get thumbnail from in video</param>
+        /// <param name="time">Optional. Time to get thumbnail from in video</param>
         [Doc(@"GetThumbnail", @"GetThumbnailDiscussion"), Code(@"Thumbnail")]
 		public static Texture2D GetThumbnail (string videoPath, float time = 0f) {
 			if (string.IsNullOrEmpty(videoPath)) {

@@ -27,12 +27,12 @@ namespace NatShareU.Platforms {
             return false;
         }
 
-        bool INatShare.SaveToCameraRoll (byte[] pngData) {
+        bool INatShare.SaveToCameraRoll (byte[] pngData, string album) {
             Debug.LogError("NatShare Error: This platform does not support saving to camera roll");
             return false;
         }
 
-        bool INatShare.SaveToCameraRoll (string videoPath) {
+        bool INatShare.SaveToCameraRoll (string path, string album) {
             Debug.LogError("NatShare Error: This platform does not support saving to camera roll");
             return false;
         }

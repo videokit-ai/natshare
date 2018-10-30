@@ -84,7 +84,7 @@ public class NatShare {
         return true;
     }
 
-    public boolean saveImageToCameraRoll (byte[] pngData) {
+    public boolean saveImageToCameraRoll (byte[] pngData, String album) { // INCOMPLETE // Album
         final ContentValues values = new ContentValues();
         values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
         values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
@@ -104,7 +104,7 @@ public class NatShare {
         return true;
     }
 
-    public boolean saveMediaToCameraRoll (String path) {
+    public boolean saveMediaToCameraRoll (String path, String album) { // INCOMPLETE // Album
         File file = new File(path);
         if (!file.exists()) return false;
         // Copy file to gallery folder

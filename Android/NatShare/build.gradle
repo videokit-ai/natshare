@@ -1,21 +1,11 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "27.0.3"
-    sourceSets {
-        main {
-            manifest.srcFile 'AndroidManifest.xml'
-            java.srcDir 'src/main/java'
-            jni.srcDirs = []
-            jniLibs.srcDirs = []
-            resources.srcDirs = ['res']
-            res.srcDirs = ['res']
-        }
-    }
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
+
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -27,12 +17,15 @@ android {
     }
     libraryVariants.all { variant ->
         variant.outputs.each { output ->
-            if (variant.name == android.buildTypes.debug.name) {
+            if (variant.name == android.buildTypes.release.name) {
                 def file = output.outputFile;
                 def fileName = "NatShare.aar"
                 output.outputFile = new File(file.parent, fileName)
             }
         }
+    }
+    lintOptions {
+        abortOnError false
     }
 }
 

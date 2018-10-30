@@ -8,12 +8,14 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import <Accelerate/Accelerate.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 #import <Photos/Photos.h>
 #import "UnityInterface.h"
 
 typedef void (*ShareCallback) (bool);
 
 static ShareCallback shareCallback;
+static PHAssetCollection* RetrieveAlbumForName (NSString* name);
 
 void NSRegisterCallbacks (ShareCallback share) {
     shareCallback = share;
@@ -73,26 +75,38 @@ bool NSShareMedia (const char* mediaPath, const char* message) {
     return true;
 }
 
-bool NSSaveImageToCameraRoll (uint8_t* pngData, int dataSize) {
+bool NSSaveImageToCameraRoll (uint8_t* pngData, int dataSize, const char* album) {
     NSData* data = [NSData dataWithBytes:pngData length:dataSize];
-    UIImage* image = [UIImage imageWithData:data];
+    NSString* albumName = [NSString stringWithUTF8String:album];
     if (PHPhotoLibrary.authorizationStatus == PHAuthorizationStatusDenied) {
         NSLog(@"NatShare Error: Failed to save image to camera roll because user denied photo library permission");
         return false;
     }
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-        if (status == PHAuthorizationStatusAuthorized)
-            [PHPhotoLibrary.sharedPhotoLibrary performChanges:^{
-                [PHAssetChangeRequest creationRequestForAssetFromImage:image];
-            } completionHandler:nil];
+        if (status != PHAuthorizationStatusAuthorized) {
+            NSLog(@"NatShare Error: Failed to save image to camera roll because user denied photo library permission");
+            return;
+        }
+        [PHPhotoLibrary.sharedPhotoLibrary performChanges:^{
+            PHAssetCreationRequest* creationRequest = [PHAssetCreationRequest creationRequestForAsset];
+            [creationRequest addResourceWithType:PHAssetResourceTypePhoto data:data options:nil];
+            if (albumName.length) {
+                PHAssetCollection* photoAlbum = RetrieveAlbumForName(albumName);
+                PHObjectPlaceholder* placeholder = creationRequest.placeholderForCreatedAsset;
+                PHFetchResult* currentAlbumContents = [PHAsset fetchAssetsInAssetCollection:photoAlbum options:nil];
+                PHAssetCollectionChangeRequest* albumAddRequest = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:photoAlbum assets:currentAlbumContents];
+                [albumAddRequest addAssets:@[placeholder]];
+            }
+        } completionHandler:nil];
     }];
     return true;
 }
 
-bool NSSaveMediaToCameraRoll (const char* path) {
+bool NSSaveMediaToCameraRoll (const char* path, const char* album) {
     NSURL* url = [NSURL fileURLWithPath:[NSString stringWithUTF8String:path]];
+    NSString* albumName = [NSString stringWithUTF8String:album];
     if (![NSFileManager.defaultManager fileExistsAtPath:url.path]) {
-        NSLog(@"NatShare Error: Failed to save media to camera roll because no file was found at path '%@'", url.path);
+        NSLog(@"NatShare Error: Failed to save media to camera roll because no file was found at path: %@", url.path);
         return false;
     }
     if (PHPhotoLibrary.authorizationStatus == PHAuthorizationStatusDenied) {
@@ -100,10 +114,30 @@ bool NSSaveMediaToCameraRoll (const char* path) {
         return false;
     }
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-        if (status == PHAuthorizationStatusAuthorized)
-            [PHPhotoLibrary.sharedPhotoLibrary performChanges:^{
-                [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:url];
-            } completionHandler:nil];
+        if (status != PHAuthorizationStatusAuthorized) {
+            NSLog(@"NatShare Error: Failed to save media to camera roll because user denied photo library permission");
+            return;
+        }
+        [PHPhotoLibrary.sharedPhotoLibrary performChanges:^{
+            PHAssetChangeRequest* creationRequest;
+            CFStringRef fileExtension = (__bridge CFStringRef)url.pathExtension;
+            CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, fileExtension, NULL);
+            if (UTTypeConformsTo(fileUTI, kUTTypeImage))
+                creationRequest = [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:url];
+            else if (UTTypeConformsTo(fileUTI, kUTTypeMovie))
+                creationRequest = [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:url];
+            else {
+                NSLog(@"NatShare Error: Failed to save media to camera roll because media is neither image nor video");
+                return;
+            }
+            if (albumName.length) {
+                PHAssetCollection* photoAlbum = RetrieveAlbumForName(albumName);
+                PHObjectPlaceholder* placeholder = creationRequest.placeholderForCreatedAsset;
+                PHFetchResult* currentAlbumContents = [PHAsset fetchAssetsInAssetCollection:photoAlbum options:nil];
+                PHAssetCollectionChangeRequest* albumAddRequest = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:photoAlbum assets:currentAlbumContents];
+                [albumAddRequest addAssets:@[placeholder]];
+            }
+        } completionHandler:nil];
     }];
     return true;
 }
@@ -145,4 +179,24 @@ bool NSGetThumbnail (const char* videoPath, float time, void** pixelBuffer, int*
 
 void NSFreeThumbnail (const intptr_t pixelBuffer) {
     free((void*)pixelBuffer);
+}
+
+PHAssetCollection* RetrieveAlbumForName (NSString* name) {
+    PHFetchOptions* options = [PHFetchOptions new];
+    options.predicate = [NSPredicate predicateWithFormat:@"title = %@", name];
+    PHFetchResult* collection = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAny options:options];
+    if (collection.firstObject)
+        return collection.firstObject;
+    NSError* creationError;
+    __block PHObjectPlaceholder* albumPlaceholder;
+    [PHPhotoLibrary.sharedPhotoLibrary performChangesAndWait:^{
+        PHAssetCollectionChangeRequest* creationRequest = [PHAssetCollectionChangeRequest creationRequestForAssetCollectionWithTitle:name];
+        albumPlaceholder = creationRequest.placeholderForCreatedAssetCollection;
+    } error: &creationError];
+    if (creationError) {
+        NSLog(@"NatShare Error: Failed to create album for saving media. Media will not be added to an album");
+        return nil;
+    }
+    collection = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[albumPlaceholder.localIdentifier] options:nil];
+    return collection.firstObject;
 }

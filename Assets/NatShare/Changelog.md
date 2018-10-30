@@ -1,3 +1,6 @@
+## NatShare 1.1f3
++ When saving to the camera roll, you can now specify an album for the media to be saved to.
+
 ## NatShare 1.1f2
 + Added callbacks to the `NatShare.Share...` functions. You can use these to know when the user has completed the sharing activity.
 + Added better error logging on iOS.
