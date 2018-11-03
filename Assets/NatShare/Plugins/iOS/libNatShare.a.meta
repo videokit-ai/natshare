@@ -97,7 +97,7 @@ PluginImporter:
       settings:
         AddToEmbeddedBinaries: false
         CompileFlags: 
-        FrameworkDependencies: 
+        FrameworkDependencies: MobileCoreServices;
   userData: 
   assetBundleName: 
   assetBundleVariant: 
