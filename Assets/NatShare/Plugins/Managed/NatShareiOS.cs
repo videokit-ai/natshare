@@ -36,8 +36,8 @@ namespace NatShareU.Platforms {
 			return NatShareBridge.SaveToCameraRoll(pngData, pngData.Length, album);
 		}
 
-		bool INatShare.SaveToCameraRoll (string path, string album) {
-			return NatShareBridge.SaveToCameraRoll(path, album);
+		bool INatShare.SaveToCameraRoll (string path, string album, bool copy) {
+			return NatShareBridge.SaveToCameraRoll(path, album, copy);
 		}
 
 		Texture2D INatShare.GetThumbnail (string videoPath, float time) {

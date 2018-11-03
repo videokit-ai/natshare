@@ -110,7 +110,7 @@ public class NatShare {
         return true;
     }
 
-    public boolean saveMediaToCameraRoll (String path, String album) {
+    public boolean saveMediaToCameraRoll (String path, String album, boolean copy) {
         // Check that file exists
         final File file = new File(path);
         if (!file.exists())
@@ -121,7 +121,7 @@ public class NatShare {
         final File galleryFile = new File(saveDirectory, file.getName());
         saveDirectory.mkdirs();
         try {
-            copyFile(file, galleryFile);
+            copyFile(file, galleryFile, copy);
         } catch (IOException ex) {
             Log.e("Unity", "NatShare Error: Failed to save media to camera roll", ex);
             return false;
@@ -155,7 +155,7 @@ public class NatShare {
         return thumbnail;
     }
 
-    private void copyFile (File src, File dst) throws IOException {
+    private void copyFile (File src, File dst, boolean copy) throws IOException {
         InputStream is = null;
         OutputStream os = null;
         try {
@@ -168,6 +168,7 @@ public class NatShare {
             if (is != null) is.close();
             if (os != null) os.close();
         }
+        if (!copy) src.delete();
     }
 
     static {

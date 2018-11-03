@@ -65,13 +65,14 @@ namespace NatShareU {
         /// </summary>
         /// <param name="path">Path to media file</param>
 		/// <param name="album">Optional. Album where to save image</param>
+		/// <param name="copy">Optional. Should file be copied or moved to the camera roll?</param>
         [Doc(@"SaveToCameraRoll")]
-		public static bool SaveToCameraRoll (string path, string album = "") {
+		public static bool SaveToCameraRoll (string path, string album = "", bool copy = true) {
 			if (string.IsNullOrEmpty(path)) {
 				Debug.LogError("NatShare Error: Path to media file is invalid");
 				return false;
 			}
-			return Implementation.SaveToCameraRoll(path, album ?? "");
+			return Implementation.SaveToCameraRoll(path, album ?? "", copy);
 		}
 
 		/// <summary>

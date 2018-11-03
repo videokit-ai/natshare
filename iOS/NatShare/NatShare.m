@@ -102,7 +102,7 @@ bool NSSaveImageToCameraRoll (uint8_t* pngData, int dataSize, const char* album)
     return true;
 }
 
-bool NSSaveMediaToCameraRoll (const char* path, const char* album) {
+bool NSSaveMediaToCameraRoll (const char* path, const char* album, bool copy) { // INCOMPLETE
     NSURL* url = [NSURL fileURLWithPath:[NSString stringWithUTF8String:path]];
     NSString* albumName = [NSString stringWithUTF8String:album];
     if (![NSFileManager.defaultManager fileExistsAtPath:url.path]) {
@@ -120,13 +120,17 @@ bool NSSaveMediaToCameraRoll (const char* path, const char* album) {
         }
         PHAssetCollection* photoAlbum = albumName.length ? RetrieveAlbumForName(albumName) : nil; // Apparently you can't nest calls to `PHPhotoLibrary::performChanges`
         [PHPhotoLibrary.sharedPhotoLibrary performChanges:^{
-            PHAssetChangeRequest* creationRequest;
+            PHAssetResourceCreationOptions* options = [PHAssetResourceCreationOptions new];
+            options.shouldMoveFile = !copy;
+            PHAssetCreationRequest* creationRequest = [PHAssetCreationRequest creationRequestForAsset];
             CFStringRef fileExtension = (__bridge CFStringRef)url.pathExtension;
             CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, fileExtension, NULL);
             if (UTTypeConformsTo(fileUTI, kUTTypeImage))
-                creationRequest = [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:url];
+                [creationRequest addResourceWithType:PHAssetResourceTypePhoto fileURL:url options:options];
             else if (UTTypeConformsTo(fileUTI, kUTTypeMovie))
-                creationRequest = [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:url];
+                [creationRequest addResourceWithType:PHAssetResourceTypeVideo fileURL:url options:options];
+            else if (UTTypeConformsTo(fileUTI, kUTTypeAudio))
+                [creationRequest addResourceWithType:PHAssetResourceTypeAudio fileURL:url options:options];
             else {
                 NSLog(@"NatShare Error: Failed to save media to camera roll because media is neither image nor video");
                 return;

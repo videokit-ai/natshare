@@ -31,7 +31,7 @@ namespace NatShareU.Platforms {
         [DllImport(Assembly, EntryPoint = "NSSaveImageToCameraRoll")]
         public static extern bool SaveToCameraRoll (byte[] pngData, int dataSize, string album);
         [DllImport(Assembly, EntryPoint = "NSSaveMediaToCameraRoll")]
-        public static extern bool SaveToCameraRoll (string path, string album);
+        public static extern bool SaveToCameraRoll (string path, string album, bool copy);
         [DllImport(Assembly, EntryPoint = "NSGetThumbnail")]
         public static extern bool GetThumbnail (string path, float time, ref IntPtr pixelBuffer, ref int width, ref int height);
         [DllImport(Assembly, EntryPoint = "NSFreeThumbnail")]
@@ -43,7 +43,7 @@ namespace NatShareU.Platforms {
         public static bool ShareImage (byte[] pngData, int dataSize) { return false; }
         public static bool ShareMedia (string media) { return false; }
         public static bool SaveToCameraRoll (byte[] pngData, int dataSize, string album) { return false; }
-        public static bool SaveToCameraRoll (string path, string album) { return false; }
+        public static bool SaveToCameraRoll (string path, string album, bool copy) { return false; }
         public static bool GetThumbnail (string path, float time, ref IntPtr pixelBuffer, ref int width, ref int height) { return false; }
         public static void FreeThumbnail (IntPtr pixelBuffer) {}
         #endif
