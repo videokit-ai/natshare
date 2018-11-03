@@ -15,49 +15,33 @@ namespace NatShareU {
 		#region --Client API--
 
 		/// <summary>
-        /// Share plain text with the native sharing UI.
-        /// Returns true if the text can be shared.
-        /// </summary>
-        /// <param name="text">Text to be shared</param>
-		/// <param name="callback">Optional. Callback to be invoked once sharing is complete</param>
-		public static bool ShareText (string text, ShareCallback callback = null) {
-			if (string.IsNullOrEmpty(text)) {
-				Debug.LogError("NatShare Error: Text being shared is null");
-				return false;
-			}
-			return Implementation.ShareText(text, callback);
-		}
-
-		/// <summary>
         /// Share an texture with the native sharing UI.
         /// Returns true if the image can be shared.
         /// </summary>
         /// <param name="image">Image to be shared</param>
-		/// <param name="message">Optional. Message to be shared with image</param>
 		/// <param name="callback">Optional. Callback to be invoked once sharing is complete</param>
         [Doc(@"ShareImage")]
-		public static bool ShareImage (Texture2D image, string message = "", ShareCallback callback = null) {
+		public static bool Share (Texture2D image, ShareCallback callback = null) {
 			if (!image) {
 				Debug.LogError("NatShare Error: Texture being shared is null");
 				return false;
 			}
-			return Implementation.ShareImage(image.EncodeToPNG(), message ?? "", callback);
+			return Implementation.Share(image.EncodeToPNG(), callback);
 		}
 
 		/// <summary>
-        /// Share a media file with the native sharing UI.
-        /// Returns true if media file is found and can be shared.
+        /// Share plain text with the native sharing UI.
+        /// Returns true if the text can be shared.
         /// </summary>
-        /// <param name="path">Path to media file</param>
-		/// <param name="message">Optional. Message to be shared with image</param>
+        /// <param name="media">Media to be shared</param>
 		/// <param name="callback">Optional. Callback to be invoked once sharing is complete</param>
-        [Doc(@"ShareMedia")]
-		public static bool ShareMedia (string path, string message = "", ShareCallback callback = null) {
-			if (string.IsNullOrEmpty(path)) {
-				Debug.LogError("NatShare Error: Path to media file is invalid");
+		[Doc(@"ShareMedia")]
+		public static bool Share (string media, ShareCallback callback = null) {
+			if (string.IsNullOrEmpty(media)) {
+				Debug.LogError("NatShare Error: Media being shared is null or empty");
 				return false;
 			}
-			return Implementation.ShareMedia(path, message ?? "", callback);
+			return Implementation.Share(media, callback);
 		}
 
 		/// <summary>

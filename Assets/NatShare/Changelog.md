@@ -1,5 +1,7 @@
 ## NatShare 1.1f3
-+ When saving to the camera roll, you can now specify an album for the media to be saved to.
++ Added support for saving to an album in the camera roll.
++ Deprecated `message` parameter in `Share*` functions.
++ Refactored all `Share*` functions to overloads of one `NatShare.Share` function.
 
 ## NatShare 1.1f2
 + Added callbacks to the `NatShare.Share...` functions. You can use these to know when the user has completed the sharing activity.

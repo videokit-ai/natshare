@@ -18,19 +18,18 @@ namespace NatShareU.Platforms {
 			NatShareBridge.RegisterCallbacks(OnShare);
 		}
 
-		bool INatShare.ShareText (string text, ShareCallback callback) {
+		bool INatShare.Share (byte[] pngData, ShareCallback callback) {
 			this.callback = callback;
-			return NatShareBridge.Share(text);
+			return NatShareBridge.ShareImage(pngData, pngData.Length);
 		}
 
-		bool INatShare.ShareImage (byte[] pngData, string message, ShareCallback callback) {
+		bool INatShare.Share (string media, ShareCallback callback) {
 			this.callback = callback;
-			return NatShareBridge.Share(pngData, pngData.Length, message);
-		}
-
-		bool INatShare.ShareMedia (string path, string message, ShareCallback callback) {
-			this.callback = callback;
-			return NatShareBridge.Share(path, message);
+			Uri uri;
+			if (Uri.TryCreate(media, UriKind.Absolute, out uri))
+				return NatShareBridge.ShareMedia(media);
+			else
+				return NatShareBridge.ShareText(media);
 		}
 
 		bool INatShare.SaveToCameraRoll (byte[] pngData, string album) {

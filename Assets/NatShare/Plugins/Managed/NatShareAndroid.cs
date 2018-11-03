@@ -6,6 +6,7 @@
 namespace NatShareU.Platforms {
 
 	using UnityEngine;
+	using System;
 
 	public class NatShareAndroid : AndroidJavaProxy, INatShare {
 
@@ -16,19 +17,18 @@ namespace NatShareU.Platforms {
 			natshare = new AndroidJavaObject("com.yusufolokoba.natshare.NatShare", this);
 		}
 
-		bool INatShare.ShareText (string text, ShareCallback callback) {
+		bool INatShare.Share (byte[] pngData, ShareCallback callback) {
 			this.callback = callback;
-			return natshare.Call<bool>("shareText", text);
+			return natshare.Call<bool>("shareImage", pngData);
 		}
 
-		bool INatShare.ShareImage (byte[] pngData, string message, ShareCallback callback) {
+		bool INatShare.Share (string media, ShareCallback callback) {
 			this.callback = callback;
-			return natshare.Call<bool>("shareImage", pngData, message);
-		}
-
-		bool INatShare.ShareMedia (string path, string message, ShareCallback callback) {
-			this.callback = callback;
-			return natshare.Call<bool>("shareMedia", path, message);
+			Uri uri;
+			if (Uri.TryCreate(media, UriKind.Absolute, out uri))
+				return natshare.Call<bool>("shareMedia", media);
+			else
+				return natshare.Call<bool>("shareText", media);
 		}
 
 		bool INatShare.SaveToCameraRoll (byte[] pngData, string album) {
