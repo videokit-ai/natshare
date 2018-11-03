@@ -87,11 +87,11 @@ bool NSSaveImageToCameraRoll (uint8_t* pngData, int dataSize, const char* album)
             NSLog(@"NatShare Error: Failed to save image to camera roll because user denied photo library permission");
             return;
         }
+        PHAssetCollection* photoAlbum = albumName.length ? RetrieveAlbumForName(albumName) : nil; // Apparently you can't nest calls to `PHPhotoLibrary::performChanges`
         [PHPhotoLibrary.sharedPhotoLibrary performChanges:^{
             PHAssetCreationRequest* creationRequest = [PHAssetCreationRequest creationRequestForAsset];
             [creationRequest addResourceWithType:PHAssetResourceTypePhoto data:data options:nil];
-            if (albumName.length) {
-                PHAssetCollection* photoAlbum = RetrieveAlbumForName(albumName);
+            if (photoAlbum) {
                 PHObjectPlaceholder* placeholder = creationRequest.placeholderForCreatedAsset;
                 PHFetchResult* currentAlbumContents = [PHAsset fetchAssetsInAssetCollection:photoAlbum options:nil];
                 PHAssetCollectionChangeRequest* albumAddRequest = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:photoAlbum assets:currentAlbumContents];
@@ -118,6 +118,7 @@ bool NSSaveMediaToCameraRoll (const char* path, const char* album) {
             NSLog(@"NatShare Error: Failed to save media to camera roll because user denied photo library permission");
             return;
         }
+        PHAssetCollection* photoAlbum = albumName.length ? RetrieveAlbumForName(albumName) : nil; // Apparently you can't nest calls to `PHPhotoLibrary::performChanges`
         [PHPhotoLibrary.sharedPhotoLibrary performChanges:^{
             PHAssetChangeRequest* creationRequest;
             CFStringRef fileExtension = (__bridge CFStringRef)url.pathExtension;
@@ -130,8 +131,7 @@ bool NSSaveMediaToCameraRoll (const char* path, const char* album) {
                 NSLog(@"NatShare Error: Failed to save media to camera roll because media is neither image nor video");
                 return;
             }
-            if (albumName.length) {
-                PHAssetCollection* photoAlbum = RetrieveAlbumForName(albumName);
+            if (photoAlbum) {
                 PHObjectPlaceholder* placeholder = creationRequest.placeholderForCreatedAsset;
                 PHFetchResult* currentAlbumContents = [PHAsset fetchAssetsInAssetCollection:photoAlbum options:nil];
                 PHAssetCollectionChangeRequest* albumAddRequest = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:photoAlbum assets:currentAlbumContents];
