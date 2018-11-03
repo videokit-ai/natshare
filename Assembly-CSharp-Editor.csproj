@@ -336,6 +336,12 @@
  <Reference Include="UnityEngine.StandardEvents">
  <HintPath>/Users/yusuf/Library/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.13/UnityEngine.StandardEvents.dll</HintPath>
  </Reference>
+ <Reference Include="AssetStoreToolsExtra">
+ <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Assets/AssetStoreTools/Editor/AssetStoreToolsExtra.dll</HintPath>
+ </Reference>
+ <Reference Include="AssetStoreTools">
+ <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Assets/AssetStoreTools/Editor/AssetStoreTools.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>/Applications/Unity/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
  </Reference>
