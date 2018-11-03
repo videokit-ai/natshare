@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NatShare-API", "Assembly-CSharp.csproj", "{57BA4F3B-595C-4247-86EC-FC01808689B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{57BA4F3B-595C-4247-86EC-FC01808689B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NatShare-API", "Assembly-CSharp-Editor.csproj", "{A883BF98-CE75-F2F1-81FF-C41F5BE91853}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{A883BF98-CE75-F2F1-81FF-C41F5BE91853}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

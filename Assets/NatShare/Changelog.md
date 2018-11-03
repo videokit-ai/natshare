@@ -1,3 +1,9 @@
+## NatShare 1.1f3
++ Added support for saving to an album in the camera roll.
++ Added `copy` parameter to `SaveToCameraRoll`. When `false`, the media file will be moved to the camera roll instead of being copied.
++ Deprecated `message` parameter in `Share*` functions.
++ Refactored all `Share*` functions to overloads of one `NatShare.Share` function.
+
 ## NatShare 1.1f2
 + Added callbacks to the `NatShare.Share...` functions. You can use these to know when the user has completed the sharing activity.
 + Added better error logging on iOS.

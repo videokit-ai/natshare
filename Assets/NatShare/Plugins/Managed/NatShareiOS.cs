@@ -18,27 +18,26 @@ namespace NatShareU.Platforms {
 			NatShareBridge.RegisterCallbacks(OnShare);
 		}
 
-		bool INatShare.ShareText (string text, ShareCallback callback) {
+		bool INatShare.Share (byte[] pngData, ShareCallback callback) {
 			this.callback = callback;
-			return NatShareBridge.Share(text);
+			return NatShareBridge.ShareImage(pngData, pngData.Length);
 		}
 
-		bool INatShare.ShareImage (byte[] pngData, string message, ShareCallback callback) {
+		bool INatShare.Share (string media, ShareCallback callback) {
 			this.callback = callback;
-			return NatShareBridge.Share(pngData, pngData.Length, message);
+			Uri uri;
+			if (Uri.TryCreate(media, UriKind.Absolute, out uri))
+				return NatShareBridge.ShareMedia(media);
+			else
+				return NatShareBridge.ShareText(media);
 		}
 
-		bool INatShare.ShareMedia (string path, string message, ShareCallback callback) {
-			this.callback = callback;
-			return NatShareBridge.Share(path, message);
+		bool INatShare.SaveToCameraRoll (byte[] pngData, string album) {
+			return NatShareBridge.SaveToCameraRoll(pngData, pngData.Length, album);
 		}
 
-		bool INatShare.SaveToCameraRoll (byte[] pngData) {
-			return NatShareBridge.SaveToCameraRoll(pngData, pngData.Length);
-		}
-
-		bool INatShare.SaveToCameraRoll (string videoPath) {
-			return NatShareBridge.SaveToCameraRoll(videoPath);
+		bool INatShare.SaveToCameraRoll (string path, string album, bool copy) {
+			return NatShareBridge.SaveToCameraRoll(path, album, copy);
 		}
 
 		Texture2D INatShare.GetThumbnail (string videoPath, float time) {

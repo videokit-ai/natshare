@@ -2,31 +2,37 @@
 NatShare is a lightweight, easy-to-use native sharing API for Unity Engine. NatShare supports images (using a `Texture2D`) and media files (using a `string` path). Currently, you can save media to the camera roll, open the native sharing UI, and retrieve a thumbnail for a video:
 
 ## Native Sharing
-To share an image, you can use the `ShareImage` function:
+To share an image, you can use the `Share` function:
 ```csharp
 Texture2D image = ...;
-// Share by using the `NatShare` function
-NatShare.ShareImage(image);
+NatShare.Share(image);
 ```
 
-To share a media file, use the `ShareMedia` function:
+The `Share` function also has an overload for sharing plain text or a media file:
+```csharp
+string videoPath = "file://some/path/to/a/media/file.ext";
+NatShare.Share(videoPath);
+string message = "Happy Birthday!";
+NatShare.Share(message);
+```
+
+All sharing functions take a callback parameter. This callback can be used to know when the user has finished the sharing activity:
 ```csharp
 string videoPath = ...;
-NatShare.ShareMedia(videoPath);
-```
+NatShare.ShareMedia(videoPath, callback: OnShare);
 
-Finally, to share plain text, use the `ShareText` function:
-```csharp
-NatShare.ShareText("Hi there!");
+void OnShare () {
+    Debug.Log("User shared recording!");
+}
 ```
 
 ## Saving to the Camera Roll
 You can save images or media files to the camera roll:
 ```csharp
-// Save to the camera roll by using the `NatShare` function
+// Save a texture to the camera roll
 Texture2D image = ...;
 NatShare.SaveToCameraRoll(image);
-// Now save a video to the camera roll
+// Now save a media file to the camera roll
 string gifPath = ...;
 NatShare.SaveToCameraRoll(gifPath);
 ```
@@ -35,18 +41,15 @@ NatShare.SaveToCameraRoll(gifPath);
 NatShare also supports generating thumbnails for videos:
 ```csharp
 string videoPath = ...;
-NatShare.GetThumbnail(videoPath, OnThumbnail);
-
-void OnThumbnail (Texture2D thumbnail) {
-    // Do stuff with thumbnail...
-}
+var thumbnail = NatShare.GetThumbnail(videoPath);
+// Do stuff with thumbnail...
 ```
 
 You can also request the thumbnail at a specific time in the video:
 ```csharp
 string videoPath = ...;
 // Request the thumbnail at 5 seconds
-NatShare.GetThumbnail(videoPath, thumbnail => preview.texture = thumbnail, 5f);
+var thumbnail = NatShare.GetThumbnail(videoPath, 5f);
 ```
 
 ## Requirements

@@ -49,7 +49,8 @@ public class NatShare {
         return true;
     }
 
-    public boolean shareImage (byte[] pngData, String message) {
+    public boolean shareImage (byte[] pngData) {
+        // Write image to file
         final File cachePath = new File(UnityPlayer.currentActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "NatShare");
         final File file = new File(cachePath, "/share.png");
         cachePath.mkdirs();
@@ -61,63 +62,72 @@ public class NatShare {
             e.printStackTrace();
             return false;
         }
+        // Share
         final Intent intent = new Intent()
                 .setAction(Intent.ACTION_SEND)
                 .setType("image/png")
                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file))
-                .putExtra(Intent.EXTRA_TEXT, message);
-        callbackManager.startActivityForResult(Intent.createChooser(intent, message), NatShareCallbacks.ACTIVITY_SHARE_IMAGE);
+                .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+        callbackManager.startActivityForResult(Intent.createChooser(intent, "Share"), NatShareCallbacks.ACTIVITY_SHARE_IMAGE);
         return true;
     }
 
-    public boolean shareMedia (String path, String message) {
-        File file = new File(path);
-        if (!file.exists()) return false;
+    public boolean shareMedia (String path) {
+        // Check that file exists
+        final File file = new File(path);
+        if (!file.exists())
+            return false;
+        // Get the MIME type
+        final String extension = MimeTypeMap.getFileExtensionFromUrl(path);
+        final String mimeType = extension != null ? MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension) : "*/*";
+        // Share
         final Intent intent = new Intent()
                 .setAction(Intent.ACTION_SEND)
-                .setType(getMimeType(path))
+                .setType(mimeType)
                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file))
-                .putExtra(Intent.EXTRA_TEXT, message);
-        callbackManager.startActivityForResult(Intent.createChooser(intent, message), NatShareCallbacks.ACTIVITY_SHARE_MEDIA);
+                .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+        callbackManager.startActivityForResult(Intent.createChooser(intent, "Share"), NatShareCallbacks.ACTIVITY_SHARE_MEDIA);
         return true;
     }
 
-    public boolean saveImageToCameraRoll (byte[] pngData) {
-        final ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
-        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
-        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
-        final ContentResolver resolver = UnityPlayer.currentActivity.getContentResolver();
-        final Uri url = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+    public boolean saveImageToCameraRoll (byte[] pngData, String album) {
+        // Write image to gallery folder
+        final String galleryDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath();
+        final File saveDirectory = new File(galleryDirectory + (!album.isEmpty() ? "/" + album : ""));
+        final File file = new File(saveDirectory, System.nanoTime() + ".png");
+        saveDirectory.mkdirs();
         try {
-            OutputStream stream = resolver.openOutputStream(url);
+            final FileOutputStream stream = new FileOutputStream(file);
             stream.write(pngData);
             stream.close();
         } catch (IOException ex) {
-            resolver.delete(url, null, null);
-            Log.e("Unity", "NatShare Error: Failed to save image to camera roll");
-            ex.printStackTrace();
+            Log.e("Unity", "NatShare Error: Failed to save image to camera roll", ex);
             return false;
         }
+        // Add to camera roll
+        final Intent scanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file));
+        UnityPlayer.currentActivity.sendBroadcast(scanIntent);
         return true;
     }
 
-    public boolean saveMediaToCameraRoll (String path) {
-        File file = new File(path);
-        if (!file.exists()) return false;
+    public boolean saveMediaToCameraRoll (String path, String album, boolean copy) {
+        // Check that file exists
+        final File file = new File(path);
+        if (!file.exists())
+            return false;
         // Copy file to gallery folder
-        File galleryDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-        File galleryFile = new File(galleryDirectory, file.getName());
+        final String galleryDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath();
+        final File saveDirectory = new File(galleryDirectory + (!album.isEmpty() ? "/" + album : ""));
+        final File galleryFile = new File(saveDirectory, file.getName());
+        saveDirectory.mkdirs();
         try {
-            copyFile(file, galleryFile);
+            copyFile(file, galleryFile, copy);
         } catch (IOException ex) {
-            Log.e("Unity", "NatShare Error: Failed to copy media to camera roll");
-            ex.printStackTrace();
+            Log.e("Unity", "NatShare Error: Failed to save media to camera roll", ex);
             return false;
         }
-        UnityPlayer.currentActivity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(galleryFile)));
+        final Intent scanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(galleryFile));
+        UnityPlayer.currentActivity.sendBroadcast(scanIntent);
         return true;
     }
 
@@ -128,7 +138,8 @@ public class NatShare {
         retriever.setDataSource(path);
         Bitmap rawFrame = retriever.getFrameAtTime((long)(time * 1e+6f));
         retriever.release();
-        if (rawFrame == null) return new Thumbnail();
+        if (rawFrame == null)
+            return new Thumbnail();
         // Invert
         final Matrix invert = new Matrix();
         invert.postScale(1, -1, rawFrame.getWidth() / 2.f, rawFrame.getHeight() / 2.f);
@@ -144,15 +155,7 @@ public class NatShare {
         return thumbnail;
     }
 
-    private String getMimeType (String url) {
-        String type = null;
-        String extension = MimeTypeMap.getFileExtensionFromUrl(url);
-        if (extension != null)
-            type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-        return type;
-    }
-
-    private void copyFile (File src, File dst) throws IOException {
+    private void copyFile (File src, File dst, boolean copy) throws IOException {
         InputStream is = null;
         OutputStream os = null;
         try {
@@ -165,6 +168,7 @@ public class NatShare {
             if (is != null) is.close();
             if (os != null) os.close();
         }
+        if (!copy) src.delete();
     }
 
     static {

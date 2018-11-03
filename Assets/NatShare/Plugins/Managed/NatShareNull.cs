@@ -9,32 +9,26 @@ namespace NatShareU.Platforms {
 
     public class NatShareNull : INatShare {
 
-        bool INatShare.ShareText (string text, ShareCallback callback) {
+        bool INatShare.Share (byte[] pngData, ShareCallback callback) {
             Debug.LogError("NatShare Error: This platform does not support sharing");
             if (callback != null) callback();
-            return false;
-		}
-
-        bool INatShare.ShareImage (byte[] pngData, string message, ShareCallback callback) {
-            Debug.LogError("NatShare Error: This platform does not support sharing");
-            if (callback != null) callback();
-            return false;
+            return true;
         }
 
-        bool INatShare.ShareMedia (string path, string message, ShareCallback callback) {
+        bool INatShare.Share (string media, ShareCallback callback) {
             Debug.LogError("NatShare Error: This platform does not support sharing");
             if (callback != null) callback();
-            return false;
+            return true;
         }
 
-        bool INatShare.SaveToCameraRoll (byte[] pngData) {
+        bool INatShare.SaveToCameraRoll (byte[] pngData, string album) {
             Debug.LogError("NatShare Error: This platform does not support saving to camera roll");
-            return false;
+            return true;
         }
 
-        bool INatShare.SaveToCameraRoll (string videoPath) {
+        bool INatShare.SaveToCameraRoll (string path, string album, bool copy) {
             Debug.LogError("NatShare Error: This platform does not support saving to camera roll");
-            return false;
+            return true;
         }
 
         Texture2D INatShare.GetThumbnail (string videoPath, float time) {

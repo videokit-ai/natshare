@@ -6,6 +6,7 @@
 namespace NatShareU.Platforms {
 
 	using UnityEngine;
+	using System;
 
 	public class NatShareAndroid : AndroidJavaProxy, INatShare {
 
@@ -16,27 +17,26 @@ namespace NatShareU.Platforms {
 			natshare = new AndroidJavaObject("com.yusufolokoba.natshare.NatShare", this);
 		}
 
-		bool INatShare.ShareText (string text, ShareCallback callback) {
+		bool INatShare.Share (byte[] pngData, ShareCallback callback) {
 			this.callback = callback;
-			return natshare.Call<bool>("shareText", text);
+			return natshare.Call<bool>("shareImage", pngData);
 		}
 
-		bool INatShare.ShareImage (byte[] pngData, string message, ShareCallback callback) {
+		bool INatShare.Share (string media, ShareCallback callback) {
 			this.callback = callback;
-			return natshare.Call<bool>("shareImage", pngData, message);
+			Uri uri;
+			if (Uri.TryCreate(media, UriKind.Absolute, out uri))
+				return natshare.Call<bool>("shareMedia", media);
+			else
+				return natshare.Call<bool>("shareText", media);
 		}
 
-		bool INatShare.ShareMedia (string path, string message, ShareCallback callback) {
-			this.callback = callback;
-			return natshare.Call<bool>("shareMedia", path, message);
+		bool INatShare.SaveToCameraRoll (byte[] pngData, string album) {
+			return natshare.Call<bool>("saveImageToCameraRoll", pngData, album);
 		}
 
-		bool INatShare.SaveToCameraRoll (byte[] pngData) {
-			return natshare.Call<bool>("saveImageToCameraRoll", pngData);
-		}
-
-		bool INatShare.SaveToCameraRoll (string path) {
-			return natshare.Call<bool>("saveMediaToCameraRoll", path);
+		bool INatShare.SaveToCameraRoll (string path, string album, bool copy) {
+			return natshare.Call<bool>("saveMediaToCameraRoll", path, album, copy);
 		}
 
 		Texture2D INatShare.GetThumbnail (string videoPath, float time) {
@@ -54,7 +54,7 @@ namespace NatShareU.Platforms {
 						image.LoadRawTextureData(pixelData);
 						image.Apply();
 						return image;
-				}
+					}
 			}
 		}
 

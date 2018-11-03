@@ -2,22 +2,18 @@
 NatShare is a lightweight, easy-to-use native sharing API for Unity Engine. NatShare supports images (using a `Texture2D`) and media files (using a `string` path). Currently, you can save media to the camera roll, open the native sharing UI, and retrieve a thumbnail for a video:
 
 ## Native Sharing
-To share an image, you can use the `ShareImage` function:
+To share an image, you can use the `Share` function:
 ```csharp
 Texture2D image = ...;
-// Share by using the `NatShare` function
-NatShare.ShareImage(image);
+NatShare.Share(image);
 ```
 
-To share a media file, use the `ShareMedia` function:
+The `Share` function also has an overload for sharing plain text or a media file:
 ```csharp
-string videoPath = ...;
-NatShare.ShareMedia(videoPath);
-```
-
-Finally, to share plain text, use the `ShareText` function:
-```csharp
-NatShare.ShareText("Hi there!");
+string videoPath = "file://some/path/to/a/media/file.ext";
+NatShare.Share(videoPath);
+string message = "Happy Birthday!";
+NatShare.Share(message);
 ```
 
 All sharing functions take a callback parameter. This callback can be used to know when the user has finished the sharing activity:
