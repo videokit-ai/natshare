@@ -30,14 +30,10 @@ bool NSShareText (const char* text) {
     return true;
 }
 
-bool NSShareImage (uint8_t* pngData, int dataSize, const char* message) {
+bool NSShareImage (uint8_t* pngData, int dataSize) {
     NSData* data = [NSData dataWithBytes:pngData length:dataSize];
     UIImage* image = [UIImage imageWithData:data];
-    NSMutableArray* items = [NSMutableArray arrayWithObject:image];
-    NSString* messageString = [NSString stringWithUTF8String:message];
-    if (messageString.length)
-        [items addObject:messageString];
-    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
+    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[image] applicationActivities:nil];
     UIViewController* vc = UnityGetGLViewController();
     controller.modalPresentationStyle = UIModalPresentationPopover;
     controller.popoverPresentationController.sourceView = vc.view;
@@ -52,17 +48,13 @@ bool NSShareImage (uint8_t* pngData, int dataSize, const char* message) {
     return true;
 }
 
-bool NSShareMedia (const char* mediaPath, const char* message) {
+bool NSShareMedia (const char* mediaPath) {
     NSString* path = [NSString stringWithUTF8String:mediaPath];
     if (![NSFileManager.defaultManager fileExistsAtPath:path]) {
         NSLog(@"NatShare Error: Failed to share media because no file was found at path '%@'", path);
         return false;
     }
-    NSMutableArray* items = [NSMutableArray arrayWithObject:[NSURL fileURLWithPath:path]];
-    NSString* messageString = [NSString stringWithUTF8String:message];
-    if (messageString.length)
-        [items addObject:messageString];
-    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
+    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[[NSURL fileURLWithPath:path]] applicationActivities:nil];
     UIViewController* vc = UnityGetGLViewController();
     controller.modalPresentationStyle = UIModalPresentationPopover;
     controller.popoverPresentationController.sourceView = vc.view;
