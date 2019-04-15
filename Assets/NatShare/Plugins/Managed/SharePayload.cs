@@ -13,19 +13,18 @@ namespace NatShare {
     /// A payload for social sharing
     /// </summary>
     [Doc(@"SharePayload")]
-    public abstract class SharePayload : IDisposable {
+    public class SharePayload : IDisposable {
 
         #region --Client API--
         /// <summary>
-        /// Create a share payload.
-        /// This function will return `null` on unsupported platforms.
+        /// Create a share payload
         /// </summary>
-        [Doc(@"SharePayloadCreate")]
-        public static SharePayload Create (PayloadCommitMode commitMode) {
+        [Doc(@"SharePayloadCtor")]
+        public SharePayload () {
             switch (Application.platform) {
-                case RuntimePlatform.Android: return new SharePayloadAndroid(commitMode);
-                case RuntimePlatform.IPhonePlayer: return new SharePayloadiOS(commitMode);
-                default: return null;
+                case RuntimePlatform.Android: backingPayload = new SharePayloadAndroid(); break;
+                case RuntimePlatform.IPhonePlayer: backingPayload = new SharePayloadiOS(); break;
+                default: backingPayload = null; break;
             }
         }
 
@@ -33,37 +32,59 @@ namespace NatShare {
         /// Subject of the share payload
         /// </summary>
         [Doc(@"SetSubject")]
-        public abstract SharePayload SetSubject (string subject);
+        public virtual SharePayload SetSubject (string subject) {
+            return backingPayload.SetSubject(subject);
+        }
 
         /// <summary>
         /// Add plain text
         /// </summary>
         [Doc(@"AddText")]
-        public abstract SharePayload AddText (string text);
+        public virtual SharePayload AddText (string text) {
+            return backingPayload.AddText(text);
+        }
 
         /// <summary>
         /// Add an image
         /// </summary>
         [Doc(@"AddImage")]
-        public abstract SharePayload AddImage (Texture2D image);
+        public virtual SharePayload AddImage (Texture2D image) {
+            return backingPayload.AddImage(image);
+        }
 
         /// <summary>
         /// Add media with at a given URI
         /// </summary>
         [Doc(@"AddMedia")]
-        public abstract SharePayload AddMedia (string uri);
+        public virtual SharePayload AddMedia (string uri) {
+            return backingPayload.AddMedia(uri);
+        }
 
         /// <summary>
-        /// Commit the payload to the operating system for sharing
+        /// Share the payload
         /// </summary>
-        [Doc(@"Commit")]
-        public abstract void Commit (Action completionHandler = null);
+        /// <param name="completionHandler">Delegate invoked with whether sharing was successful</param>
+        [Doc(@"Share")]
+        public virtual void Share (Action<bool> completionHandler = null) {
+            backingPayload.Share(completionHandler);
+        }
+
+        /// <summary>
+        /// Save the payload to the device camera roll
+        /// </summary>
+        /// <param name="completionHandler">Delegate invoked with whether sharing was successful</param>
+        [Doc(@"Save")]
+        public virtual void Save (string album = null, Action<bool> completionHandler = null) {
+            backingPayload.Save(album, completionHandler);
+        }
 
         /// <summary>
         /// Dispose the payload
         /// </summary>
         [Doc(@"Dispose")]
-        public abstract void Dispose ();
+        public virtual void Dispose () {
+            backingPayload.Dispose();
+        }
 
         /// <summary>
         /// Extract an image from a media file
@@ -73,20 +94,7 @@ namespace NatShare {
             return null;
         }
         #endregion
-    }
 
-    /// <summary>
-    /// Share payload commit mode
-    /// </summary>
-    [Doc(@"PayloadCommitMode")]
-    public enum PayloadCommitMode {
-        /// <summary>
-        /// Share the payload contents
-        /// </summary>
-        [Doc(@"Share")] Share = 1,
-        /// <summary>
-        /// Save the payload contents to the camera roll
-        /// </summary>
-        [Doc(@"SaveToCameraRoll")] SaveToCameraRoll = 2
+        private readonly SharePayload backingPayload;
     }
 }

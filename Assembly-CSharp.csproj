@@ -53,14 +53,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\NatShare\Plugins\Managed\INatShare.cs" />
-     <Compile Include="Assets\NatShare\Plugins\Managed\NatShare.cs" />
-     <Compile Include="Assets\NatShare\Plugins\Managed\NatShareAndroid.cs" />
-     <Compile Include="Assets\NatShare\Plugins\Managed\NatShareBridge.cs" />
      <Compile Include="Assets\NatShare\Plugins\Managed\NatShareDocs.cs" />
-     <Compile Include="Assets\NatShare\Plugins\Managed\NatShareiOS.cs" />
-     <Compile Include="Assets\NatShare\Plugins\Managed\NatShareNull.cs" />
-     <Compile Include="Assets\NatShare\Plugins\Managed\NatShareTypes.cs" />
+     <Compile Include="Assets\NatShare\Plugins\Managed\SharePayload.cs" />
+     <Compile Include="Assets\NatShare\Plugins\Managed\SharePayloadAndroid.cs" />
+     <Compile Include="Assets\NatShare\Plugins\Managed\SharePayloadBridge.cs" />
+     <Compile Include="Assets\NatShare\Plugins\Managed\SharePayloadiOS.cs" />
      <Compile Include="Assets\Tests\SaveTest.cs" />
      <Compile Include="Assets\Tests\ShareTest.cs" />
  <Reference Include="Unity.TextMeshPro.Editor">
@@ -69,11 +66,11 @@
  <Reference Include="Unity.PackageManagerUI.Editor">
  <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
  </Reference>
- <Reference Include="Unity.TextMeshPro">
- <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
- </Reference>
  <Reference Include="Unity.CollabProxy.Editor">
  <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.TextMeshPro">
+ <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Analytics.DataPrivacy">
  <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>

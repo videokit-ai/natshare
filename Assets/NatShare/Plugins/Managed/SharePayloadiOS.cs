@@ -12,7 +12,7 @@ namespace NatShare.Internal {
 
         #region --SharePayload--
 
-        public SharePayloadiOS (PayloadCommitMode commitMode) {
+        public SharePayloadiOS () {
 
         }
 
@@ -36,7 +36,11 @@ namespace NatShare.Internal {
             return this;
         }
 
-        public override void Commit (Action completionHandler) {
+        public override void Share (Action<bool> completionHandler = null) {
+
+        }
+
+        public override void Save (string album = null, Action<bool> completionHandler = null) {
 
         }
 
