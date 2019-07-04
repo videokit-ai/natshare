@@ -72,6 +72,30 @@ public class NatShare {
         return true;
     }
 
+    public boolean shareImageWithText (byte[] pngData, String text) {
+        // Write image to file
+        final File cachePath = new File(UnityPlayer.currentActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "NatShare");
+        final File file = new File(cachePath, "/share.png");
+        cachePath.mkdirs();
+        try {
+            FileOutputStream stream = new FileOutputStream(file);
+            stream.write(pngData);
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        // Share
+        final Intent intent = new Intent()
+                .setAction(Intent.ACTION_SEND)
+                .setType("image/png")
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file))
+                .putExtra(Intent.EXTRA_TEXT, text);
+        callbackManager.startActivityForResult(Intent.createChooser(intent, "Share"), NatShareCallbacks.ACTIVITY_SHARE_IMAGE);
+        return true;
+    }
+
     public boolean shareMedia (String path) {
         // Check that file exists
         final File file = new File(path);
@@ -86,6 +110,25 @@ public class NatShare {
                 .setType(mimeType)
                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+        callbackManager.startActivityForResult(Intent.createChooser(intent, "Share"), NatShareCallbacks.ACTIVITY_SHARE_MEDIA);
+        return true;
+    }
+
+    public boolean shareMediaWithText (String path, String text) {
+        // Check that file exists
+        final File file = new File(path);
+        if (!file.exists())
+            return false;
+        // Get the MIME type
+        final String extension = MimeTypeMap.getFileExtensionFromUrl(path);
+        final String mimeType = extension != null ? MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension) : "*/*";
+        // Share
+        final Intent intent = new Intent()
+                .setAction(Intent.ACTION_SEND)
+                .setType(mimeType)
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file))
+                .putExtra(Intent.EXTRA_TEXT, text);
         callbackManager.startActivityForResult(Intent.createChooser(intent, "Share"), NatShareCallbacks.ACTIVITY_SHARE_MEDIA);
         return true;
     }

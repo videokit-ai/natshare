@@ -21,32 +21,42 @@ void NSRegisterCallbacks (ShareCallback share) {
     shareCallback = share;
 }
 
-bool NSShareText (const char* text) {
-    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[[NSString stringWithUTF8String:text]] applicationActivities:nil];
+bool NSShareItems(NSArray* shareItems) {
+    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:shareItems applicationActivities:nil];
     UIViewController* vc = UnityGetGLViewController();
     controller.modalPresentationStyle = UIModalPresentationPopover;
     controller.popoverPresentationController.sourceView = vc.view;
+    // Pause Unity
+    UnityPause( true );
+    // Register for completion callback (thanks srorke!)
+    [controller setCompletionWithItemsHandler:^(UIActivityType activityType, BOOL completed, NSArray* returnedItems, NSError* activityError) {
+        // Unpause Unity
+        UnityPause( false );
+        shareCallback(completed);
+    }];
     [vc presentViewController:controller animated:YES completion:nil];
     return true;
+}
+
+bool NSShareText (const char* text) {
+    NSArray* items=@[[NSString stringWithUTF8String:text]];
+    return NSShareItems(items);
+}
+
+bool NSShareImageWithText (uint8_t* pngData, int dataSize,const char* text) {
+    NSData* data = [NSData dataWithBytes:pngData length:dataSize];
+    UIImage* image = [UIImage imageWithData:data];
+    NSArray* items=@[image,[NSString stringWithUTF8String:text]];
+    return NSShareItems(items);
 }
 
 bool NSShareImage (uint8_t* pngData, int dataSize) {
     NSData* data = [NSData dataWithBytes:pngData length:dataSize];
     UIImage* image = [UIImage imageWithData:data];
-    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[image] applicationActivities:nil];
-    UIViewController* vc = UnityGetGLViewController();
-    controller.modalPresentationStyle = UIModalPresentationPopover;
-    controller.popoverPresentationController.sourceView = vc.view;
-    // Register for completion callback (thanks srorke!)
-    [controller setCompletionWithItemsHandler:^(UIActivityType activityType, BOOL completed, NSArray* returnedItems, NSError* activityError) {
-        shareCallback(completed);
-    }];
-    // Request save tp photos permission, if not, crash occurs (thanks Ilya!)
-    [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-        [vc presentViewController:controller animated:YES completion:nil];
-    }];
-    return true;
+    NSArray* items=@[image];
+    return NSShareItems(items);
 }
+
 
 bool NSShareMedia (const char* mediaPath) {
     NSString* path = [NSString stringWithUTF8String:mediaPath];
@@ -54,17 +64,18 @@ bool NSShareMedia (const char* mediaPath) {
         NSLog(@"NatShare Error: Failed to share media because no file was found at path '%@'", path);
         return false;
     }
-    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[[NSURL fileURLWithPath:path]] applicationActivities:nil];
-    UIViewController* vc = UnityGetGLViewController();
-    controller.modalPresentationStyle = UIModalPresentationPopover;
-    controller.popoverPresentationController.sourceView = vc.view;
-    [controller setCompletionWithItemsHandler:^(UIActivityType activityType, BOOL completed, NSArray* returnedItems, NSError* activityError) {
-        shareCallback(completed);
-    }];
-    [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-        [vc presentViewController:controller animated:YES completion:nil];
-    }];
-    return true;
+    NSArray* items=@[[NSURL fileURLWithPath:path]];
+    return NSShareItems(items);
+}
+
+bool NSShareMediaWithText (const char* mediaPath,const char* text) {
+    NSString* path = [NSString stringWithUTF8String:mediaPath];
+    if (![NSFileManager.defaultManager fileExistsAtPath:path]) {
+        NSLog(@"NatShare Error: Failed to share media because no file was found at path '%@'", path);
+        return false;
+    }
+    NSArray* items=@[[NSURL fileURLWithPath:path],[NSString stringWithUTF8String:text]];
+    return NSShareItems(items);
 }
 
 bool NSSaveImageToCameraRoll (uint8_t* pngData, int dataSize, const char* album) {

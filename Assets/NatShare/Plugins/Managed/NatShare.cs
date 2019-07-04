@@ -30,7 +30,23 @@ namespace NatShareU {
 		}
 
 		/// <summary>
-        /// Share plain text with the native sharing UI.
+        /// Share an texture and caption text with the native sharing UI.
+        /// Returns true if the image can be shared.
+        /// </summary>
+        /// <param name="image">Image to be shared</param>
+		/// <param name="text">Text Caption to be shared</param>
+		/// <param name="callback">Optional. Callback to be invoked once sharing is complete</param>
+        [Doc(@"ShareImage")]
+		public static bool Share (Texture2D image, string text, ShareCallback callback = null) {
+			if (!image) {
+				Debug.LogError("NatShare Error: Texture being shared is null");
+				return false;
+			}
+			return Implementation.Share(image.EncodeToPNG(),text, callback);
+		}
+
+		/// <summary>
+        /// Share media or plain text with the native sharing UI.
         /// Returns true if the text can be shared.
         /// </summary>
         /// <param name="media">Media to be shared</param>
@@ -42,6 +58,22 @@ namespace NatShareU {
 				return false;
 			}
 			return Implementation.Share(media, callback);
+		}
+
+		/// <summary>
+        /// Share media and caption text with the native sharing UI.
+        /// Returns true if the text can be shared.
+        /// </summary>
+        /// <param name="media">Media to be shared</param>
+		/// <param name="text">Text Caption to be shared</param>
+		/// <param name="callback">Optional. Callback to be invoked once sharing is complete</param>
+		[Doc(@"ShareMedia")]
+		public static bool Share (string media, string text, ShareCallback callback = null) {
+			if (string.IsNullOrEmpty(media)) {
+				Debug.LogError("NatShare Error: Media being shared is null or empty");
+				return false;
+			}
+			return Implementation.Share(media, text, callback);
 		}
 
 		/// <summary>

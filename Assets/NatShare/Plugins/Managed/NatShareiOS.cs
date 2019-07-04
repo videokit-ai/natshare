@@ -23,6 +23,11 @@ namespace NatShareU.Platforms {
 			return NatShareBridge.ShareImage(pngData, pngData.Length);
 		}
 
+		bool INatShare.Share (byte[] pngData, string text,ShareCallback callback) {
+			this.callback = callback;
+			return NatShareBridge.ShareImageWithText(pngData, pngData.Length,text);
+		}
+
 		bool INatShare.Share (string media, ShareCallback callback) {
 			this.callback = callback;
 			Uri uri;
@@ -30,6 +35,11 @@ namespace NatShareU.Platforms {
 				return NatShareBridge.ShareMedia(media);
 			else
 				return NatShareBridge.ShareText(media);
+		}
+
+		bool INatShare.Share (string media, string text, ShareCallback callback) {
+			this.callback = callback;
+			return NatShareBridge.ShareMediaWithText(media,text);
 		}
 
 		bool INatShare.SaveToCameraRoll (byte[] pngData, string album) {

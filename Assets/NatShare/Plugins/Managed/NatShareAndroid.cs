@@ -22,6 +22,11 @@ namespace NatShareU.Platforms {
 			return natshare.Call<bool>("shareImage", pngData);
 		}
 
+		bool INatShare.Share (byte[] pngData, string text, ShareCallback callback) {
+			this.callback = callback;
+			return natshare.Call<bool>("shareImageWithText", pngData,text);
+		}
+
 		bool INatShare.Share (string media, ShareCallback callback) {
 			this.callback = callback;
 			Uri uri;
@@ -29,6 +34,11 @@ namespace NatShareU.Platforms {
 				return natshare.Call<bool>("shareMedia", media);
 			else
 				return natshare.Call<bool>("shareText", media);
+		}
+
+		bool INatShare.Share (string media, string text, ShareCallback callback) {
+			this.callback = callback;		
+			return natshare.Call<bool>("shareMediaWithText", media,text);
 		}
 
 		bool INatShare.SaveToCameraRoll (byte[] pngData, string album) {

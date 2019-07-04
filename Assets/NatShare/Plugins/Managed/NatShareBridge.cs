@@ -26,8 +26,12 @@ namespace NatShareU.Platforms {
         public static extern bool ShareText (string text);
         [DllImport(Assembly, EntryPoint = "NSShareImage")]
         public static extern bool ShareImage (byte[] pngData, int dataSize);
+        [DllImport(Assembly, EntryPoint = "NSShareImageWithText")]
+        public static extern bool ShareImageWithText (byte[] pngData, int dataSize,string text);        
         [DllImport(Assembly, EntryPoint = "NSShareMedia")]
         public static extern bool ShareMedia (string media);
+        [DllImport(Assembly, EntryPoint = "NSShareMediaWithText")]
+        public static extern bool ShareMediaWithText (string media,string text);
         [DllImport(Assembly, EntryPoint = "NSSaveImageToCameraRoll")]
         public static extern bool SaveToCameraRoll (byte[] pngData, int dataSize, string album);
         [DllImport(Assembly, EntryPoint = "NSSaveMediaToCameraRoll")]
@@ -41,7 +45,9 @@ namespace NatShareU.Platforms {
         public static void RegisterCallbacks (ShareCallback callback) {}
         public static bool ShareText (string media) { return false; }
         public static bool ShareImage (byte[] pngData, int dataSize) { return false; }
+        public static bool ShareImageWithText (byte[] pngData, int dataSize, string text) { return false; }
         public static bool ShareMedia (string media) { return false; }
+        public static bool ShareMediaWithText (string media,string text) { return false; }        
         public static bool SaveToCameraRoll (byte[] pngData, int dataSize, string album) { return false; }
         public static bool SaveToCameraRoll (string path, string album, bool copy) { return false; }
         public static bool GetThumbnail (string path, float time, ref IntPtr pixelBuffer, ref int width, ref int height) { return false; }

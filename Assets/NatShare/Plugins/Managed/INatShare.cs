@@ -9,7 +9,9 @@ namespace NatShareU {
 
 	public interface INatShare {
 		bool Share (byte[] pngData, ShareCallback callback);
+		bool Share (byte[] pngData,string text, ShareCallback callback);
 		bool Share (string media, ShareCallback callback);
+		bool Share (string media, string text, ShareCallback callback);
 		bool SaveToCameraRoll (byte[] pngData, string album);
         bool SaveToCameraRoll (string path, string album, bool copy);
         Texture2D GetThumbnail (string videoPath, float time);

@@ -15,7 +15,19 @@ namespace NatShareU.Platforms {
             return true;
         }
 
+        bool INatShare.Share (byte[] pngData,  string text, ShareCallback callback) {
+            Debug.LogError("NatShare Error: This platform does not support sharing");
+            if (callback != null) callback();
+            return true;
+        }
+
         bool INatShare.Share (string media, ShareCallback callback) {
+            Debug.LogError("NatShare Error: This platform does not support sharing");
+            if (callback != null) callback();
+            return true;
+        }
+
+        bool INatShare.Share (string media, string text, ShareCallback callback) {
             Debug.LogError("NatShare Error: This platform does not support sharing");
             if (callback != null) callback();
             return true;
