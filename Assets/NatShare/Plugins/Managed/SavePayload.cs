@@ -11,33 +11,33 @@ namespace NatShare {
     using Internal;
 
     /// <summary>
-    /// A payload for sharing to available social services
+    /// A payload for saving to the camera roll
     /// </summary>
-    [Doc(@"SharePayload")]
-    public sealed class SharePayload : IPayload {
+    [Doc(@"SavePayload")]
+    public sealed class SavePayload : IPayload {
 
         #region --Client API--
         /// <summary>
-        /// Create a share payload
+        /// Create a save payload
         /// </summary>
-        /// <param name="subject">Optional. Subject attached to the sharing payload</param>
-        /// <param name="completionHandler">Optional. Delegate invoked with whether sharing was successful</param>
-        [Doc(@"SharePayloadCtor")]
-        public SharePayload (string subject = null, Action completionHandler = null) {
+        /// <param name="album">Optional. Album name in which contents should be saved</param>
+        /// <param name="completionHandler">Optional. Delegate invoked with whether saving was successful</param>
+        [Doc(@"SavePayloadCtor")]
+        public SavePayload (string album = null, Action completionHandler = null) {
             switch (Application.platform) {
                 case RuntimePlatform.Android: {
-                    var nativePayload = new AndroidJavaObject(@"com.yusufolokoba.natshare.SharePayload", subject, completionHandler);
+                    var nativePayload = new AndroidJavaObject(@"com.yusufolokoba.natshare.SavePayload", album, completionHandler);
                     this.payload = new PayloadAndroid(nativePayload);
                     break;
                 }
                 case RuntimePlatform.IPhonePlayer: {
                     var handlerPtr = completionHandler != null ? (IntPtr)GCHandle.Alloc(completionHandler, GCHandleType.Normal) : IntPtr.Zero;
-                    var nativePayload = PayloadBridge.CreateSharePayload(subject, PayloadiOS.OnCompletion, handlerPtr);
+                    var nativePayload = PayloadBridge.CreateSavePayload(album, PayloadiOS.OnCompletion, handlerPtr);
                     this.payload = new PayloadiOS(nativePayload);
                     break;
                 }
                 default:
-                    Debug.LogError("NatShare Error: SharePayload is not supported on this platform");
+                    Debug.LogError("NatShare Error: SavePayload is not supported on this platform");
                     this.payload = null; // Self-destruct >:D
                     break;
             }
@@ -52,7 +52,7 @@ namespace NatShare {
         }
 
         /// <summary>
-        /// Add plain text
+        /// Nop. No concept as saving text to the gallery
         /// </summary>
         [Doc(@"AddText")]
         public void AddText (string text) {

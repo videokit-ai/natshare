@@ -1,42 +1,50 @@
 package com.yusufolokoba.natshare;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
-public final class SharePayload {
+/**
+ * NatShare
+ * Created by Yusuf Olokoba on 08/08/19.
+ */
+public final class SharePayload implements Payload {
 
-    private final Intent intent = new Intent().setAction(Intent.ACTION_SEND);
+    private final Intent intent;
 
-    public interface Callback {
-        void onShare (boolean success);
-    }
-
-    public SharePayload () {
-
-    }
-
-    public void setSubject (String subject) {
+    public SharePayload (String subject, Runnable completionHandler) { // INCOMPLETE
+        intent = new Intent().setAction(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
     }
 
-    public void addText (String text) {
+    @Override
+    public void dispose () { // INCOMPLETE
+
+    }
+
+    @Override
+    public void addText (String text) { // DEPLOY
         intent.putExtra(Intent.EXTRA_TEXT, text);
     }
 
-    public void addImage (byte[] pngData) {
-
+    @Override
+    public void addImage (byte[] pixelBuffer, int width, int height) { // INCOMPLETE
+        // Load into bitmap
+        Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        image.copyPixelsFromBuffer(ByteBuffer.wrap(pixelBuffer));
+        // ...
     }
 
-    public void addMedia (String uri) {
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION).putExtra(Intent.EXTRA_STREAM, Uri.parse(uri));
+    @Override
+    public void addMedia (String uri) { // DEPLOY
+        intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(uri));
     }
 
-    public void share (Callback callback) {
-
-    }
-
-    public void save (String album, Callback callback) {
+    @Override
+    public void commit () { // INCOMPLETE
 
     }
 }
