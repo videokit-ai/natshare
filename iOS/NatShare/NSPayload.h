@@ -1,5 +1,5 @@
 //
-//  NSSharePayload.h
+//  NSPayload.h
 //  NatShare
 //
 //  Created by Yusuf Olokoba on 8/8/19.
@@ -18,12 +18,10 @@ typedef void (^CompletionHandler) (void);
 - (void) addImage:(nonnull UIImage*) image;
 - (void) addMedia:(nonnull NSURL*) url;
 - (void) commit;
-- (void) dispose;
 @end
 
 @interface NSSharePayload : NSObject <NSPayload>
 - (instancetype) initWithCompletionHandler:(nullable CompletionHandler) completionHandler;
-- (void) dispose;
 - (void) addText:(nonnull NSString*) text;
 - (void) addImage:(nonnull UIImage*) image;
 - (void) addMedia:(nonnull NSURL*) url;
@@ -33,7 +31,6 @@ typedef void (^CompletionHandler) (void);
 
 @interface NSSavePayload : NSObject <NSPayload>
 - (instancetype) initWithAlbum:(nullable NSString*) album andCompletionHandler:(nullable CompletionHandler) completionHandler;
-- (void) dispose;
 - (void) addImage:(nonnull UIImage*) image;
 - (void) addMedia:(nonnull NSURL*) url;
 - (void) commit;

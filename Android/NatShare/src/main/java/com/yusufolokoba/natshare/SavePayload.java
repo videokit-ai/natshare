@@ -14,11 +14,6 @@ public final class SavePayload implements Payload {
     }
 
     @Override
-    public void dispose () { // INCOMPLETE
-
-    }
-
-    @Override
     public void addText (String text) { }
 
     @Override

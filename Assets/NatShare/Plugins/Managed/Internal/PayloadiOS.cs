@@ -18,7 +18,7 @@ namespace NatShare.Internal {
         }
 
         public void Dispose () {
-            payload.Dispose();
+            payload.Commit();
         }
 
         public void AddText (string text) {
@@ -31,10 +31,6 @@ namespace NatShare.Internal {
 
         public void AddMedia (string uri) {
             payload.AddMedia(uri);
-        }
-
-        public void Commit () {
-            payload.Commit();
         }
         #endregion
 

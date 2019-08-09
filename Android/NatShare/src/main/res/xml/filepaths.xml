@@ -1,0 +1,4 @@
+<paths>
+    <files-path name="root" path="/" />
+    <cache-path name="cache" path="/natshare" />
+</paths>

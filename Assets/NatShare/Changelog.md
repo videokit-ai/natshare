@@ -1,3 +1,6 @@
+## NatShare 1.2.0
+*INCOMPLETE*
+
 ## NatShare 1.1f3
 + Added support for saving to an album in the camera roll.
 + Added `copy` parameter to `SaveToCameraRoll`. When `false`, the media file will be moved to the camera roll instead of being copied.

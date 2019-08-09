@@ -17,7 +17,7 @@ namespace NatShare.Internal {
         }
 
         public void Dispose () {
-            payload.Call(@"dispose");
+            payload.Call(@"commit");
         }
 
         public void AddText (string text) {
@@ -31,16 +31,8 @@ namespace NatShare.Internal {
         public void AddMedia (string uri) {
             payload.Call(@"addMedia", uri);
         }
-
-        public void Commit () {
-            payload.Call(@"commit");
-        }
         #endregion
-
-
-        #region --Operations--
         
         private readonly AndroidJavaObject payload;
-        #endregion
     }
 }

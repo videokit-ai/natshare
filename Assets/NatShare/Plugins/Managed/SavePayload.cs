@@ -88,14 +88,6 @@ namespace NatShare {
         public void AddMedia (string uri) {
             payload.AddMedia(uri);
         }
-
-        /// <summary>
-        /// Commit the payload
-        /// </summary>
-        [Doc(@"Commit")]
-        public void Commit () {
-            payload.Commit();
-        }
         #endregion
 
         private readonly IPayload payload;

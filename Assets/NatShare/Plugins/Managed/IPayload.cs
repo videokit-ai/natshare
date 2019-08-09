@@ -28,9 +28,5 @@ namespace NatShare {
         /// </summary>
         /// <param name="path">Path to media to be shared. MUST be prepended with URI scheme</param>
         void AddMedia (string path);
-        /// <summary>
-        /// Commit the payload
-        /// </summary>
-        void Commit ();
     }
 }

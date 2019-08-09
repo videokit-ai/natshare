@@ -5,5 +5,4 @@ public interface Payload {
     void addImage (byte[] pixelBuffer, int width, int height);
     void addMedia (String uri);
     void commit ();
-    void dispose ();
 }
