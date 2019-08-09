@@ -12,6 +12,7 @@ namespace NatShare.Tests {
     public class SaveTest : MonoBehaviour {
 
         IEnumerator Start () {
+            yield return new WaitForSeconds(3.0f);
             yield return new WaitForEndOfFrame();
             // Take a screenshot
             var screenshot = ScreenCapture.CaptureScreenshotAsTexture();

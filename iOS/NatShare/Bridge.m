@@ -23,14 +23,14 @@ void NSAddText (id<NSPayload> payload, const char* text) {
     [payload addText:[NSString stringWithUTF8String:text]];
 }
 
-void NSAddImage (id<NSPayload> payload, uint8_t* pixelBuffer, int width, int height) { // DEPLOY
+void NSAddImage (id<NSPayload> payload, uint8_t* pixelBuffer, int width, int height) {
     // Create UIImage
     CGDataProviderRef dataProvider = CGDataProviderCreateWithData(NULL, pixelBuffer, width * height * 4, NULL);
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     CGImageRef cgImage = CGImageCreate(width, height, 8, 32, width * 4, colorSpace, kCGBitmapByteOrderDefault | kCGImageAlphaNoneSkipLast, dataProvider, NULL, false, kCGRenderingIntentDefault);
     CGDataProviderRelease(dataProvider);
     CGColorSpaceRelease(colorSpace);
-    UIImage* image = [UIImage imageWithCGImage:cgImage];
+    UIImage* image = [UIImage imageWithCGImage:cgImage scale:1.0 orientation:UIImageOrientationDownMirrored];
     CGImageRelease(cgImage);
     // Add
     [payload addImage:image];

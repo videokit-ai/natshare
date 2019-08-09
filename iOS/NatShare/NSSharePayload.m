@@ -46,8 +46,10 @@
     shareController.modalPresentationStyle = UIModalPresentationPopover;
     shareController.popoverPresentationController.sourceView = appController.view;
     [shareController setCompletionWithItemsHandler:^(UIActivityType activityType, BOOL completed, NSArray* returnedItems, NSError* activityError) {
-        if (completionHandler)
-            completionHandler();
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (completionHandler)
+                completionHandler();
+        });
     }];
     [appController presentViewController:shareController animated:YES completion:nil];
 }

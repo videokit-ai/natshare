@@ -55,9 +55,10 @@
         if (album)
             [[NSSavePayload albumRequestForName:album] addAssets:placeholders];
     } completionHandler:^(BOOL success, NSError* error) {
-        NSLog(@"Failure: %@", error);
-        if (completionHandler)
-            completionHandler();
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (completionHandler)
+                completionHandler();
+        });
     }];
 }
 
