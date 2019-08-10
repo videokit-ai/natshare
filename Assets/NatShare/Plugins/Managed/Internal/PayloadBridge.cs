@@ -17,6 +17,8 @@ namespace NatShare.Internal {
         public static extern IntPtr CreateSharePayload (string subject, Action<IntPtr> completionHandler, IntPtr context);
         [DllImport(Assembly, EntryPoint = @"NSCreateSavePayload")]
         public static extern IntPtr CreateSavePayload (string album, Action<IntPtr> completionHandler, IntPtr context);
+        [DllImport(Assembly, EntryPoint = @"NSCreatePrintPayload")]
+        public static extern IntPtr CreatePrintPayload (bool greyscale, bool landscape, Action<IntPtr> completionHandler, IntPtr context);
         [DllImport(Assembly, EntryPoint = @"NSAddText")]
         public static extern void AddText (this IntPtr payload, string text);
         [DllImport(Assembly, EntryPoint = @"NSAddImage")]
@@ -29,6 +31,7 @@ namespace NatShare.Internal {
         #else
         public static IntPtr CreateSharePayload (string subject, Action<IntPtr> completionHandler, IntPtr context) { return IntPtr.Zero; }
         public static IntPtr CreateSavePayload (string album, Action<IntPtr> completionHandler, IntPtr context) { return IntPtr.Zero; }
+        public static IntPtr CreatePrintPayload (bool greyscale, bool landscape, Action<IntPtr> completionHandler, IntPtr context) { return IntPtr.Zero; }
         public static void AddText (this IntPtr payload, string text) { }
         public static void AddImage (this IntPtr payload, byte[] pixelBuffer, int width, int height) { }
         public static void AddMedia (this IntPtr payload, string uri) { }

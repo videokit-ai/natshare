@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		888F3F4A2084E2900019E011 /* libNatShare.a in CopyFiles */ = {isa = PBXBuildFile; fileRef = 886F16392082485000C3FA2D /* libNatShare.a */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		889E8FA122FE4A4A00574B17 /* NSPrintPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = 889E8FA022FE4A4A00574B17 /* NSPrintPayload.m */; };
 		88A73C5E22FCFED0002A9DC9 /* NSSharePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = 88A73C5D22FCFED0002A9DC9 /* NSSharePayload.m */; };
 		88A73C6022FCFF04002A9DC9 /* NSSavePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = 88A73C5F22FCFF04002A9DC9 /* NSSavePayload.m */; };
 		88A73C6222FD0094002A9DC9 /* Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 88A73C6122FD0094002A9DC9 /* Bridge.m */; };
@@ -31,6 +32,7 @@
 		888F3F472084E19B0019E011 /* UnityInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnityInterface.h; sourceTree = "<group>"; };
 		888F3F482084E1B90019E011 /* UnityRendering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnityRendering.h; sourceTree = "<group>"; };
 		888F3F492084E1BA0019E011 /* UnityForwardDecls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnityForwardDecls.h; sourceTree = "<group>"; };
+		889E8FA022FE4A4A00574B17 /* NSPrintPayload.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSPrintPayload.m; sourceTree = "<group>"; };
 		88A73C5C22FCFED0002A9DC9 /* NSPayload.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSPayload.h; sourceTree = "<group>"; };
 		88A73C5D22FCFED0002A9DC9 /* NSSharePayload.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSSharePayload.m; sourceTree = "<group>"; };
 		88A73C5F22FCFF04002A9DC9 /* NSSavePayload.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSSavePayload.m; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 				88A73C5D22FCFED0002A9DC9 /* NSSharePayload.m */,
 				88A73C5F22FCFF04002A9DC9 /* NSSavePayload.m */,
 				88A73C6122FD0094002A9DC9 /* Bridge.m */,
+				889E8FA022FE4A4A00574B17 /* NSPrintPayload.m */,
 			);
 			path = NatShare;
 			sourceTree = "<group>";
@@ -146,6 +149,7 @@
 				88A73C6222FD0094002A9DC9 /* Bridge.m in Sources */,
 				88A73C6022FCFF04002A9DC9 /* NSSavePayload.m in Sources */,
 				88A73C5E22FCFED0002A9DC9 /* NSSharePayload.m in Sources */,
+				889E8FA122FE4A4A00574B17 /* NSPrintPayload.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

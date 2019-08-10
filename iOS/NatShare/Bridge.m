@@ -19,6 +19,11 @@ void* NSCreateSavePayload (const char* album, void (*completionHandler) (void*),
     return (__bridge_retained void*)payload;
 }
 
+void* NSCreatePrintPayload (bool greyscale, bool landscape, void (*completionHandler) (void*), void* context) {
+    id<NSPayload> payload = [NSPrintPayload.alloc initWithGreyscale:greyscale landscape:landscape andCompletionHandler:^{ completionHandler(context); }];
+    return (__bridge_retained void*)payload;
+}
+
 void NSAddText (id<NSPayload> payload, const char* text) {
     [payload addText:[NSString stringWithUTF8String:text]];
 }
