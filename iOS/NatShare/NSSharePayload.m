@@ -47,11 +47,13 @@
     shareController.popoverPresentationController.sourceView = appController.view;
     [shareController setCompletionWithItemsHandler:^(UIActivityType activityType, BOOL completed, NSArray* returnedItems, NSError* activityError) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            UnityPause(false);
             if (completionHandler)
                 completionHandler();
         });
     }];
     [appController presentViewController:shareController animated:YES completion:nil];
+    UnityPause(true);
 }
 
 @end

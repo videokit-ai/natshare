@@ -5,8 +5,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import com.unity3d.player.UnityPlayer;
+import com.unity3d.player.UnityPlayerActivity;
+import com.unity3d.player.UnityPlayerNativeActivity;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,18 +25,22 @@ public final class SharePayload implements Payload {
 
     private final Intent intent;
     private final ArrayList<Bitmap> images;
+    private int size;
 
     public SharePayload (String subject, Runnable completionHandler) { // INCOMPLETE
-        intent = new Intent().setAction(Intent.ACTION_SEND);
+        // Create intent
+        intent = new Intent();
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        // Create collections
         images = new ArrayList<>();
     }
 
     @Override
-    public void addText (String text) { // DEPLOY
+    public void addText (String text) {
         intent.putExtra(Intent.EXTRA_TEXT, text);
+        size++;
     }
 
     @Override
@@ -56,11 +64,14 @@ public final class SharePayload implements Payload {
 
     @Override
     public void addMedia (String uri) { // DEPLOY
+        Uri contentUri = FileProvider.getUriForFile(UnityPlayer.currentActivity, UnityPlayer.currentActivity.getPackageName() + ".fileprovider", new File(uri));
         intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(uri));
     }
 
     @Override
     public void commit () { // INCOMPLETE
+        // Set action
+
         // ...
         for (Bitmap image : images)
             image.recycle();
