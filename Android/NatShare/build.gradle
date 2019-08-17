@@ -1,4 +1,4 @@
-apply plugin: 'com.android.library'
+apply plugin: "com.android.library"
 
 android {
     compileSdkVersion 28
@@ -12,12 +12,12 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
     libraryVariants.all { variant ->
         variant.outputs.all { output ->
-            if (outputFile != null && outputFileName.endsWith('.aar') && variant.name == android.buildTypes.release.name) {
+            if (outputFile != null && outputFileName.endsWith(".aar") && variant.name == android.buildTypes.release.name) {
                 outputFileName = "NatShare.aar"
             }
         }
@@ -29,13 +29,13 @@ android {
 
 dependencies {
     implementation "com.android.support:appcompat-v7:28.0.0"
-    compile "com.android.support:support-v4:28.0.0"
+    implementation "com.android.support:support-v4:28.0.0"
     implementation project(":Unity")
 }
 
 task copyToUnity(type: Copy) {
-    from 'build/outputs/aar/NatShare.aar'
-    into '../../Assets/NatShare/Plugins/Android'
+    from "build/outputs/aar/NatShare.aar"
+    into "../../Assets/NatShare/Plugins/Android"
 }
 
 assemble.finalizedBy (copyToUnity)

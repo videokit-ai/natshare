@@ -58,6 +58,7 @@
      <Compile Include="Assets\NatShare\Plugins\Managed\Internal\PayloadDocs.cs" />
      <Compile Include="Assets\NatShare\Plugins\Managed\Internal\PayloadiOS.cs" />
      <Compile Include="Assets\NatShare\Plugins\Managed\IPayload.cs" />
+     <Compile Include="Assets\NatShare\Plugins\Managed\PrintPayload.cs" />
      <Compile Include="Assets\NatShare\Plugins\Managed\SavePayload.cs" />
      <Compile Include="Assets\NatShare\Plugins\Managed\SharePayload.cs" />
      <Compile Include="Assets\Tests\SaveTest.cs" />
