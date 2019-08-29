@@ -1,12 +1,13 @@
 package com.yusufolokoba.natshare;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
-import android.support.v4.content.FileProvider;
+import androidx.core.content.FileProvider;
 import android.util.Log;
 import com.unity3d.player.UnityPlayer;
 
@@ -22,21 +23,29 @@ import java.util.ArrayList;
  */
 public final class SharePayload implements Payload {
 
-    private final Runnable completionHandler;
+    private final HandlerThread commitThread;
+    private final Handler commitHandler;
     private final Intent intent;
-    private final ArrayList<Bitmap> images;
     private final ArrayList<Uri> uris;
+    private static final String authority;
 
     public SharePayload (String subject, Runnable completionHandler) { // INCOMPLETE
-        this.completionHandler = completionHandler;
+        this.commitThread = new HandlerThread("SharePayload Commit Thread");
+        this.commitThread.start();
+        this.commitHandler = new Handler(commitThread.getLooper());
         // Create intent
-        intent = new Intent();
-        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        this.intent = new Intent();
+        if (!subject.equals(""))
+            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         // Create collections
-        images = new ArrayList<>();
-        uris = new ArrayList<>();
+        this.uris = new ArrayList<>();
+        // Setup completion handler
+        String payloadID = "SharePayload." + System.nanoTime();
+        final ResultHandler resultHandler = new ResultHandler();
+        resultHandler.setHandler(completionHandler);
+        UnityPlayer.currentActivity.getFragmentManager().beginTransaction().add(resultHandler, payloadID).commit();
     }
 
     @Override
@@ -45,66 +54,81 @@ public final class SharePayload implements Payload {
     }
 
     @Override
-    public void addImage (byte[] pixelBuffer, int width, int height) { // INCOMPLETE
+    public void addImage (final byte[] pixelBuffer, final int width, final int height) { // DEPLOY
         // Load into bitmap
-        Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        final Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         image.copyPixelsFromBuffer(ByteBuffer.wrap(pixelBuffer));
-        images.add(image);
         // Write to file
-        /*
-        try {
-            File file = new File(UnityPlayer.currentActivity.getExternalCacheDir(), System.nanoTime() + ".png");
-            FileOutputStream outputStream = new FileOutputStream(file);
-            image.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-            outputStream.close();
-            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-            intent.setType("image/png");
-        } catch (IOException ex) {
-            Log.e("Unity", "NatShare Error: Failed to add image to share payload with error: " + ex);
-        }
-        */
-    }
-
-    @Override
-    public void addMedia (String uri) { // DEPLOY
-        Uri contentUri = FileProvider.getUriForFile(UnityPlayer.currentActivity, UnityPlayer.currentActivity.getPackageName() + ".natshare", new File(uri));
-        uris.add(contentUri);
-        Log.d("Unity", "Content URI: "+contentUri);
-    }
-
-    @Override
-    public void commit () { // INCOMPLETE
-        // Create worker thread for IO
-        final HandlerThread commitThread = new HandlerThread("SharePayload Commit Thread");
-        commitThread.start();
-        final Handler commitHandler = new Handler(commitThread.getLooper());
-        final Handler delegateHandler = new Handler(Looper.myLooper());
-        // Commit
         commitHandler.post(new Runnable() {
             @Override
             public void run () {
                 // Write images
-                for (int i = 0; i < images.size(); i++) {
-                    final Bitmap image = images.get(i);
-                    try {
-                        File file = new File(UnityPlayer.currentActivity.getCacheDir(), "natshare." + i + ".png");
-                        FileOutputStream outputStream = new FileOutputStream(file);
-                        image.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-                        outputStream.close();
-                        Uri fileUri = FileProvider.getUriForFile(UnityPlayer.currentActivity, UnityPlayer.currentActivity.getPackageName() + ".natshare", file);
-                        uris.add(fileUri);
-                    } catch (IOException ex) {
-                        Log.e("Unity", "NatShare Error: SharePayload failed to commit image with error: " + ex);
-                    } finally {
-                        image.recycle();
-                    }
+                try {
+                    File file = new File(UnityPlayer.currentActivity.getCacheDir(), "share." + System.nanoTime() + ".png");
+                    FileOutputStream outputStream = new FileOutputStream(file);
+                    image.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                    outputStream.close();
+                    Uri fileUri = FileProvider.getUriForFile(UnityPlayer.currentActivity, authority, file);
+                    Log.d("Unity", "Created URI for image: "+fileUri);
+                    uris.add(fileUri);
+                } catch (IOException ex) {
+                    Log.e("Unity", "NatShare Error: SharePayload failed to commit image with error: " + ex);
+                } finally {
+                    image.recycle();
                 }
-                images.clear();
-                //
+            }
+        });
+    }
+
+    @Override
+    public void addMedia (final String uri) { // DEPLOY
+        final Uri contentUri = FileProvider.getUriForFile(UnityPlayer.currentActivity, authority, new File(uri));
+        commitHandler.post(new Runnable() {
+            @Override
+            public void run () {
+                uris.add(contentUri);
+            }
+        });
+    }
+
+    @Override
+    public void commit () {
+        commitHandler.post(new Runnable() {
+            @Override
+            public void run () {
+                // Set intent type
+                intent.setAction(uris.size() > 1 ? Intent.ACTION_SEND_MULTIPLE : Intent.ACTION_SEND);
+                intent.setType("*/*");
+                // Add URI's
+                if (uris.size() > 1)
+                    intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+                else if (uris.size() == 1)
+                    intent.putExtra(Intent.EXTRA_STREAM, uris.get(0));
+                // Start activity
+                UnityPlayer.currentActivity.startActivityForResult(Intent.createChooser(intent, "Share"), 0);
             }
         });
         commitThread.quitSafely();
-        // Set action
+    }
 
+    static { authority = UnityPlayer.currentActivity.getPackageName() + ".natshare"; }
+
+    /**
+     * Created by Sean Roske on 10/07/18.
+     */
+    public static class ResultHandler extends Fragment {
+
+        private Runnable delegate;
+        private Handler handler;
+
+        public void setHandler (Runnable delegate) {
+            this.delegate = delegate;
+            this.handler = new Handler(Looper.myLooper());
+        }
+
+        @Override
+        public void onActivityResult (int requestCode, int resultCode, Intent data) {
+            handler.post(delegate);
+        }
     }
 }

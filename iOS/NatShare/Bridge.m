@@ -41,8 +41,8 @@ void NSAddImage (id<NSPayload> payload, uint8_t* pixelBuffer, int width, int hei
     [payload addImage:image];
 }
 
-void NSAddMedia (id<NSPayload> payload, const char* uri) {
-    [payload addMedia:[NSURL URLWithString:[NSString stringWithUTF8String:uri]]];
+void NSAddMedia (id<NSPayload> payload, const char* path) {
+    [payload addMedia:[NSURL fileURLWithPath:[NSString stringWithUTF8String:path]]];
 }
 
 void NSCommit (void* payloadPtr) {

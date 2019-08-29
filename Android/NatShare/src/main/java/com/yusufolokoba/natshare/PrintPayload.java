@@ -3,7 +3,7 @@ package com.yusufolokoba.natshare;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.print.PrintHelper;
+import androidx.print.PrintHelper;
 import com.unity3d.player.UnityPlayer;
 import java.nio.ByteBuffer;
 

@@ -27,7 +27,7 @@ namespace NatShare {
         public PrintPayload (bool greyscale = false, bool landscape = false, Action completionHandler = null) { // INCOMPLETE
             switch (Application.platform) {
                 case RuntimePlatform.Android: {
-                    var nativePayload = new AndroidJavaObject(@"com.yusufolokoba.natshare.PrintPayload", greyscale, landscape, completionHandler);
+                    var nativePayload = new AndroidJavaObject(@"com.yusufolokoba.natshare.PrintPayload", greyscale, landscape, new AndroidJavaRunnable(completionHandler));
                     this.payload = new PayloadAndroid(nativePayload);
                     break;
                 }
@@ -83,8 +83,9 @@ namespace NatShare {
         }
 
         /// <summary>
-        /// Add media with at a given URI
+        /// Add media to the payload
         /// </summary>
+        /// <param name="path">Path to local media file to be shared</param>
         [Doc(@"AddMedia")]
         public void AddMedia (string uri) {
             payload.AddMedia(uri);

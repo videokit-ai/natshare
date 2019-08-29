@@ -26,7 +26,7 @@ namespace NatShare {
         /// <summary>
         /// Add media to the payload
         /// </summary>
-        /// <param name="path">Path to media to be shared. MUST be prepended with URI scheme</param>
+        /// <param name="path">Path to local media file to be shared</param>
         void AddMedia (string path);
     }
 }
