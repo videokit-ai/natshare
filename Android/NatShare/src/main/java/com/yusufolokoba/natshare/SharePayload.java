@@ -2,7 +2,6 @@ package com.yusufolokoba.natshare;
 
 import android.app.Fragment;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -10,11 +9,9 @@ import android.os.Looper;
 import androidx.core.content.FileProvider;
 import android.util.Log;
 import com.unity3d.player.UnityPlayer;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 /**
@@ -29,7 +26,7 @@ public final class SharePayload implements Payload {
     private final ArrayList<Uri> uris;
     private static final String authority;
 
-    public SharePayload (String subject, Runnable completionHandler) { // INCOMPLETE
+    public SharePayload (String subject, Runnable completionHandler) { // INCOMPLETE // completion handler
         this.commitThread = new HandlerThread("SharePayload Commit Thread");
         this.commitThread.start();
         this.commitHandler = new Handler(commitThread.getLooper());
@@ -54,10 +51,7 @@ public final class SharePayload implements Payload {
     }
 
     @Override
-    public void addImage (final byte[] pixelBuffer, final int width, final int height) { // DEPLOY
-        // Load into bitmap
-        final Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        image.copyPixelsFromBuffer(ByteBuffer.wrap(pixelBuffer));
+    public void addImage (final byte[] pngData) {
         // Write to file
         commitHandler.post(new Runnable() {
             @Override
@@ -66,22 +60,20 @@ public final class SharePayload implements Payload {
                 try {
                     File file = new File(UnityPlayer.currentActivity.getCacheDir(), "share." + System.nanoTime() + ".png");
                     FileOutputStream outputStream = new FileOutputStream(file);
-                    image.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                    outputStream.write(pngData);
                     outputStream.close();
                     Uri fileUri = FileProvider.getUriForFile(UnityPlayer.currentActivity, authority, file);
                     Log.d("Unity", "Created URI for image: "+fileUri);
                     uris.add(fileUri);
                 } catch (IOException ex) {
                     Log.e("Unity", "NatShare Error: SharePayload failed to commit image with error: " + ex);
-                } finally {
-                    image.recycle();
                 }
             }
         });
     }
 
     @Override
-    public void addMedia (final String uri) { // DEPLOY
+    public void addMedia (final String uri) {
         final Uri contentUri = FileProvider.getUriForFile(UnityPlayer.currentActivity, authority, new File(uri));
         commitHandler.post(new Runnable() {
             @Override

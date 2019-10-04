@@ -6,10 +6,11 @@
 namespace NatShare.Internal {
 
     using AOT;
+    using UnityEngine;
     using System;
     using System.Runtime.InteropServices;
 
-    public sealed class PayloadiOS : IPayload {
+    public sealed class PayloadiOS : ISharePayload {
 
         #region --IPayload--
 
@@ -25,8 +26,8 @@ namespace NatShare.Internal {
             payload.AddText(text);
         }
 
-        public void AddImage (byte[] pixelBuffer, int width, int height) {
-            payload.AddImage(pixelBuffer, width, height);
+        public void AddImage (Texture2D image) {
+            payload.AddImage(image.GetRawTextureData(), image.width, image.height);
         }
 
         public void AddMedia (string uri) {

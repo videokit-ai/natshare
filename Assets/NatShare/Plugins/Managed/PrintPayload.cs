@@ -14,7 +14,7 @@ namespace NatShare {
     /// EXPERIMENTAL. A payload for printing media
     /// </summary>
     [Doc(@"PrintPayload")]
-    public sealed class PrintPayload : IPayload { // EXPERIMENTAL
+    public sealed class PrintPayload : ISharePayload { // EXPERIMENTAL
 
         #region --Client API--
         /// <summary>
@@ -61,25 +61,11 @@ namespace NatShare {
         }
 
         /// <summary>
-        /// Add an image to the payload.
-        /// The pixel buffer MUST in the RGBA32 format.
+        /// Add an image to the payload
         /// </summary>
-        /// <param name="pixelBuffer">Pixel buffer</param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
         [Doc(@"AddImage")]
-        public void AddImage (byte[] pixelBuffer, int width, int height) {
-            payload.AddImage(pixelBuffer, width, height);
-        }
-
-        /// <summary>
-        /// Add an image to the payload.
-        /// The texture MUST in the RGBA32 format.
-        /// </summary>
-        /// <param name="image">Image to save</param>
-        [Doc(@"SharePayloadAddImageTexture")]
         public void AddImage (Texture2D image) {
-            AddImage(image.GetRawTextureData(), image.width, image.height);
+            payload.AddImage(image);
         }
 
         /// <summary>
@@ -92,6 +78,6 @@ namespace NatShare {
         }
         #endregion
 
-        private readonly IPayload payload;
+        private readonly ISharePayload payload;
     }
 }

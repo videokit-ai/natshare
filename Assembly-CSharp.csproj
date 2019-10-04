@@ -57,7 +57,7 @@
      <Compile Include="Assets\NatShare\Plugins\Managed\Internal\PayloadBridge.cs" />
      <Compile Include="Assets\NatShare\Plugins\Managed\Internal\PayloadDocs.cs" />
      <Compile Include="Assets\NatShare\Plugins\Managed\Internal\PayloadiOS.cs" />
-     <Compile Include="Assets\NatShare\Plugins\Managed\IPayload.cs" />
+     <Compile Include="Assets\NatShare\Plugins\Managed\ISharePayload.cs" />
      <Compile Include="Assets\NatShare\Plugins\Managed\PrintPayload.cs" />
      <Compile Include="Assets\NatShare\Plugins\Managed\SavePayload.cs" />
      <Compile Include="Assets\NatShare\Plugins\Managed\SharePayload.cs" />

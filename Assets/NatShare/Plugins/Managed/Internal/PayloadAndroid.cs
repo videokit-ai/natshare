@@ -8,7 +8,7 @@ namespace NatShare.Internal {
     using UnityEngine;
     using System;
 
-    public sealed class PayloadAndroid : IPayload {
+    public sealed class PayloadAndroid : ISharePayload {
 
         #region --IPayload--
 
@@ -24,8 +24,8 @@ namespace NatShare.Internal {
             payload.Call(@"addText", text);
         }
 
-        public void AddImage (byte[] pixelBuffer, int width, int height) {
-            payload.Call(@"addImage", pixelBuffer, width, height);
+        public void AddImage (Texture2D image) {
+            payload.Call(@"addImage", image.EncodeToPNG());
         }
 
         public void AddMedia (string uri) {

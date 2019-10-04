@@ -5,24 +5,22 @@
 
 namespace NatShare {
 
+    using UnityEngine;
     using System;
 
     /// <summary>
     /// A payload for social sharing
     /// </summary>
-    public interface IPayload : IDisposable {
+    public interface ISharePayload : IDisposable {
         /// <summary>
         /// Add text to the payload
         /// </summary>
         void AddText (string text);
         /// <summary>
         /// Add an image to the payload.
-        /// The pixel buffer MUST in the RGBA32 format.
         /// </summary>
-        /// <param name="pixelBuffer">Pixel buffer</param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        void AddImage (byte[] pixelBuffer, int width, int height); // Parity with NatCorder and NatExtractor :)
+        /// <param name="image">Image</param>
+        void AddImage (Texture2D image);
         /// <summary>
         /// Add media to the payload
         /// </summary>

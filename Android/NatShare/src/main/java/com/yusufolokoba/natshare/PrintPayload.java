@@ -1,11 +1,11 @@
 package com.yusufolokoba.natshare;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
 import androidx.print.PrintHelper;
 import com.unity3d.player.UnityPlayer;
-import java.nio.ByteBuffer;
 
 /**
  * NatShare
@@ -30,11 +30,8 @@ public final class PrintPayload implements Payload {
     public void addText (String text) { } // Not implemented
 
     @Override
-    public void addImage (byte[] pixelBuffer, int width, int height) { // INCOMPLETE
-        // Load into bitmap
-        Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        image.copyPixelsFromBuffer(ByteBuffer.wrap(pixelBuffer));
-        // Replace image
+    public void addImage (byte[] pngData) {
+        final Bitmap image = BitmapFactory.decodeByteArray(pngData, 0, pngData.length);
         if (latestImage != null)
             latestImage.recycle();
         latestImage = image;
@@ -44,7 +41,7 @@ public final class PrintPayload implements Payload {
     public void addMedia (String uri) { } // Not implemented
 
     @Override
-    public void commit () { // DEPLOY
+    public void commit () {
         printHelper.printBitmap("Print", latestImage, new PrintHelper.OnPrintFinishCallback() {
             @Override
             public void onFinish () {
