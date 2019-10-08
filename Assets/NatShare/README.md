@@ -12,7 +12,7 @@ using (var payload = new SharePayload())
 You can share multiple items at once:
 ```csharp
 using (var payload = new SharePayload()) {
-    payload.AddText("Happy Birthday")!
+    payload.AddText("Happy Birthday!");
     payload.AddMedia("/path/to/some/media/file.mp4");
 }
 ```
