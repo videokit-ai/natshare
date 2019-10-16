@@ -18,6 +18,10 @@ public final class PrintPayload implements Payload {
     private final PrintHelper printHelper;
     private Bitmap latestImage;
 
+    public PrintPayload (boolean greyscale, boolean landscape) {
+        this(greyscale, landscape, null);
+    }
+
     public PrintPayload (boolean greyscale, boolean landscape, Runnable completionHandler) {
         this.delegateHandler = new Handler(Looper.myLooper());
         this.completionHandler = completionHandler;

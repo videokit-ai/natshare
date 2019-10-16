@@ -26,6 +26,10 @@ public final class SavePayload implements Payload {
     private final ArrayList<byte[]> images = new ArrayList<>();
     private final ArrayList<Uri> media = new ArrayList<>();
 
+    public SavePayload (String album) {
+        this(album, null);
+    }
+
     public SavePayload (String album, Runnable callback) {
         this.saveRoot = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/" + album);
         this.saveRoot.mkdirs();

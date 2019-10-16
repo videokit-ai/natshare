@@ -26,7 +26,11 @@ namespace NatShare {
         public SavePayload (string album = null, Action completionHandler = null) {
             switch (Application.platform) {
                 case RuntimePlatform.Android: {
-                    var nativePayload = new AndroidJavaObject(@"com.yusufolokoba.natshare.SavePayload", album, new AndroidJavaRunnable(completionHandler));
+                    AndroidJavaObject nativePayload;
+                    if (completionHandler != null)
+                        nativePayload = new AndroidJavaObject(@"com.yusufolokoba.natshare.SavePayload", album, new AndroidJavaRunnable(completionHandler));
+                    else
+                        nativePayload = new AndroidJavaObject(@"com.yusufolokoba.natshare.SavePayload", album);
                     this.payload = new PayloadAndroid(nativePayload);
                     break;
                 }

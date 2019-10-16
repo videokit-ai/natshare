@@ -27,7 +27,11 @@ namespace NatShare {
         public PrintPayload (bool greyscale = false, bool landscape = false, Action completionHandler = null) { // INCOMPLETE
             switch (Application.platform) {
                 case RuntimePlatform.Android: {
-                    var nativePayload = new AndroidJavaObject(@"com.yusufolokoba.natshare.PrintPayload", greyscale, landscape, new AndroidJavaRunnable(completionHandler));
+                    AndroidJavaObject nativePayload;
+                    if (completionHandler != null)
+                        nativePayload = new AndroidJavaObject(@"com.yusufolokoba.natshare.PrintPayload", greyscale, landscape, new AndroidJavaRunnable(completionHandler));
+                    else
+                        nativePayload = new AndroidJavaObject(@"com.yusufolokoba.natshare.PrintPayload", greyscale, landscape);
                     this.payload = new PayloadAndroid(nativePayload);
                     break;
                 }

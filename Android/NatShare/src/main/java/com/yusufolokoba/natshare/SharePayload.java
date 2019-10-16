@@ -26,6 +26,10 @@ public final class SharePayload implements Payload {
     private final ArrayList<Uri> uris;
     private static final String authority;
 
+    public SharePayload (String subject) {
+        this(subject, null);
+    }
+
     public SharePayload (String subject, Runnable completionHandler) { // INCOMPLETE // completion handler
         this.commitThread = new HandlerThread("SharePayload Commit Thread");
         this.commitThread.start();
