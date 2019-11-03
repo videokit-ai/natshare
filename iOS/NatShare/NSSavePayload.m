@@ -7,6 +7,7 @@
 //
 
 @import Photos;
+@import MobileCoreServices;
 #import "NSPayload.h"
 
 @interface NSSavePayload ()
@@ -49,8 +50,16 @@
         NSMutableArray<PHObjectPlaceholder*>* placeholders = NSMutableArray.array;
         for (UIImage* image in images)
             [placeholders addObject:[PHAssetChangeRequest creationRequestForAssetFromImage:image].placeholderForCreatedAsset];
-        for (NSURL* uri in media)
-            [placeholders addObject:[PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:uri].placeholderForCreatedAsset];
+        for (NSURL* uri in media) {
+            CFStringRef fileExtension = (__bridge CFStringRef)uri.pathExtension;
+            CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, fileExtension, NULL);
+            if (UTTypeConformsTo(fileUTI, kUTTypeImage))
+                [placeholders addObject:[PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:uri].placeholderForCreatedAsset];
+            else if (UTTypeConformsTo(fileUTI, kUTTypeMovie))
+                [placeholders addObject:[PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:uri].placeholderForCreatedAsset];
+            else
+                NSLog(@"NatShare Error: Failed to commit media at path '%@' to camera roll because media is neither image nor video", uri);
+        }
         // Add to album if applicable
         if (album)
             [[NSSavePayload albumRequestForName:album] addAssets:placeholders];
