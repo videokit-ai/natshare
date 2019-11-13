@@ -27,7 +27,10 @@ namespace NatShare.Internal {
         }
 
         public void AddImage (Texture2D image) {
-            payload.AddImage(image.GetRawTextureData(), image.width, image.height);
+            var pixels = image.GetPixels32(); // This ensures that pixel buffer sent to native is always RGBA32
+            var handle = GCHandle.Alloc(pixels, GCHandleType.Pinned);
+            payload.AddImage(handle.AddrOfPinnedObject(), image.width, image.height);
+            handle.Free();
         }
 
         public void AddMedia (string uri) {

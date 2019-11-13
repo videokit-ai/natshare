@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application>
+        <receiver android:name=".ShareReceiver" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.natshare"

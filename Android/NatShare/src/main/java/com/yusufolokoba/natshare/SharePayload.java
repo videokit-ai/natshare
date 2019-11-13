@@ -1,6 +1,7 @@
 package com.yusufolokoba.natshare;
 
 import android.app.Fragment;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
@@ -67,7 +68,6 @@ public final class SharePayload implements Payload {
                     outputStream.write(pngData);
                     outputStream.close();
                     Uri fileUri = FileProvider.getUriForFile(UnityPlayer.currentActivity, authority, file);
-                    Log.d("Unity", "Created URI for image: "+fileUri);
                     uris.add(fileUri);
                 } catch (IOException ex) {
                     Log.e("Unity", "NatShare Error: SharePayload failed to commit image with error: " + ex);
@@ -88,7 +88,7 @@ public final class SharePayload implements Payload {
     }
 
     @Override
-    public void commit () {
+    public void commit () { // INCOMPLETE // Put extra, delegate handle?
         commitHandler.post(new Runnable() {
             @Override
             public void run () {
@@ -101,30 +101,14 @@ public final class SharePayload implements Payload {
                 else if (uris.size() == 1)
                     intent.putExtra(Intent.EXTRA_STREAM, uris.get(0));
                 // Start activity
-                UnityPlayer.currentActivity.startActivityForResult(Intent.createChooser(intent, "Share"), 0);
+                Intent receiver = new Intent(UnityPlayer.currentActivity, ShareReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(UnityPlayer.currentActivity, 0, receiver, PendingIntent.FLAG_UPDATE_CURRENT);
+                Intent chooser = Intent.createChooser(intent, null, pendingIntent.getIntentSender());
+                UnityPlayer.currentActivity.startActivity(chooser);
             }
         });
         commitThread.quitSafely();
     }
 
     static { authority = UnityPlayer.currentActivity.getPackageName() + ".natshare"; }
-
-    /**
-     * Created by Sean Roske on 10/07/18.
-     */
-    public static class ResultHandler extends Fragment {
-
-        private Runnable delegate;
-        private Handler handler;
-
-        public void setHandler (Runnable delegate) {
-            this.delegate = delegate;
-            this.handler = new Handler(Looper.myLooper());
-        }
-
-        @Override
-        public void onActivityResult (int requestCode, int resultCode, Intent data) {
-            handler.post(delegate);
-        }
-    }
 }
