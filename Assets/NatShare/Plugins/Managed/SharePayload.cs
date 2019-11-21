@@ -17,6 +17,7 @@ namespace NatShare {
     public sealed class SharePayload : ISharePayload {
 
         #region --Client API--
+
         /// <summary>
         /// Create a share payload
         /// </summary>
@@ -51,35 +52,27 @@ namespace NatShare {
         /// Dispose the payload
         /// </summary>
         [Doc(@"Dispose")]
-        public void Dispose () {
-            payload.Dispose();
-        }
+        public void Dispose () => payload.Dispose();
 
         /// <summary>
         /// Add plain text
         /// </summary>
         [Doc(@"AddText")]
-        public void AddText (string text) {
-            payload.AddText(text);
-        }
+        public void AddText (string text) => payload.AddText(text);
 
         /// <summary>
         /// Add an image to the payload
         /// </summary>
         /// <param name="image">Image</param>
         [Doc(@"AddImage")]
-        public void AddImage (Texture2D image) {
-            payload.AddImage(image);
-        }
+        public void AddImage (Texture2D image) => payload.AddImage(image);
 
         /// <summary>
         /// Add media to the payload
         /// </summary>
         /// <param name="path">Path to local media file to be shared</param>
         [Doc(@"AddMedia")]
-        public void AddMedia (string path) {
-            payload.AddMedia(path);
-        }
+        public void AddMedia (string path) => payload.AddMedia(path);
         #endregion
 
         private readonly ISharePayload payload;

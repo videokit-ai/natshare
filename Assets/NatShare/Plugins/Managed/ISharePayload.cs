@@ -12,6 +12,7 @@ namespace NatShare {
     /// A payload for social sharing
     /// </summary>
     public interface ISharePayload : IDisposable {
+        
         /// <summary>
         /// Add text to the payload
         /// </summary>

@@ -29,9 +29,9 @@ namespace NatShare.Internal {
         public static extern void Commit (this IntPtr payload);
 
         #else
-        public static IntPtr CreateSharePayload (string subject, Action<IntPtr> completionHandler, IntPtr context) { return IntPtr.Zero; }
-        public static IntPtr CreateSavePayload (string album, Action<IntPtr> completionHandler, IntPtr context) { return IntPtr.Zero; }
-        public static IntPtr CreatePrintPayload (bool greyscale, bool landscape, Action<IntPtr> completionHandler, IntPtr context) { return IntPtr.Zero; }
+        public static IntPtr CreateSharePayload (string subject, Action<IntPtr> completionHandler, IntPtr context) => IntPtr.Zero;
+        public static IntPtr CreateSavePayload (string album, Action<IntPtr> completionHandler, IntPtr context) => IntPtr.Zero;
+        public static IntPtr CreatePrintPayload (bool greyscale, bool landscape, Action<IntPtr> completionHandler, IntPtr context) => IntPtr.Zero;
         public static void AddText (this IntPtr payload, string text) { }
         public static void AddImage (this IntPtr payload, IntPtr pixelBuffer, int width, int height) { }
         public static void AddMedia (this IntPtr payload, string uri) { }

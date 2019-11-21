@@ -14,9 +14,10 @@ namespace NatShare {
     /// EXPERIMENTAL. A payload for printing media
     /// </summary>
     [Doc(@"PrintPayload")]
-    public sealed class PrintPayload : ISharePayload { // EXPERIMENTAL
+    public sealed class PrintPayload : ISharePayload {
 
         #region --Client API--
+
         /// <summary>
         /// Create a print payload
         /// </summary>
@@ -24,7 +25,7 @@ namespace NatShare {
         /// <param name="landscape">Optional. Should items be printed in landscape orientation</param>
         /// <param name="completionHandler">Optional. Delegate invoked with whether saving was successful</param>
         [Doc(@"PrintPayloadCtor")]
-        public PrintPayload (bool greyscale = false, bool landscape = false, Action completionHandler = null) { // INCOMPLETE
+        public PrintPayload (bool greyscale = false, bool landscape = false, Action completionHandler = null) {
             switch (Application.platform) {
                 case RuntimePlatform.Android: {
                     AndroidJavaObject nativePayload;
@@ -52,34 +53,26 @@ namespace NatShare {
         /// Dispose the payload
         /// </summary>
         [Doc(@"Dispose")]
-        public void Dispose () {
-            payload.Dispose();
-        }
+        public void Dispose () => payload.Dispose();
 
         /// <summary>
         /// Nop. No concept as saving text to the gallery
         /// </summary>
         [Doc(@"AddText")]
-        public void AddText (string text) {
-            payload.AddText(text);
-        }
+        public void AddText (string text) => payload.AddText(text);
 
         /// <summary>
         /// Add an image to the payload
         /// </summary>
         [Doc(@"AddImage")]
-        public void AddImage (Texture2D image) {
-            payload.AddImage(image);
-        }
+        public void AddImage (Texture2D image) => payload.AddImage(image);
 
         /// <summary>
         /// Add media to the payload
         /// </summary>
         /// <param name="path">Path to local media file to be shared</param>
         [Doc(@"AddMedia")]
-        public void AddMedia (string uri) {
-            payload.AddMedia(uri);
-        }
+        public void AddMedia (string uri) => payload.AddMedia(uri);
         #endregion
 
         private readonly ISharePayload payload;

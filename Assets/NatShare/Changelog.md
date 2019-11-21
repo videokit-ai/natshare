@@ -2,6 +2,7 @@
 + Migrated to an object-oriented approach, where sharing payloads are created then committed. See README for more details.
 + Added support for printing on iOS with `PrintPayload`.
 + Added support for sharing multiple items at once.
++ Upgraded API to .NET 4.
 
 ## NatShare 1.1f3
 + Added support for saving to an album in the camera roll.

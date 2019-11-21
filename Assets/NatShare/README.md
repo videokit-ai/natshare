@@ -41,8 +41,10 @@ using (var payload = new SavePayload()) {
 ___
 
 ## Requirements
-- On Android, NatShare requires API Level 18+
-- On iOS, NatShare requires iOS 9+
+- Unity 2018.3+
+- Android API Level 18+
+- iOS 9+
+
 
 ## Quick Tips
 - To discuss, report an issue, or request a feature, visit [Unity forums](https://forum.unity.com/threads/natshare-free-sharing-api.527074/) or [GitHub](https://github.com/olokobayusuf/NatShare-API)

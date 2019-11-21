@@ -14,17 +14,11 @@ namespace NatShare.Internal {
 
         #region --IPayload--
 
-        public PayloadiOS (IntPtr payload) {
-            this.payload = payload;
-        }
+        public PayloadiOS (IntPtr payload) => this.payload = payload;
 
-        public void Dispose () {
-            payload.Commit();
-        }
+        public void Dispose () => payload.Commit();
 
-        public void AddText (string text) {
-            payload.AddText(text);
-        }
+        public void AddText (string text) => payload.AddText(text);
 
         public void AddImage (Texture2D image) {
             var pixels = image.GetPixels32(); // This ensures that pixel buffer sent to native is always RGBA32
@@ -33,9 +27,7 @@ namespace NatShare.Internal {
             handle.Free();
         }
 
-        public void AddMedia (string uri) {
-            payload.AddMedia(uri);
-        }
+        public void AddMedia (string uri) => payload.AddMedia(uri);
         #endregion
 
 
