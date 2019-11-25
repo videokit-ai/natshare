@@ -1,4 +1,4 @@
-package com.yusufolokoba.natshare;
+package com.natsuite.natshare;
 
 import android.content.Intent;
 import android.net.Uri;

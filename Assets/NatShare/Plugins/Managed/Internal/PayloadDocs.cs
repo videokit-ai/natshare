@@ -1,6 +1,6 @@
 /* 
 *   NatShare
-*   Copyright (c) 2019 Yusuf Olokoba
+*   Copyright (c) 2019 Yusuf Olokoba.
 */
 
 //#define DOC_GEN // Internal. Do not use

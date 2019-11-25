@@ -1,4 +1,4 @@
-package com.yusufolokoba.natshare;
+package com.natsuite.natshare;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

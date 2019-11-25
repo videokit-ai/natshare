@@ -1,4 +1,4 @@
-package com.yusufolokoba.natshare;
+package com.natsuite.natshare;
 
 public interface Payload {
     void addText (String text);

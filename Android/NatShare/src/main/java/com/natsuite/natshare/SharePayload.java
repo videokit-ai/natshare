@@ -1,12 +1,10 @@
-package com.yusufolokoba.natshare;
+package com.natsuite.natshare;
 
-import android.app.Fragment;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.Looper;
 import androidx.core.content.FileProvider;
 import android.util.Log;
 import com.unity3d.player.UnityPlayer;
@@ -45,9 +43,9 @@ public final class SharePayload implements Payload {
         this.uris = new ArrayList<>();
         // Setup completion handler
         String payloadID = "SharePayload." + System.nanoTime();
-        final ResultHandler resultHandler = new ResultHandler();
-        resultHandler.setHandler(completionHandler);
-        UnityPlayer.currentActivity.getFragmentManager().beginTransaction().add(resultHandler, payloadID).commit();
+        //final ResultHandler resultHandler = new ResultHandler();
+        //resultHandler.setHandler(completionHandler);
+        //UnityPlayer.currentActivity.getFragmentManager().beginTransaction().add(resultHandler, payloadID).commit();
     }
 
     @Override

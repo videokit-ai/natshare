@@ -1,6 +1,6 @@
 /* 
 *   NatShare
-*   Copyright (c) 2019 Yusuf Olokoba
+*   Copyright (c) 2019 Yusuf Olokoba.
 */
 
 namespace NatShare {
@@ -29,9 +29,9 @@ namespace NatShare {
                 case RuntimePlatform.Android: {
                     AndroidJavaObject nativePayload;
                     if (completionHandler != null)
-                        nativePayload = new AndroidJavaObject(@"com.yusufolokoba.natshare.SavePayload", album, new AndroidJavaRunnable(completionHandler));
+                        nativePayload = new AndroidJavaObject(@"com.natsuite.natshare.SavePayload", album, new AndroidJavaRunnable(completionHandler));
                     else
-                        nativePayload = new AndroidJavaObject(@"com.yusufolokoba.natshare.SavePayload", album);
+                        nativePayload = new AndroidJavaObject(@"com.natsuite.natshare.SavePayload", album);
                     this.payload = new PayloadAndroid(nativePayload);
                     break;
                 }

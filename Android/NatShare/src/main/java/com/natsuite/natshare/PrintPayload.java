@@ -1,4 +1,4 @@
-package com.yusufolokoba.natshare;
+package com.natsuite.natshare;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

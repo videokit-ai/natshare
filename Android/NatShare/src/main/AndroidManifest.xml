@@ -1,11 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yusufolokoba.natshare">
+    package="com.natsuite.natshare">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application>
-        <receiver android:name=".ShareReceiver" />
+        <receiver android:name="com.natsuite.natshare.ShareReceiver" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.natshare"
