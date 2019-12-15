@@ -29,23 +29,22 @@ namespace NatShare.Internal {
         #region --Operations--
         
         private readonly AndroidJavaObject payload;
+        private static CallbackManager instance;
 
-        public class CallbackManager : AndroidJavaProxy {
-
-            public static int GetCallbackID (Action callback) {
-                // Give Java the C# delegate to invoke
-                if (instance == null) {
-                    instance = new CallbackManager();
-                    using (var Bridge = new AndroidJavaClass(@"api.natsuite.natshare.Bridge"))
-                        Bridge.CallStatic(@"setCallback", instance);
-                }
-                // Get handle
-                return callback != null ? (int)(IntPtr)GCHandle.Alloc(callback, GCHandleType.Normal) : 0;
+        public static int GetCallbackID (Action callback) {
+            // Give Java the C# delegate to invoke
+            if (instance == null) {
+                instance = new CallbackManager();
+                using (var Bridge = new AndroidJavaClass(@"api.natsuite.natshare.Bridge"))
+                    Bridge.CallStatic(@"setCallback", instance);
             }
+            // Get handle
+            return callback != null ? (int)(IntPtr)GCHandle.Alloc(callback, GCHandleType.Normal) : 0;
+        }
 
-            private static CallbackManager instance;
-
-            private CallbackManager () : base(@"api.natsuite.natshare.Bridge$CompletionHandler") { }
+        private class CallbackManager : AndroidJavaProxy {
+            
+            public CallbackManager () : base(@"api.natsuite.natshare.Bridge$CompletionHandler") { }
 
             [Preserve]
             private static void onCompletion (int context) {

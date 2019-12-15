@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.Looper;
 import com.unity3d.player.UnityPlayer;
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,16 +19,14 @@ import java.util.ArrayList;
 public final class SavePayload implements Payload {
 
     private final File saveRoot;
-    private final Runnable callback;
-    private final Handler callbackHandler;
+    private final int callback;
     private final ArrayList<byte[]> images = new ArrayList<>();
     private final ArrayList<Uri> media = new ArrayList<>();
 
-    public SavePayload (String album, Runnable callback) {
+    public SavePayload (String album, int callback) {
         this.saveRoot = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/" + album);
         this.saveRoot.mkdirs();
         this.callback = callback;
-        this.callbackHandler = new Handler(Looper.myLooper());
     }
 
     @Override
@@ -46,7 +43,7 @@ public final class SavePayload implements Payload {
     }
 
     @Override
-    public void commit () { // DEPLOY
+    public void commit () {
         final HandlerThread commitThread = new HandlerThread("SavePayload Commit Thread");
         commitThread.start();
         final Handler commitHandler = new Handler(commitThread.getLooper());
@@ -77,7 +74,8 @@ public final class SavePayload implements Payload {
                         UnityPlayer.currentActivity.sendBroadcast(scanIntent);
                     } catch (IOException ex) {}
                 // Invoke callback
-                callbackHandler.post(callback);
+                if (callback != 0)
+                    Bridge.callback(callback);
             }
         });
         commitThread.quitSafely();

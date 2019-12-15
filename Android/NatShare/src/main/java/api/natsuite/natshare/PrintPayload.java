@@ -2,8 +2,6 @@ package api.natsuite.natshare;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Handler;
-import android.os.Looper;
 import androidx.print.PrintHelper;
 import com.unity3d.player.UnityPlayer;
 
@@ -13,14 +11,12 @@ import com.unity3d.player.UnityPlayer;
  */
 public final class PrintPayload implements Payload {
 
-    private final Handler delegateHandler; // So we can call back into Unity on main thread
-    private final Runnable completionHandler;
+    private final int callback;
     private final PrintHelper printHelper;
     private Bitmap latestImage;
 
-    public PrintPayload (boolean greyscale, boolean landscape, Runnable completionHandler) {
-        this.delegateHandler = new Handler(Looper.myLooper());
-        this.completionHandler = completionHandler;
+    public PrintPayload (boolean greyscale, boolean landscape, int callback) {
+        this.callback = callback;
         this.printHelper = new PrintHelper(UnityPlayer.currentActivity);
         printHelper.setColorMode(greyscale ? PrintHelper.COLOR_MODE_MONOCHROME : PrintHelper.COLOR_MODE_COLOR);
         printHelper.setOrientation(landscape ? PrintHelper.ORIENTATION_LANDSCAPE : PrintHelper.ORIENTATION_PORTRAIT);
@@ -45,8 +41,8 @@ public final class PrintPayload implements Payload {
         printHelper.printBitmap("NatShare Print", latestImage, new PrintHelper.OnPrintFinishCallback() {
             @Override
             public void onFinish () {
-                if (completionHandler != null)
-                    delegateHandler.post(completionHandler);
+                if (callback != 0)
+                    Bridge.callback(callback);
             }
         });
     }

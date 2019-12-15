@@ -26,7 +26,7 @@ namespace NatShare {
         public SharePayload (string subject = null, Action completionHandler = null) {
             switch (Application.platform) {
                 case RuntimePlatform.Android: {
-                    var nativePayload = new AndroidJavaObject(@"api.natsuite.natshare.SharePayload", subject ?? "", PayloadAndroid.CallbackManager.GetCallbackID(completionHandler));
+                    var nativePayload = new AndroidJavaObject(@"api.natsuite.natshare.SharePayload", subject ?? "", PayloadAndroid.GetCallbackID(completionHandler));
                     this.payload = new PayloadAndroid(nativePayload);
                     break;
                 }
