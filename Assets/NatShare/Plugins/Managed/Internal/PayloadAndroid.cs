@@ -6,6 +6,9 @@
 namespace NatShare.Internal {
 
     using UnityEngine;
+    using UnityEngine.Scripting;
+    using System;
+    using System.Runtime.InteropServices;
 
     public sealed class PayloadAndroid : ISharePayload {
 
@@ -22,6 +25,36 @@ namespace NatShare.Internal {
         public void AddMedia (string uri) => payload.Call(@"addMedia", uri);
         #endregion
         
+
+        #region --Operations--
+        
         private readonly AndroidJavaObject payload;
+
+        public class CallbackManager : AndroidJavaProxy {
+
+            public static int GetCallbackID (Action callback) {
+                // Give Java the C# delegate to invoke
+                if (instance == null) {
+                    instance = new CallbackManager();
+                    using (var Bridge = new AndroidJavaClass(@"api.natsuite.natshare.Bridge"))
+                        Bridge.CallStatic(@"setCallback", instance);
+                }
+                // Get handle
+                return callback != null ? (int)(IntPtr)GCHandle.Alloc(callback, GCHandleType.Normal) : 0;
+            }
+
+            private static CallbackManager instance;
+
+            private CallbackManager () : base(@"api.natsuite.natshare.Bridge$CompletionHandler") { }
+
+            [Preserve]
+            private static void onCompletion (int context) {
+                var handle = (GCHandle)(IntPtr)context;
+                var handler = handle.Target as Action;
+                handle.Free();
+                handler();
+            }
+        }
+        #endregion
     }
 }

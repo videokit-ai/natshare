@@ -1,4 +1,4 @@
-package com.natsuite.natshare;
+package api.natsuite.natshare;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -21,23 +21,15 @@ public final class SavePayload implements Payload {
 
     private final File saveRoot;
     private final Runnable callback;
-    private final HandlerThread commitThread;
-    private final Handler commitHandler, callbackHandler;
+    private final Handler callbackHandler;
     private final ArrayList<byte[]> images = new ArrayList<>();
     private final ArrayList<Uri> media = new ArrayList<>();
-
-    public SavePayload (String album) {
-        this(album, null);
-    }
 
     public SavePayload (String album, Runnable callback) {
         this.saveRoot = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/" + album);
         this.saveRoot.mkdirs();
         this.callback = callback;
         this.callbackHandler = new Handler(Looper.myLooper());
-        this.commitThread = new HandlerThread("SavePayload Commit Thread");
-        this.commitThread.start();
-        this.commitHandler = new Handler(commitThread.getLooper());
     }
 
     @Override
@@ -55,6 +47,9 @@ public final class SavePayload implements Payload {
 
     @Override
     public void commit () { // DEPLOY
+        final HandlerThread commitThread = new HandlerThread("SavePayload Commit Thread");
+        commitThread.start();
+        final Handler commitHandler = new Handler(commitThread.getLooper());
         commitHandler.post(new Runnable() {
             @Override
             public void run () {

@@ -1,6 +1,9 @@
-package com.natsuite.natshare;
+package api.natsuite.natshare;
 
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
@@ -19,33 +22,23 @@ import java.util.ArrayList;
  */
 public final class SharePayload implements Payload {
 
+    private final Intent intent;
+    private final int callback;
     private final HandlerThread commitThread;
     private final Handler commitHandler;
-    private final Intent intent;
-    private final ArrayList<Uri> uris;
-    private static final String authority;
+    private final ArrayList<Uri> uris = new ArrayList<>();
 
-    public SharePayload (String subject) {
-        this(subject, null);
-    }
-
-    public SharePayload (String subject, Runnable completionHandler) { // INCOMPLETE // completion handler
+    public SharePayload (String subject, int callback) {
+        // Create intent
+        this.callback = callback;
+        this.intent = new Intent();
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        // Create commit handler
         this.commitThread = new HandlerThread("SharePayload Commit Thread");
         this.commitThread.start();
         this.commitHandler = new Handler(commitThread.getLooper());
-        // Create intent
-        this.intent = new Intent();
-        if (!subject.equals(""))
-            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        // Create collections
-        this.uris = new ArrayList<>();
-        // Setup completion handler
-        String payloadID = "SharePayload." + System.nanoTime();
-        //final ResultHandler resultHandler = new ResultHandler();
-        //resultHandler.setHandler(completionHandler);
-        //UnityPlayer.currentActivity.getFragmentManager().beginTransaction().add(resultHandler, payloadID).commit();
     }
 
     @Override
@@ -86,7 +79,7 @@ public final class SharePayload implements Payload {
     }
 
     @Override
-    public void commit () { // INCOMPLETE // Put extra, delegate handle?
+    public void commit () {
         commitHandler.post(new Runnable() {
             @Override
             public void run () {
@@ -100,6 +93,7 @@ public final class SharePayload implements Payload {
                     intent.putExtra(Intent.EXTRA_STREAM, uris.get(0));
                 // Start activity
                 Intent receiver = new Intent(UnityPlayer.currentActivity, ShareReceiver.class);
+                receiver.putExtra("context", callback);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(UnityPlayer.currentActivity, 0, receiver, PendingIntent.FLAG_UPDATE_CURRENT);
                 Intent chooser = Intent.createChooser(intent, null, pendingIntent.getIntentSender());
                 UnityPlayer.currentActivity.startActivity(chooser);
@@ -108,5 +102,17 @@ public final class SharePayload implements Payload {
         commitThread.quitSafely();
     }
 
+    public static final class ShareReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive (final Context context, final Intent intent) {
+            final ComponentName clickedComponent = intent.getParcelableExtra(Intent.EXTRA_CHOSEN_COMPONENT);
+            final int callback = intent.getIntExtra("context", 0);
+            if (callback != 0)
+                Bridge.callback(callback);
+        }
+    }
+
+    private static final String authority;
     static { authority = UnityPlayer.currentActivity.getPackageName() + ".natshare"; }
 }

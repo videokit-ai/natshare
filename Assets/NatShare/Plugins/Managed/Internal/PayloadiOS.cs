@@ -37,12 +37,10 @@ namespace NatShare.Internal {
 
         [MonoPInvokeCallback(typeof(Action<IntPtr>))]
         public static void OnCompletion (IntPtr context) {
-            if (context == IntPtr.Zero)
-                return;
-            var callbackHandle = (GCHandle)context;
-            var callback = callbackHandle.Target as Action;
-            callbackHandle.Free();
-            callback();
+            var handle = (GCHandle)context;
+            var handler = handle.Target as Action;
+            handle.Free();
+            handler();
         }
         #endregion
     }

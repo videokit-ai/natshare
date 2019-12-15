@@ -17,7 +17,6 @@ namespace NatShare {
     public sealed class SharePayload : ISharePayload {
 
         #region --Client API--
-
         /// <summary>
         /// Create a share payload
         /// </summary>
@@ -27,17 +26,13 @@ namespace NatShare {
         public SharePayload (string subject = null, Action completionHandler = null) {
             switch (Application.platform) {
                 case RuntimePlatform.Android: {
-                    AndroidJavaObject nativePayload;
-                    if (completionHandler != null)
-                        nativePayload = new AndroidJavaObject(@"com.natsuite.natshare.SharePayload", subject ?? "", new AndroidJavaRunnable(completionHandler));
-                    else
-                        nativePayload = new AndroidJavaObject(@"com.natsuite.natshare.SharePayload", subject ?? "");
+                    var nativePayload = new AndroidJavaObject(@"api.natsuite.natshare.SharePayload", subject ?? "", PayloadAndroid.CallbackManager.GetCallbackID(completionHandler));
                     this.payload = new PayloadAndroid(nativePayload);
                     break;
                 }
                 case RuntimePlatform.IPhonePlayer: {
-                    var handlerPtr = completionHandler != null ? (IntPtr)GCHandle.Alloc(completionHandler, GCHandleType.Normal) : IntPtr.Zero;
-                    var nativePayload = PayloadBridge.CreateSharePayload(subject, PayloadiOS.OnCompletion, handlerPtr);
+                    var callback = completionHandler != null ? (IntPtr)GCHandle.Alloc(completionHandler, GCHandleType.Normal) : IntPtr.Zero;
+                    var nativePayload = PayloadBridge.CreateSharePayload(subject, PayloadiOS.OnCompletion, callback);
                     this.payload = new PayloadiOS(nativePayload);
                     break;
                 }

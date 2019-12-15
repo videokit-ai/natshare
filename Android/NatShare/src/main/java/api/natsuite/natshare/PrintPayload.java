@@ -1,4 +1,4 @@
-package com.natsuite.natshare;
+package api.natsuite.natshare;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,10 +17,6 @@ public final class PrintPayload implements Payload {
     private final Runnable completionHandler;
     private final PrintHelper printHelper;
     private Bitmap latestImage;
-
-    public PrintPayload (boolean greyscale, boolean landscape) {
-        this(greyscale, landscape, null);
-    }
 
     public PrintPayload (boolean greyscale, boolean landscape, Runnable completionHandler) {
         this.delegateHandler = new Handler(Looper.myLooper());
@@ -46,7 +42,7 @@ public final class PrintPayload implements Payload {
 
     @Override
     public void commit () {
-        printHelper.printBitmap("Print", latestImage, new PrintHelper.OnPrintFinishCallback() {
+        printHelper.printBitmap("NatShare Print", latestImage, new PrintHelper.OnPrintFinishCallback() {
             @Override
             public void onFinish () {
                 if (completionHandler != null)
