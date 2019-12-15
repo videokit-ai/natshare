@@ -7,5 +7,5 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Tests/Tests.unity
-    guid: 57d3c39b143834db68b15bd38ed1a3d6
+    guid: f0604ec9fb8ea424fba11104b324cd9a
   m_configObjects: {}

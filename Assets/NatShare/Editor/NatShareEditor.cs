@@ -1,46 +1,30 @@
 /* 
 *   NatShare
-*   Copyright (c) 2018 Yusuf Olokoba
+*   Copyright (c) 2019 Yusuf Olokoba
 */
 
-namespace NatShareU {
+namespace NatShare {
 
     using UnityEditor;
     using UnityEditor.Callbacks;
+	using UnityEditor.iOS.Xcode;
     using System.IO;
-    #if UNITY_IOS
-    using UnityEditor.iOS.Xcode;
-    #endif
 
     public static class NatShareEditor {
 
-        private const string
-		LibraryUsageKey = @"NSPhotoLibraryUsageDescription",
-		LibraryUsageDescription = @"Allow this app to save media to your photo library"; // Change this as necessary
-
-        #if UNITY_IOS
-
-        [PostProcessBuild]
-		static void LinkFrameworks (BuildTarget buildTarget, string path) {
-			if (buildTarget != BuildTarget.iOS) return;
-			string projPath = path + "/Unity-iPhone.xcodeproj/project.pbxproj";
-			PBXProject proj = new PBXProject();
-			proj.ReadFromString(File.ReadAllText(projPath));
-			string target = proj.TargetGuidByName("Unity-iPhone");
-			proj.AddFrameworkToProject(target, "Photos.framework", true);
-			File.WriteAllText(projPath, proj.WriteToString());
-		}
+        private const string LibraryUsageDescription = @"Allow this app to save media to your photo library"; // Change this as necessary
 
         [PostProcessBuild]
 		static void SetPermissions (BuildTarget buildTarget, string path) {
-			if (buildTarget != BuildTarget.iOS) return;
-			string plistPath = path + "/Info.plist";
-			PlistDocument plist = new PlistDocument();
+			if (buildTarget != BuildTarget.iOS)
+				return;
+			var plistPath = path + "/Info.plist";
+			var plist = new PlistDocument();
 			plist.ReadFromString(File.ReadAllText(plistPath));
-			PlistElementDict rootDictionary = plist.root;
-			rootDictionary.SetString(LibraryUsageKey, LibraryUsageDescription);
+			var rootDictionary = plist.root;
+			rootDictionary.SetString(@"NSPhotoLibraryUsageDescription", LibraryUsageDescription);
+			rootDictionary.SetString(@"NSPhotoLibraryAddUsageDescription", LibraryUsageDescription);
 			File.WriteAllText(plistPath, plist.WriteToString());
 		}
-        #endif
     }
 }
