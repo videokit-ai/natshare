@@ -42,7 +42,7 @@ ___
 
 ## Requirements
 - Unity 2018.3+
-- Android API Level 18+
+- Android API level 22+
 - iOS 9+
 
 
