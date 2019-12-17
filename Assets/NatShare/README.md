@@ -40,6 +40,11 @@ using (var payload = new SavePayload()) {
 
 ___
 
+## iOS Instructions
+After building an Xcode project from Unity, add the following keys to the `Info.plist` file with a good description:
+- `NSPhotoLibraryUsageDescription`
+- `NSPhotoLibraryAddUsageDescription`
+
 ## Requirements
 - Unity 2018.3+
 - Android API level 22+

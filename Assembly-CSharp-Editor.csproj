@@ -324,6 +324,9 @@
  <Reference Include="UnityEditor.Purchasing">
  <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/PackageCache/com.unity.purchasing@2.0.3/Editor/UnityEditor.Purchasing.dll</HintPath>
  </Reference>
+ <Reference Include="AssetStoreTools">
+ <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Assets/AssetStoreTools/Editor/AssetStoreTools.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>/Applications/Unity/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
  </Reference>

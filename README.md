@@ -39,6 +39,11 @@ using (var payload = new SavePayload()) {
 
 ___
 
+## iOS Instructions
+After building an Xcode project from Unity, add the following keys to the `Info.plist` file with a good description:
+- `NSPhotoLibraryUsageDescription`
+- `NSPhotoLibraryAddUsageDescription`
+
 ## Requirements
 - On Android, NatShare requires API Level 18+
 - On iOS, NatShare requires iOS 9+
