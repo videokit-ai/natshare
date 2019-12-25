@@ -45,6 +45,13 @@
 }
 
 - (void) commit {
+    // Request permissions if not determined // We need to block until user decides // #69
+    if (PHPhotoLibrary.authorizationStatus == PHAuthorizationStatusNotDetermined) {
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) { dispatch_semaphore_signal(semaphore); }];
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    }
+    // Save
     [PHPhotoLibrary.sharedPhotoLibrary performChanges:^{
         // Create addition requests
         NSMutableArray<PHObjectPlaceholder*>* placeholders = NSMutableArray.array;
