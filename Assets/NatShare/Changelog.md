@@ -1,3 +1,7 @@
+## NatShare 1.2.1
++ Fixed `SavePayload.AddMedia` not working properly on Android.
++ Fixed `SavePayload` failing to save the first time the user is asked for permissions on iOS.
+
 ## NatShare 1.2.0
 + Migrated to an object-oriented approach, where sharing payloads are created then committed. See README for more details.
 + Added support for printing on iOS with `PrintPayload`.

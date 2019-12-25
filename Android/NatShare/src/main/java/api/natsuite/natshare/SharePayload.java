@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import androidx.core.content.FileProvider;
 import android.util.Log;
-import com.unity3d.player.UnityPlayer;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -54,11 +53,11 @@ public final class SharePayload implements Payload {
             public void run () {
                 // Write images
                 try {
-                    File file = new File(UnityPlayer.currentActivity.getCacheDir(), "share." + System.nanoTime() + ".png");
+                    File file = new File(Bridge.activity().getCacheDir(), "share." + System.nanoTime() + ".png");
                     FileOutputStream outputStream = new FileOutputStream(file);
                     outputStream.write(pngData);
                     outputStream.close();
-                    Uri fileUri = FileProvider.getUriForFile(UnityPlayer.currentActivity, authority, file);
+                    Uri fileUri = FileProvider.getUriForFile(Bridge.activity(), authority, file);
                     uris.add(fileUri);
                 } catch (IOException ex) {
                     Log.e("Unity", "NatShare Error: SharePayload failed to commit image with error: " + ex);
@@ -69,7 +68,7 @@ public final class SharePayload implements Payload {
 
     @Override
     public void addMedia (final String uri) {
-        final Uri contentUri = FileProvider.getUriForFile(UnityPlayer.currentActivity, authority, new File(uri));
+        final Uri contentUri = FileProvider.getUriForFile(Bridge.activity(), authority, new File(uri));
         commitHandler.post(new Runnable() {
             @Override
             public void run () {
@@ -92,11 +91,11 @@ public final class SharePayload implements Payload {
                 else if (uris.size() == 1)
                     intent.putExtra(Intent.EXTRA_STREAM, uris.get(0));
                 // Start activity
-                Intent receiver = new Intent(UnityPlayer.currentActivity, ShareReceiver.class);
+                Intent receiver = new Intent(Bridge.activity(), ShareReceiver.class);
                 receiver.putExtra("context", callback);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(UnityPlayer.currentActivity, 0, receiver, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(Bridge.activity(), 0, receiver, PendingIntent.FLAG_UPDATE_CURRENT);
                 Intent chooser = Intent.createChooser(intent, null, pendingIntent.getIntentSender());
-                UnityPlayer.currentActivity.startActivity(chooser);
+                Bridge.activity().startActivity(chooser);
             }
         });
         commitThread.quitSafely();
@@ -114,5 +113,5 @@ public final class SharePayload implements Payload {
     }
 
     private static final String authority;
-    static { authority = UnityPlayer.currentActivity.getPackageName() + ".natshare"; }
+    static { authority = Bridge.activity().getPackageName() + ".natshare"; }
 }

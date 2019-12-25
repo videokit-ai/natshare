@@ -5,7 +5,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
-import com.unity3d.player.UnityPlayer;
+import android.util.Log;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -21,7 +21,7 @@ public final class SavePayload implements Payload {
     private final File saveRoot;
     private final int callback;
     private final ArrayList<byte[]> images = new ArrayList<>();
-    private final ArrayList<Uri> media = new ArrayList<>();
+    private final ArrayList<String> media = new ArrayList<>();
 
     public SavePayload (String album, int callback) {
         this.saveRoot = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/" + album);
@@ -39,7 +39,7 @@ public final class SavePayload implements Payload {
 
     @Override
     public void addMedia (String uri) {
-        media.add(Uri.fromFile(new File(uri)));
+        media.add(uri);
     }
 
     @Override
@@ -58,12 +58,14 @@ public final class SavePayload implements Payload {
                         stream.write(pngData);
                         stream.close();
                         Intent scanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file));
-                        UnityPlayer.currentActivity.sendBroadcast(scanIntent);
-                    } catch (IOException ex) { }
+                        Bridge.activity().sendBroadcast(scanIntent);
+                    } catch (IOException ex) {
+                        Log.e("Unity", "NatShare Error: SavePayload failed to commit image with error: " + ex);
+                    }
                 // Commit media
-                for (Uri uri : media)
+                for (String uri : media)
                     try {
-                        File ifile = new File(uri.toString());
+                        File ifile = new File(uri);
                         File ofile = new File(saveRoot, ifile.getName());
                         FileInputStream istream = new FileInputStream(ifile);
                         FileOutputStream ostream = new FileOutputStream(ofile);
@@ -71,8 +73,10 @@ public final class SavePayload implements Payload {
                         istream.close();
                         ostream.close();
                         Intent scanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(ofile));
-                        UnityPlayer.currentActivity.sendBroadcast(scanIntent);
-                    } catch (IOException ex) {}
+                        Bridge.activity().sendBroadcast(scanIntent);
+                    } catch (IOException ex) {
+                        Log.e("Unity", "NatShare Error: SavePayload failed to commit media with error: " + ex);
+                    }
                 // Invoke callback
                 if (callback != 0)
                     Bridge.callback(callback);

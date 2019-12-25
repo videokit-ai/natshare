@@ -3,7 +3,6 @@ package api.natsuite.natshare;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import androidx.print.PrintHelper;
-import com.unity3d.player.UnityPlayer;
 
 /**
  * NatShare
@@ -17,7 +16,7 @@ public final class PrintPayload implements Payload {
 
     public PrintPayload (boolean greyscale, boolean landscape, int callback) {
         this.callback = callback;
-        this.printHelper = new PrintHelper(UnityPlayer.currentActivity);
+        this.printHelper = new PrintHelper(Bridge.activity());
         printHelper.setColorMode(greyscale ? PrintHelper.COLOR_MODE_MONOCHROME : PrintHelper.COLOR_MODE_COLOR);
         printHelper.setOrientation(landscape ? PrintHelper.ORIENTATION_LANDSCAPE : PrintHelper.ORIENTATION_PORTRAIT);
     }

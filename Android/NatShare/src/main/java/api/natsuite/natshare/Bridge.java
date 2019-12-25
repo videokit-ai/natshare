@@ -1,7 +1,9 @@
 package api.natsuite.natshare;
 
+import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
+import com.unity3d.player.UnityPlayer;
 
 /**
  * NatShare
@@ -11,6 +13,10 @@ public final class Bridge {
 
     interface CompletionHandler {
         void onCompletion (int callback);
+    }
+
+    public static Activity activity () {
+        return UnityPlayer.currentActivity;
     }
 
     public static void callback (final int id) {
