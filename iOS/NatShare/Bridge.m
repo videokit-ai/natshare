@@ -8,19 +8,21 @@
 
 #import "NSPayload.h"
 
-void* NSCreateSharePayload (const char* subject, void (*completionHandler) (void*), void* context) {
-    id<NSPayload> payload = [NSSharePayload.alloc initWithCompletionHandler:^{ if (context) completionHandler(context); }];
+typedef void (*CCompletionHandler) (void* context, bool success);
+
+void* NSCreateSharePayload (const char* subject, CCompletionHandler completionHandler, void* context) {
+    id<NSPayload> payload = [NSSharePayload.alloc initWithCompletionHandler:^(bool success) { completionHandler(context, success); }];
     return (__bridge_retained void*)payload;
 }
 
-void* NSCreateSavePayload (const char* album, void (*completionHandler) (void*), void* context) {
+void* NSCreateSavePayload (const char* album, CCompletionHandler completionHandler, void* context) {
     NSString* albumStr = album ? [NSString stringWithUTF8String:album] : nil;
-    id<NSPayload> payload = [NSSavePayload.alloc initWithAlbum:albumStr andCompletionHandler:^{ if (context) completionHandler(context); }];
+    id<NSPayload> payload = [NSSavePayload.alloc initWithAlbum:albumStr andCompletionHandler:^(bool success) { completionHandler(context, success); }];
     return (__bridge_retained void*)payload;
 }
 
-void* NSCreatePrintPayload (bool greyscale, bool landscape, void (*completionHandler) (void*), void* context) {
-    id<NSPayload> payload = [NSPrintPayload.alloc initWithGreyscale:greyscale landscape:landscape andCompletionHandler:^{ if (context) completionHandler(context); }];
+void* NSCreatePrintPayload (bool greyscale, bool landscape, CCompletionHandler completionHandler, void* context) {
+    id<NSPayload> payload = [NSPrintPayload.alloc initWithGreyscale:greyscale landscape:landscape andCompletionHandler:^(bool success) { completionHandler(context, success); }];
     return (__bridge_retained void*)payload;
 }
 

@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import androidx.core.content.FileProvider;
 import android.util.Log;
+import com.unity3d.player.UnityPlayer;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,22 +23,23 @@ import java.util.ArrayList;
 public final class SharePayload implements Payload {
 
     private final Intent intent;
-    private final int callback;
-    private final HandlerThread commitThread;
-    private final Handler commitHandler;
-    private final ArrayList<Uri> uris = new ArrayList<>();
+    private final CompletionHandler completionHandler;
+    private final ArrayList<byte[]> images;
+    private final ArrayList<Uri> uris;
+    private static final String authority;
 
-    public SharePayload (String subject, int callback) {
+    static { authority = UnityPlayer.currentActivity.getPackageName() + ".natshare"; }
+
+    public SharePayload (String subject, CompletionHandler completionHandler) {
         // Create intent
-        this.callback = callback;
         this.intent = new Intent();
+        this.completionHandler = completionHandler;
+        this.images = new ArrayList<>();
+        this.uris = new ArrayList<>();
+        // Set intent params
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        // Create commit handler
-        this.commitThread = new HandlerThread("SharePayload Commit Thread");
-        this.commitThread.start();
-        this.commitHandler = new Handler(commitThread.getLooper());
     }
 
     @Override
@@ -47,55 +49,49 @@ public final class SharePayload implements Payload {
 
     @Override
     public void addImage (final byte[] pngData) {
-        // Write to file
-        commitHandler.post(new Runnable() {
-            @Override
-            public void run () {
-                // Write images
-                try {
-                    File file = new File(Bridge.activity().getCacheDir(), "share." + System.nanoTime() + ".png");
-                    FileOutputStream outputStream = new FileOutputStream(file);
-                    outputStream.write(pngData);
-                    outputStream.close();
-                    Uri fileUri = FileProvider.getUriForFile(Bridge.activity(), authority, file);
-                    uris.add(fileUri);
-                } catch (IOException ex) {
-                    Log.e("Unity", "NatShare Error: SharePayload failed to commit image with error: " + ex);
-                }
-            }
-        });
+        images.add(pngData);
     }
 
     @Override
     public void addMedia (final String uri) {
-        final Uri contentUri = FileProvider.getUriForFile(Bridge.activity(), authority, new File(uri));
-        commitHandler.post(new Runnable() {
-            @Override
-            public void run () {
-                uris.add(contentUri);
-            }
-        });
+        uris.add(FileProvider.getUriForFile(UnityPlayer.currentActivity, authority, new File(uri)));
     }
 
     @Override
     public void commit () {
-        commitHandler.post(new Runnable() {
+        final HandlerThread commitThread = new HandlerThread("SharePayload Commit Thread");
+        commitThread.start();
+        new Handler(commitThread.getLooper()).post(new Runnable() {
             @Override
             public void run () {
-                // Set intent type
-                intent.setAction(uris.size() > 1 ? Intent.ACTION_SEND_MULTIPLE : Intent.ACTION_SEND);
+                // Write images
+                for (byte[] pngData : images)
+                    try {
+                        File file = new File(UnityPlayer.currentActivity.getCacheDir(), "share." + System.nanoTime() + ".png");
+                        FileOutputStream outputStream = new FileOutputStream(file);
+                        outputStream.write(pngData);
+                        outputStream.close();
+                        Uri fileUri = FileProvider.getUriForFile(UnityPlayer.currentActivity, authority, file);
+                        uris.add(fileUri);
+                    } catch (IOException ex) {
+                        Log.e("Unity", "NatShare Error: SharePayload failed to commit image with error: " + ex);
+                    }
+                // Finalize intent
                 intent.setType("*/*");
-                // Add URI's
-                if (uris.size() > 1)
+                if (uris.size() > 1) {
+                    intent.setAction(Intent.ACTION_SEND_MULTIPLE);
                     intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-                else if (uris.size() == 1)
+                }
+                else if (uris.size() == 1) {
+                    intent.setAction(Intent.ACTION_SEND);
                     intent.putExtra(Intent.EXTRA_STREAM, uris.get(0));
+                }
                 // Start activity
-                Intent receiver = new Intent(Bridge.activity(), ShareReceiver.class);
-                receiver.putExtra("context", callback);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(Bridge.activity(), 0, receiver, PendingIntent.FLAG_UPDATE_CURRENT);
+                ShareReceiver.completionHandler = completionHandler;
+                Intent receiver = new Intent(UnityPlayer.currentActivity, ShareReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(UnityPlayer.currentActivity, 0, receiver, PendingIntent.FLAG_UPDATE_CURRENT);
                 Intent chooser = Intent.createChooser(intent, null, pendingIntent.getIntentSender());
-                Bridge.activity().startActivity(chooser);
+                UnityPlayer.currentActivity.startActivity(chooser);
             }
         });
         commitThread.quitSafely();
@@ -103,15 +99,12 @@ public final class SharePayload implements Payload {
 
     public static final class ShareReceiver extends BroadcastReceiver {
 
+        public static CompletionHandler completionHandler;
+
         @Override
         public void onReceive (final Context context, final Intent intent) {
             final ComponentName clickedComponent = intent.getParcelableExtra(Intent.EXTRA_CHOSEN_COMPONENT);
-            final int callback = intent.getIntExtra("context", 0);
-            if (callback != 0)
-                Bridge.callback(callback);
+            completionHandler.onCompletion(true);
         }
     }
-
-    private static final String authority;
-    static { authority = Bridge.activity().getPackageName() + ".natshare"; }
 }

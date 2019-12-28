@@ -8,52 +8,34 @@ namespace NatShare.Internal {
     using UnityEngine;
     using UnityEngine.Scripting;
     using System;
-    using System.Runtime.InteropServices;
+    using System.Threading.Tasks;
 
-    public sealed class PayloadAndroid : ISharePayload {
+    public sealed class PayloadAndroid : AndroidJavaProxy, ISharePayload {
 
         #region --IPayload--
 
-        public PayloadAndroid (AndroidJavaObject payload) => this.payload = payload;
-
-        public void Dispose () => payload.Call(@"commit");
+        public PayloadAndroid (Func<AndroidJavaProxy, AndroidJavaObject> payloadCreator) : base(@"api.natsuite.natshare.Payload$CompletionHandler") {
+            this.payload = payloadCreator(this);
+            this.commitTask = new TaskCompletionSource<bool>();
+        }
 
         public void AddText (string text) => payload.Call(@"addText", text);
 
         public void AddImage (Texture2D image) => payload.Call(@"addImage", image.EncodeToPNG());
 
         public void AddMedia (string uri) => payload.Call(@"addMedia", uri);
+
+        public Task<bool> Commit () {
+            payload.Call(@"commit");
+            return commitTask.Task;
+        }
         #endregion
         
 
         #region --Operations--
-        
         private readonly AndroidJavaObject payload;
-        private static CallbackManager instance;
-
-        public static int GetCallbackID (Action callback) {
-            // Give Java the C# delegate to invoke
-            if (instance == null) {
-                instance = new CallbackManager();
-                using (var Bridge = new AndroidJavaClass(@"api.natsuite.natshare.Bridge"))
-                    Bridge.CallStatic(@"setCallback", instance);
-            }
-            // Get handle
-            return callback != null ? (int)(IntPtr)GCHandle.Alloc(callback, GCHandleType.Normal) : 0;
-        }
-
-        private class CallbackManager : AndroidJavaProxy {
-            
-            public CallbackManager () : base(@"api.natsuite.natshare.Bridge$CompletionHandler") { }
-
-            [Preserve]
-            private static void onCompletion (int context) {
-                var handle = (GCHandle)(IntPtr)context;
-                var handler = handle.Target as Action;
-                handle.Free();
-                handler();
-            }
-        }
+        private readonly TaskCompletionSource<bool> commitTask;
+        [Preserve] private void onCompletion (bool success) => commitTask.SetResult(success);
         #endregion
     }
 }

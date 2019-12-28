@@ -49,7 +49,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             UnityPause(false);
             if (completionHandler)
-                completionHandler();
+                completionHandler(completed);
         });
     }];
     [appController presentViewController:shareController animated:YES completion:nil];

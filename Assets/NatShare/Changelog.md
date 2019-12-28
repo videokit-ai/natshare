@@ -1,3 +1,8 @@
+## NatShare 1.2.2
++ Implemented `async` pattern for sharing callback using `ISharePayload.Commit` method, further simplifying sharing code.
++ Added boolean return type for `ISharePayload.Commit` showing whether the sharing operation was successfully completed.
++ Deprecated `ISharePayload.Dispose` method.
+
 ## NatShare 1.2.1
 + Fixed `SavePayload.AddMedia` not working properly on Android.
 + Fixed `SavePayload` failing to save the first time the user is asked for permissions on iOS.

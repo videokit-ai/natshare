@@ -6,24 +6,22 @@
 namespace NatShare.Tests {
 
     using UnityEngine;
-    using System.Collections;
     using System.IO;
+    using System.Threading.Tasks;
 
     public class SaveTest : MonoBehaviour {
 
-        IEnumerator Start () {
-            yield return new WaitForSeconds(3.0f);
-            yield return new WaitForEndOfFrame();
-            // Take a screenshot
+        async void Start () {
+            await Task.Delay(2000);
+            // Get assets to share
             var screenshot = ScreenCapture.CaptureScreenshotAsTexture();
-            // Get video path // Since Android streaming assets is finicky, manually place the file
             var basePath = Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.streamingAssetsPath;
             var videoPath = Path.Combine(basePath, "animation.gif");
             // Save to camera roll
-            using (var payload = new SavePayload("NatShare", () => Debug.Log("Items saved to camera roll"))) {
-                //payload.AddImage(screenshot);
-                payload.AddMedia(videoPath);
-            }
+            var payload = new SavePayload("NatShare");
+            payload.AddMedia(videoPath);
+            var success = await payload.Commit();
+            Debug.Log($"Successfully saved items to camera roll: {success}");
         }
     }
 }

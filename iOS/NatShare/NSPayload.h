@@ -9,7 +9,7 @@
 @import Foundation;
 @import UIKit;
 
-typedef void (^CompletionHandler) (void);
+typedef void (^CompletionHandler) (bool success);
 
 @protocol NSPayload <NSObject>
 - (void) addText:(nonnull NSString*) text;

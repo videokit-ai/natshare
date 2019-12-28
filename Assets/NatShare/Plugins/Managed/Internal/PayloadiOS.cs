@@ -9,14 +9,17 @@ namespace NatShare.Internal {
     using UnityEngine;
     using System;
     using System.Runtime.InteropServices;
+    using System.Threading.Tasks;
 
     public sealed class PayloadiOS : ISharePayload {
 
         #region --IPayload--
 
-        public PayloadiOS (IntPtr payload) => this.payload = payload;
-
-        public void Dispose () => payload.Commit();
+        public PayloadiOS (Func<PayloadBridge.CompletionHandler, IntPtr, IntPtr> payloadCreator) {
+            this.commitTask = new TaskCompletionSource<bool>();
+            var handle = GCHandle.Alloc(commitTask, GCHandleType.Normal);
+            this.payload = payloadCreator(OnCompletion, (IntPtr)handle);
+        }
 
         public void AddText (string text) => payload.AddText(text);
 
@@ -28,19 +31,25 @@ namespace NatShare.Internal {
         }
 
         public void AddMedia (string uri) => payload.AddMedia(uri);
+
+        public Task<bool> Commit () {
+            payload.Commit();
+            return commitTask.Task;
+        }
         #endregion
 
 
         #region --Operations--
 
         private readonly IntPtr payload;
+        private readonly TaskCompletionSource<bool> commitTask;
 
-        [MonoPInvokeCallback(typeof(Action<IntPtr>))]
-        public static void OnCompletion (IntPtr context) {
+        [MonoPInvokeCallback(typeof(PayloadBridge.CompletionHandler))]
+        private static void OnCompletion (IntPtr context, bool success) {
             var handle = (GCHandle)context;
-            var handler = handle.Target as Action;
+            var commitTask = handle.Target as TaskCompletionSource<bool>;
             handle.Free();
-            handler();
+            commitTask.SetResult(success);
         }
         #endregion
     }

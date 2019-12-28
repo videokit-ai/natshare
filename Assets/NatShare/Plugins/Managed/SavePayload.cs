@@ -6,8 +6,7 @@
 namespace NatShare {
 
     using UnityEngine;
-    using System;
-    using System.Runtime.InteropServices;
+    using System.Threading.Tasks;
     using Internal;
 
     /// <summary>
@@ -21,33 +20,21 @@ namespace NatShare {
         /// Create a save payload
         /// </summary>
         /// <param name="album">Optional. Album name in which contents should be saved</param>
-        /// <param name="completionHandler">Optional. Delegate invoked with whether saving was successful</param>
         [Doc(@"SavePayloadCtor")]
-        public SavePayload (string album = null, Action completionHandler = null) {
+        public SavePayload (string album = null) {
             switch (Application.platform) {
-                case RuntimePlatform.Android: {
-                    var nativePayload = new AndroidJavaObject(@"api.natsuite.natshare.SavePayload", album, PayloadAndroid.GetCallbackID(completionHandler));
-                    this.payload = new PayloadAndroid(nativePayload);
+                case RuntimePlatform.Android:
+                    this.payload = new PayloadAndroid(callback => new AndroidJavaObject(@"api.natsuite.natshare.SavePayload", album, callback));
                     break;
-                }
-                case RuntimePlatform.IPhonePlayer: {
-                    var callback = completionHandler != null ? (IntPtr)GCHandle.Alloc(completionHandler, GCHandleType.Normal) : IntPtr.Zero;
-                    var nativePayload = PayloadBridge.CreateSavePayload(album, PayloadiOS.OnCompletion, callback);
-                    this.payload = new PayloadiOS(nativePayload);
+                case RuntimePlatform.IPhonePlayer:
+                    this.payload = new PayloadiOS((callback, context) => PayloadBridge.CreateSavePayload(album, callback, context));
                     break;
-                }
                 default:
                     Debug.LogError("NatShare Error: SavePayload is not supported on this platform");
                     this.payload = null; // Self-destruct >:D
                     break;
             }
         }
-
-        /// <summary>
-        /// Dispose the payload
-        /// </summary>
-        [Doc(@"Dispose")]
-        public void Dispose () => payload.Dispose();
 
         /// <summary>
         /// Nop. No concept as saving text to the gallery
@@ -68,6 +55,12 @@ namespace NatShare {
         /// <param name="path">Path to local media file to be shared</param>
         [Doc(@"AddMedia")]
         public void AddMedia (string path) => payload.AddMedia(path);
+
+        /// <summary>
+        /// Commit the payload and return whether payload was successfully shared
+        /// </summary>
+        [Doc(@"Commit")]
+        public Task<bool> Commit () => payload.Commit();
         #endregion
 
         private readonly ISharePayload payload;
