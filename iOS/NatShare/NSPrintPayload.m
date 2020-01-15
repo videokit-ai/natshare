@@ -9,7 +9,7 @@
 #import "NSPayload.h"
 
 @interface NSPrintPayload ()
-@property CompletionHandler completionHandler;
+@property CompletionBlock completionHandler;
 @property UIPrintInfo* printInfo;
 @property NSMutableArray* items;
 @end
@@ -21,7 +21,7 @@
 @synthesize printInfo;
 @synthesize items;
 
-- (instancetype) initWithGreyscale:(bool) greyscale landscape:(bool) landscape andCompletionHandler:(CompletionHandler) completionHandler {
+- (instancetype) initWithGreyscale:(bool) greyscale landscape:(bool) landscape andCompletionHandler:(CompletionBlock) completionHandler {
     self = super.init;
     // Setup state
     self.completionHandler = completionHandler;

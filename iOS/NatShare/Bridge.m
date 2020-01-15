@@ -7,21 +7,22 @@
 //
 
 #import "NSPayload.h"
+#import "UnityInterface.h"
 
-typedef void (*CCompletionHandler) (void* context, bool success);
+typedef void (*CompletionHandler) (void* context, bool success);
 
-void* NSCreateSharePayload (const char* subject, CCompletionHandler completionHandler, void* context) {
-    id<NSPayload> payload = [NSSharePayload.alloc initWithCompletionHandler:^(bool success) { completionHandler(context, success); }];
+void* NSCreateSharePayload (const char* subject, CompletionHandler completionHandler, void* context) {
+    id<NSPayload> payload = [NSSharePayload.alloc initWithSourceViewController:UnityGetGLViewController() andCompletionHandler:^(bool success) { completionHandler(context, success); }];
     return (__bridge_retained void*)payload;
 }
 
-void* NSCreateSavePayload (const char* album, CCompletionHandler completionHandler, void* context) {
+void* NSCreateSavePayload (const char* album, CompletionHandler completionHandler, void* context) {
     NSString* albumStr = album ? [NSString stringWithUTF8String:album] : nil;
     id<NSPayload> payload = [NSSavePayload.alloc initWithAlbum:albumStr andCompletionHandler:^(bool success) { completionHandler(context, success); }];
     return (__bridge_retained void*)payload;
 }
 
-void* NSCreatePrintPayload (bool greyscale, bool landscape, CCompletionHandler completionHandler, void* context) {
+void* NSCreatePrintPayload (bool greyscale, bool landscape, CompletionHandler completionHandler, void* context) {
     id<NSPayload> payload = [NSPrintPayload.alloc initWithGreyscale:greyscale landscape:landscape andCompletionHandler:^(bool success) { completionHandler(context, success); }];
     return (__bridge_retained void*)payload;
 }

@@ -12,7 +12,7 @@
 
 @interface NSSavePayload ()
 @property NSString* album;
-@property CompletionHandler completionHandler;
+@property CompletionBlock completionHandler;
 @property NSMutableArray<UIImage*>* images;
 @property NSMutableArray<NSURL*>* media;
 @end
@@ -25,7 +25,7 @@
 @synthesize images;
 @synthesize media;
 
-- (instancetype) initWithAlbum:(NSString*) album andCompletionHandler:(CompletionHandler) completionHandler {
+- (instancetype) initWithAlbum:(NSString*) album andCompletionHandler:(CompletionBlock) completionHandler {
     self = super.init;
     self.album = album;
     self.completionHandler = completionHandler;

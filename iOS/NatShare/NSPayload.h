@@ -9,7 +9,7 @@
 @import Foundation;
 @import UIKit;
 
-typedef void (^CompletionHandler) (bool success);
+typedef void (^CompletionBlock) (bool success);
 
 @protocol NSPayload <NSObject>
 - (void) addText:(nonnull NSString*) text;
@@ -19,7 +19,7 @@ typedef void (^CompletionHandler) (bool success);
 @end
 
 @interface NSSharePayload : NSObject <NSPayload>
-- (nonnull instancetype) initWithCompletionHandler:(nullable CompletionHandler) completionHandler;
+- (nonnull instancetype) initWithSourceViewController:(nonnull UIViewController*) sourceViewController andCompletionHandler:(nullable CompletionBlock) completionHandler;
 - (void) addText:(nonnull NSString*) text;
 - (void) addImage:(nonnull UIImage*) image;
 - (void) addMedia:(nonnull NSURL*) url;
@@ -28,14 +28,14 @@ typedef void (^CompletionHandler) (bool success);
 
 
 @interface NSSavePayload : NSObject <NSPayload>
-- (nonnull instancetype) initWithAlbum:(nullable NSString*) album andCompletionHandler:(nullable CompletionHandler) completionHandler;
+- (nonnull instancetype) initWithAlbum:(nullable NSString*) album andCompletionHandler:(nullable CompletionBlock) completionHandler;
 - (void) addImage:(nonnull UIImage*) image;
 - (void) addMedia:(nonnull NSURL*) url;
 - (void) commit;
 @end
 
 @interface NSPrintPayload : NSObject <NSPayload>
-- (nonnull instancetype) initWithGreyscale:(bool) greyscale landscape:(bool) landscape andCompletionHandler:(nullable CompletionHandler) completionHandler;
+- (nonnull instancetype) initWithGreyscale:(bool) greyscale landscape:(bool) landscape andCompletionHandler:(nullable CompletionBlock) completionHandler;
 - (void) addText:(nonnull NSString*) text;
 - (void) addImage:(nonnull UIImage*) image;
 - (void) addMedia:(nonnull NSURL*) url;
