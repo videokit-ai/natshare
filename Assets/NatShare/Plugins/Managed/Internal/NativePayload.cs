@@ -1,6 +1,6 @@
 /* 
 *   NatShare
-*   Copyright (c) 2019 Yusuf Olokoba.
+*   Copyright (c) 2020 Yusuf Olokoba.
 */
 
 namespace NatShare.Internal {
@@ -11,11 +11,11 @@ namespace NatShare.Internal {
     using System.Runtime.InteropServices;
     using System.Threading.Tasks;
 
-    public sealed class PayloadiOS : ISharePayload {
+    public sealed class NativePayload : ISharePayload {
 
         #region --IPayload--
 
-        public PayloadiOS (Func<PayloadBridge.CompletionHandler, IntPtr, IntPtr> payloadCreator) {
+        public NativePayload (Func<Bridge.CompletionHandler, IntPtr, IntPtr> payloadCreator) {
             this.commitTask = new TaskCompletionSource<bool>();
             var handle = GCHandle.Alloc(commitTask, GCHandleType.Normal);
             this.payload = payloadCreator(OnCompletion, (IntPtr)handle);
@@ -44,7 +44,7 @@ namespace NatShare.Internal {
         private readonly IntPtr payload;
         private readonly TaskCompletionSource<bool> commitTask;
 
-        [MonoPInvokeCallback(typeof(PayloadBridge.CompletionHandler))]
+        [MonoPInvokeCallback(typeof(Bridge.CompletionHandler))]
         private static void OnCompletion (IntPtr context, bool success) {
             var handle = (GCHandle)context;
             var commitTask = handle.Target as TaskCompletionSource<bool>;

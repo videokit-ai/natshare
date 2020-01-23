@@ -1,6 +1,6 @@
 /* 
 *   NatShare
-*   Copyright (c) 2019 Yusuf Olokoba
+*   Copyright (c) 2020 Yusuf Olokoba
 */
 
 namespace NatShare.Internal {
@@ -10,11 +10,11 @@ namespace NatShare.Internal {
     using System;
     using System.Threading.Tasks;
 
-    public sealed class PayloadAndroid : AndroidJavaProxy, ISharePayload {
+    public sealed class AndroidPayload : AndroidJavaProxy, ISharePayload {
 
         #region --IPayload--
 
-        public PayloadAndroid (Func<AndroidJavaProxy, AndroidJavaObject> payloadCreator) : base(@"api.natsuite.natshare.Payload$CompletionHandler") {
+        public AndroidPayload (Func<AndroidJavaProxy, AndroidJavaObject> payloadCreator) : base(@"api.natsuite.natshare.Payload$CompletionHandler") {
             this.payload = payloadCreator(this);
             this.commitTask = new TaskCompletionSource<bool>();
         }

@@ -1,6 +1,6 @@
 /* 
 *   NatShare
-*   Copyright (c) 2019 Yusuf Olokoba
+*   Copyright (c) 2020 Yusuf Olokoba
 */
 
 namespace NatShare.Tests {
@@ -18,7 +18,7 @@ namespace NatShare.Tests {
             var basePath = Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.streamingAssetsPath;
             var videoPath = Path.Combine(basePath, "pexels_video.mp4");
             // Share
-            var payload = new SharePayload("Sharing is caring :)");
+            var payload = new SharePayload();
             payload.AddImage(screenshot);
             var success = await payload.Commit();
             Debug.Log($"Successfully shared items: {success}");

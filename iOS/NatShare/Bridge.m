@@ -3,7 +3,7 @@
 //  NatShare
 //
 //  Created by Yusuf Olokoba on 8/8/19.
-//  Copyright © 2019 Yusuf Olokoba. All rights reserved.
+//  Copyright © 2020 Yusuf Olokoba. All rights reserved.
 //
 
 #import "NSPayload.h"
@@ -11,7 +11,7 @@
 
 typedef void (*CompletionHandler) (void* context, bool success);
 
-void* NSCreateSharePayload (const char* subject, CompletionHandler completionHandler, void* context) {
+void* NSCreateSharePayload (CompletionHandler completionHandler, void* context) {
     id<NSPayload> payload = [NSSharePayload.alloc initWithSourceViewController:UnityGetGLViewController() andCompletionHandler:^(bool success) { completionHandler(context, success); }];
     return (__bridge_retained void*)payload;
 }

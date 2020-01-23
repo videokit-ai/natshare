@@ -3,7 +3,7 @@
 //  NatShare
 //
 //  Created by Yusuf Olokoba on 8/8/19.
-//  Copyright © 2019 Yusuf Olokoba. All rights reserved.
+//  Copyright © 2020 Yusuf Olokoba. All rights reserved.
 //
 
 #import "NSPayload.h"

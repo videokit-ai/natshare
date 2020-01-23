@@ -30,14 +30,13 @@ public final class SharePayload implements Payload {
 
     static { authority = UnityPlayer.currentActivity.getPackageName() + ".natshare"; }
 
-    public SharePayload (String subject, CompletionHandler completionHandler) {
+    public SharePayload (CompletionHandler completionHandler) {
         // Create intent
         this.intent = new Intent();
         this.completionHandler = completionHandler;
         this.images = new ArrayList<>();
         this.uris = new ArrayList<>();
         // Set intent params
-        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
     }

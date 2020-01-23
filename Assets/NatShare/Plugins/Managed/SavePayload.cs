@@ -1,6 +1,6 @@
 /* 
 *   NatShare
-*   Copyright (c) 2019 Yusuf Olokoba.
+*   Copyright (c) 2020 Yusuf Olokoba.
 */
 
 namespace NatShare {
@@ -23,16 +23,9 @@ namespace NatShare {
         [Doc(@"SavePayloadCtor")]
         public SavePayload (string album = null) {
             switch (Application.platform) {
-                case RuntimePlatform.Android:
-                    this.payload = new PayloadAndroid(callback => new AndroidJavaObject(@"api.natsuite.natshare.SavePayload", album, callback));
-                    break;
-                case RuntimePlatform.IPhonePlayer:
-                    this.payload = new PayloadiOS((callback, context) => PayloadBridge.CreateSavePayload(album, callback, context));
-                    break;
-                default:
-                    Debug.LogError("NatShare Error: SavePayload is not supported on this platform");
-                    this.payload = null; // Self-destruct >:D
-                    break;
+                case RuntimePlatform.Android: this.payload = new AndroidPayload(callback => new AndroidJavaObject(@"api.natsuite.natshare.SavePayload", album, callback)); break;
+                case RuntimePlatform.IPhonePlayer: this.payload = new NativePayload((callback, context) => Bridge.CreateSavePayload(album, callback, context)); break;
+                default: Debug.LogError("NatShare Error: SavePayload is not supported on this platform"); break;
             }
         }
 
@@ -40,27 +33,27 @@ namespace NatShare {
         /// Nop. No concept as saving text to the gallery
         /// </summary>
         [Doc(@"AddText")]
-        public void AddText (string text) => payload.AddText(text);
+        public void AddText (string text) => payload?.AddText(text);
 
         /// <summary>
         /// Add an image to the payload
         /// </summary>
         /// <param name="image">Image</param>
         [Doc(@"AddImage")]
-        public void AddImage (Texture2D image) => payload.AddImage(image);
+        public void AddImage (Texture2D image) => payload?.AddImage(image);
 
         /// <summary>
         /// Add media to the payload
         /// </summary>
         /// <param name="path">Path to local media file to be shared</param>
         [Doc(@"AddMedia")]
-        public void AddMedia (string path) => payload.AddMedia(path);
+        public void AddMedia (string path) => payload?.AddMedia(path);
 
         /// <summary>
         /// Commit the payload and return whether payload was successfully shared
         /// </summary>
         [Doc(@"Commit")]
-        public Task<bool> Commit () => payload.Commit();
+        public Task<bool> Commit () => payload?.Commit();
         #endregion
 
         private readonly ISharePayload payload;
