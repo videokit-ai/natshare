@@ -3,24 +3,27 @@
 //  NatShare
 //
 //  Created by Yusuf Olokoba on 8/8/19.
-//  Copyright © 2019 Yusuf Olokoba. All rights reserved.
+//  Copyright © 2020 Yusuf Olokoba. All rights reserved.
 //
 
 #import "NSPayload.h"
+#import "UnityInterface.h"
 
-void* NSCreateSharePayload (const char* subject, void (*completionHandler) (void*), void* context) {
-    id<NSPayload> payload = [NSSharePayload.alloc initWithCompletionHandler:^{ if (context) completionHandler(context); }];
+typedef void (*CompletionHandler) (void* context, bool success);
+
+void* NSCreateSharePayload (CompletionHandler completionHandler, void* context) {
+    id<NSPayload> payload = [NSSharePayload.alloc initWithSourceViewController:UnityGetGLViewController() andCompletionHandler:^(bool success) { completionHandler(context, success); }];
     return (__bridge_retained void*)payload;
 }
 
-void* NSCreateSavePayload (const char* album, void (*completionHandler) (void*), void* context) {
+void* NSCreateSavePayload (const char* album, CompletionHandler completionHandler, void* context) {
     NSString* albumStr = album ? [NSString stringWithUTF8String:album] : nil;
-    id<NSPayload> payload = [NSSavePayload.alloc initWithAlbum:albumStr andCompletionHandler:^{ if (context) completionHandler(context); }];
+    id<NSPayload> payload = [NSSavePayload.alloc initWithAlbum:albumStr andCompletionHandler:^(bool success) { completionHandler(context, success); }];
     return (__bridge_retained void*)payload;
 }
 
-void* NSCreatePrintPayload (bool greyscale, bool landscape, void (*completionHandler) (void*), void* context) {
-    id<NSPayload> payload = [NSPrintPayload.alloc initWithGreyscale:greyscale landscape:landscape andCompletionHandler:^{ if (context) completionHandler(context); }];
+void* NSCreatePrintPayload (bool greyscale, bool landscape, CompletionHandler completionHandler, void* context) {
+    id<NSPayload> payload = [NSPrintPayload.alloc initWithGreyscale:greyscale landscape:landscape andCompletionHandler:^(bool success) { completionHandler(context, success); }];
     return (__bridge_retained void*)payload;
 }
 

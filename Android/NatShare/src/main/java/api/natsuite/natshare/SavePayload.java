@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
+import com.unity3d.player.UnityPlayer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -19,14 +20,16 @@ import java.util.ArrayList;
 public final class SavePayload implements Payload {
 
     private final File saveRoot;
-    private final int callback;
-    private final ArrayList<byte[]> images = new ArrayList<>();
-    private final ArrayList<String> media = new ArrayList<>();
+    private final CompletionHandler completionHandler;
+    private final ArrayList<byte[]> images;
+    private final ArrayList<String> media;
 
-    public SavePayload (String album, int callback) {
+    public SavePayload (String album, CompletionHandler completionHandler) {
         this.saveRoot = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/" + album);
-        this.saveRoot.mkdirs();
-        this.callback = callback;
+        this.completionHandler = completionHandler;
+        this.images = new ArrayList<>();
+        this.media = new ArrayList<>();
+        saveRoot.mkdirs();
     }
 
     @Override
@@ -46,10 +49,10 @@ public final class SavePayload implements Payload {
     public void commit () {
         final HandlerThread commitThread = new HandlerThread("SavePayload Commit Thread");
         commitThread.start();
-        final Handler commitHandler = new Handler(commitThread.getLooper());
-        commitHandler.post(new Runnable() {
+        new Handler(commitThread.getLooper()).post(new Runnable() {
             @Override
             public void run () {
+                boolean success = true;
                 // Commit images
                 for (byte[] pngData : images)
                     try {
@@ -58,9 +61,10 @@ public final class SavePayload implements Payload {
                         stream.write(pngData);
                         stream.close();
                         Intent scanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file));
-                        Bridge.activity().sendBroadcast(scanIntent);
+                        UnityPlayer.currentActivity.sendBroadcast(scanIntent);
                     } catch (IOException ex) {
                         Log.e("Unity", "NatShare Error: SavePayload failed to commit image with error: " + ex);
+                        success = false;
                     }
                 // Commit media
                 for (String uri : media)
@@ -73,13 +77,13 @@ public final class SavePayload implements Payload {
                         istream.close();
                         ostream.close();
                         Intent scanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(ofile));
-                        Bridge.activity().sendBroadcast(scanIntent);
+                        UnityPlayer.currentActivity.sendBroadcast(scanIntent);
                     } catch (IOException ex) {
                         Log.e("Unity", "NatShare Error: SavePayload failed to commit media with error: " + ex);
+                        success = false;
                     }
                 // Invoke callback
-                if (callback != 0)
-                    Bridge.callback(callback);
+                completionHandler.onCompletion(success);
             }
         });
         commitThread.quitSafely();

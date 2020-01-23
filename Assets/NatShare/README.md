@@ -5,26 +5,28 @@ NatShare is a lightweight, easy-to-use native sharing API for Unity Engine. NatS
 To share an image, you can use the `SharePayload`:
 ```csharp
 Texture2D image = ...;
-using (var payload = new SharePayload())
-    payload.AddImage(image);
+var payload = new SharePayload()
+payload.AddImage(image);
+payload.Commit();
 ```
 
 You can share multiple items at once:
 ```csharp
-using (var payload = new SharePayload()) {
-    payload.AddText("Happy Birthday!");
-    payload.AddMedia("/path/to/some/media/file.mp4");
-}
+var payload = new SharePayload()
+payload.AddText("Happy Birthday!");
+payload.AddImage(image);
+payload.AddMedia("/path/to/some/media/file.mp4");
+payload.Commit();
 ```
 
-Most payloads support a callback argument. This callback will be invoked when the user has finished the sharing activity:
+The `ISharePayload.Commit` function returns a task which when completed, returns a `bool` indicating whether the sharing operation was successful:
 ```csharp
-using (var payload = new SharePayload(
-    completionHandler: () => {
-        Debug.Log("User shared video!");
-    }
-))
+async void ShareVideo () {
+    var payload = new SharePayload();
     payload.AddMedia("/path/to/some/media/file.mp4")
+    var success = await payload.Commit();
+    Debug.Log($"Successfully shared items: {success}");
+}    
 ```
 
 ## Saving to the Camera Roll
@@ -32,10 +34,10 @@ You can save images or media files to the camera roll with the `SavePayload`:
 ```csharp
 // Save a texture and a media file to the camera roll
 Texture2D image = ...;
-using (var payload = new SavePayload()) {
-    payload.AddImage(image);
-    payload.AddMedia("/path/to/some/media/file.gif");
-}
+var payload = new SavePayload();
+payload.AddImage(image);
+payload.AddMedia("/path/to/some/media/file.gif");
+payload.Commit();
 ```
 
 ___

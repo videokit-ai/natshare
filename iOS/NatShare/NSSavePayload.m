@@ -3,7 +3,7 @@
 //  NatShare
 //
 //  Created by Yusuf Olokoba on 8/8/19.
-//  Copyright © 2019 Yusuf Olokoba. All rights reserved.
+//  Copyright © 2020 Yusuf Olokoba. All rights reserved.
 //
 
 @import Photos;
@@ -12,7 +12,7 @@
 
 @interface NSSavePayload ()
 @property NSString* album;
-@property CompletionHandler completionHandler;
+@property CompletionBlock completionHandler;
 @property NSMutableArray<UIImage*>* images;
 @property NSMutableArray<NSURL*>* media;
 @end
@@ -25,7 +25,7 @@
 @synthesize images;
 @synthesize media;
 
-- (instancetype) initWithAlbum:(NSString*) album andCompletionHandler:(CompletionHandler) completionHandler {
+- (instancetype) initWithAlbum:(NSString*) album andCompletionHandler:(CompletionBlock) completionHandler {
     self = super.init;
     self.album = album;
     self.completionHandler = completionHandler;
@@ -73,7 +73,7 @@
     } completionHandler:^(BOOL success, NSError* error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (completionHandler)
-                completionHandler();
+                completionHandler(success);
         });
     }];
 }

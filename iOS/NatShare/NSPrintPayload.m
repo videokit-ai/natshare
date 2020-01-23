@@ -3,13 +3,13 @@
 //  NatShare
 //
 //  Created by Yusuf Olokoba on 8/9/19.
-//  Copyright © 2019 Yusuf Olokoba. All rights reserved.
+//  Copyright © 2020 Yusuf Olokoba. All rights reserved.
 //
 
 #import "NSPayload.h"
 
 @interface NSPrintPayload ()
-@property CompletionHandler completionHandler;
+@property CompletionBlock completionHandler;
 @property UIPrintInfo* printInfo;
 @property NSMutableArray* items;
 @end
@@ -21,7 +21,7 @@
 @synthesize printInfo;
 @synthesize items;
 
-- (instancetype) initWithGreyscale:(bool) greyscale landscape:(bool) landscape andCompletionHandler:(CompletionHandler) completionHandler {
+- (instancetype) initWithGreyscale:(bool) greyscale landscape:(bool) landscape andCompletionHandler:(CompletionBlock) completionHandler {
     self = super.init;
     // Setup state
     self.completionHandler = completionHandler;
@@ -50,7 +50,7 @@
     [printController presentAnimated:true completionHandler:^(UIPrintInteractionController* _, BOOL completed, NSError* error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (completionHandler)
-                completionHandler();
+                completionHandler(completed);
         });
     }];
 }

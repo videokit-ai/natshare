@@ -3,25 +3,27 @@
 //  NatShare
 //
 //  Created by Yusuf Olokoba on 8/8/19.
-//  Copyright © 2019 Yusuf Olokoba. All rights reserved.
+//  Copyright © 2020 Yusuf Olokoba. All rights reserved.
 //
 
 #import "NSPayload.h"
-#import "UnityInterface.h"
 
 @interface NSSharePayload ()
-@property CompletionHandler completionHandler;
+@property UIViewController* sourceViewController;
+@property CompletionBlock completionHandler;
 @property NSMutableArray* payload;
 @end
 
 
 @implementation NSSharePayload
 
+@synthesize sourceViewController;
 @synthesize completionHandler;
 @synthesize payload;
 
-- (instancetype) initWithCompletionHandler:(CompletionHandler) completionHandler {
+- (instancetype) initWithSourceViewController:(UIViewController*) sourceViewController andCompletionHandler:(CompletionBlock) completionHandler {
     self = super.init;
+    self.sourceViewController = sourceViewController;
     self.completionHandler = completionHandler;
     self.payload = NSMutableArray.array;
     return self;
@@ -42,18 +44,16 @@
 - (void) commit {
     // Present share view
     UIActivityViewController* shareController = [UIActivityViewController.alloc initWithActivityItems:payload applicationActivities:nil];
-    UIViewController* appController = UnityGetGLViewController();
     shareController.modalPresentationStyle = UIModalPresentationPopover;
-    shareController.popoverPresentationController.sourceView = appController.view;
+    shareController.popoverPresentationController.sourceView = sourceViewController.view;
+    shareController.view.translatesAutoresizingMaskIntoConstraints = NO; // DEPLOY // iOS 13
     [shareController setCompletionWithItemsHandler:^(UIActivityType activityType, BOOL completed, NSArray* returnedItems, NSError* activityError) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            UnityPause(false);
             if (completionHandler)
-                completionHandler();
+                completionHandler(completed);
         });
     }];
-    [appController presentViewController:shareController animated:YES completion:nil];
-    UnityPause(true);
+    [sourceViewController presentViewController:shareController animated:YES completion:nil];
 }
 
 @end
