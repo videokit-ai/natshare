@@ -1,3 +1,7 @@
+## NatShare 1.2.3
++ Updated top-level namespace to `NatSuite.Sharing` for parity with other NatSuite API's.
++ Fixed UI constraints error when sharing on iPad with iOS 13.
+
 ## NatShare 1.2.2
 + Implemented `async` pattern for sharing callback using `ISharePayload.Commit` method, further simplifying sharing code.
 + Added boolean return type for `ISharePayload.Commit` showing whether the sharing operation was successfully completed.

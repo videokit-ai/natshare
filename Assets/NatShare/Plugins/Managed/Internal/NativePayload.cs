@@ -3,7 +3,7 @@
 *   Copyright (c) 2020 Yusuf Olokoba.
 */
 
-namespace NatShare.Internal {
+namespace NatSuite.Sharing.Internal {
 
     using AOT;
     using UnityEngine;
@@ -24,6 +24,10 @@ namespace NatShare.Internal {
         public void AddText (string text) => payload.AddText(text);
 
         public void AddImage (Texture2D image) {
+            if (!image.isReadable) {
+                Debug.LogError("NatShare Error: Cannot add non-readable texture to payload");
+                return;
+            }
             var pixels = image.GetPixels32(); // This ensures that pixel buffer sent to native is always RGBA32
             var handle = GCHandle.Alloc(pixels, GCHandleType.Pinned);
             payload.AddImage(handle.AddrOfPinnedObject(), image.width, image.height);

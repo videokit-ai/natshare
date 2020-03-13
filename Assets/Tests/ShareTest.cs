@@ -3,11 +3,12 @@
 *   Copyright (c) 2020 Yusuf Olokoba
 */
 
-namespace NatShare.Tests {
+namespace NatSuite.Tests {
 
     using UnityEngine;
     using System.IO;
     using System.Threading.Tasks;
+    using Sharing;
 
     public class ShareTest : MonoBehaviour {
 

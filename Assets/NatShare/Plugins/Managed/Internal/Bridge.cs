@@ -3,7 +3,7 @@
 *   Copyright (c) 2020 Yusuf Olokoba.
 */
 
-namespace NatShare.Internal {
+namespace NatSuite.Sharing.Internal {
 
     using System;
     using System.Runtime.InteropServices;

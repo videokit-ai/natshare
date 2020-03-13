@@ -3,7 +3,7 @@
 *   Copyright (c) 2020 Yusuf Olokoba
 */
 
-namespace NatShare.Internal {
+namespace NatSuite.Sharing.Internal {
 
     using UnityEngine;
     using UnityEngine.Scripting;
@@ -21,7 +21,13 @@ namespace NatShare.Internal {
 
         public void AddText (string text) => payload.Call(@"addText", text);
 
-        public void AddImage (Texture2D image) => payload.Call(@"addImage", image.EncodeToPNG());
+        public void AddImage (Texture2D image) {
+            if (!image.isReadable) {
+                Debug.LogError("NatShare Error: Cannot add non-readable texture to payload");
+                return;
+            }
+            payload.Call(@"addImage", image.EncodeToPNG());
+        }
 
         public void AddMedia (string uri) => payload.Call(@"addMedia", uri);
 

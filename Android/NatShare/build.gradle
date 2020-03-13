@@ -1,8 +1,8 @@
 apply plugin: "com.android.library"
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 'android-R'
+    buildToolsVersion "30.0.0rc1"
 
     defaultConfig {
         minSdkVersion 22
@@ -13,13 +13,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-        }
-    }
-    libraryVariants.all { variant ->
-        variant.outputs.all { output ->
-            if (outputFile != null && outputFileName.endsWith(".aar") && variant.name == android.buildTypes.release.name) {
-                outputFileName = "NatShare.aar"
-            }
         }
     }
     lintOptions {
@@ -33,7 +26,7 @@ dependencies {
 }
 
 task copyToUnity(type: Copy) {
-    from "build/outputs/aar/NatShare.aar"
+    from "build/outputs/aar/NatShare-release.aar"
     into "../../Assets/NatShare/Plugins/Android"
 }
 

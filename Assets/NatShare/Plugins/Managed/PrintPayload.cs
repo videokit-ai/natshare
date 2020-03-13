@@ -3,7 +3,7 @@
 *   Copyright (c) 2020 Yusuf Olokoba.
 */
 
-namespace NatShare {
+namespace NatSuite.Sharing {
 
     using UnityEngine;
     using System.Threading.Tasks;
