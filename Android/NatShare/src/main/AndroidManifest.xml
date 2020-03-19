@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <application>
+    <application android:requestLegacyExternalStorage="true" >
         <receiver android:name="api.natsuite.natshare.SharePayload$ShareReceiver" android:exported="false" />
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -12,10 +12,7 @@
             android:grantUriPermissions="true"
             android:exported="false"
         >
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths"
-            />
+            <meta-data  android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/filepaths" />
         </provider>
     </application>
 

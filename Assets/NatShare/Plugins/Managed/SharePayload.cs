@@ -3,21 +3,21 @@
 *   Copyright (c) 2020 Yusuf Olokoba.
 */
 
-namespace NatShare {
+namespace NatSuite.Sharing {
 
     using UnityEngine;
     using System.Threading.Tasks;
     using Internal;
 
     /// <summary>
-    /// A payload for sharing to available social services
+    /// A payload for sharing to available social services.
     /// </summary>
     [Doc(@"SharePayload")]
     public sealed class SharePayload : ISharePayload {
 
         #region --Client API--
         /// <summary>
-        /// Create a share payload
+        /// Create a share payload.
         /// </summary>
         [Doc(@"SharePayloadCtor")]
         public SharePayload () {
@@ -29,27 +29,37 @@ namespace NatShare {
         }
 
         /// <summary>
-        /// Add plain text
+        /// Add plain text.
         /// </summary>
         [Doc(@"AddText")]
-        public void AddText (string text) => payload?.AddText(text);
+        public ISharePayload AddText (string text) {
+            payload?.AddText(text);
+            return this;
+        }
 
         /// <summary>
-        /// Add an image to the payload
+        /// Add an image to the payload.
+        /// Note that the image MUST be readable.
         /// </summary>
-        /// <param name="image">Image</param>
+        /// <param name="image">Image to be shared.</param>
         [Doc(@"AddImage")]
-        public void AddImage (Texture2D image) => payload?.AddImage(image);
+        public ISharePayload AddImage (Texture2D image) {
+            payload?.AddImage(image);
+            return this;
+        }
 
         /// <summary>
         /// Add media to the payload
         /// </summary>
-        /// <param name="path">Path to local media file to be shared</param>
+        /// <param name="path">Path to local media file to be shared.</param>
         [Doc(@"AddMedia")]
-        public void AddMedia (string path) => payload?.AddMedia(path);
+        public ISharePayload AddMedia (string path) {
+            payload?.AddMedia(path);
+            return this;
+        }
 
         /// <summary>
-        /// Commit the payload and return whether payload was successfully shared
+        /// Commit the payload and return whether payload was successfully shared.
         /// </summary>
         [Doc(@"Commit")]
         public Task<bool> Commit () => payload?.Commit();

@@ -3,11 +3,12 @@
 *   Copyright (c) 2020 Yusuf Olokoba
 */
 
-namespace NatShare.Tests {
+namespace NatSuite.Tests {
 
     using UnityEngine;
     using System.IO;
     using System.Threading.Tasks;
+    using Sharing;
 
     public class ShareTest : MonoBehaviour {
 
@@ -18,10 +19,8 @@ namespace NatShare.Tests {
             var basePath = Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.streamingAssetsPath;
             var videoPath = Path.Combine(basePath, "pexels_video.mp4");
             // Share
-            var payload = new SharePayload();
-            payload.AddImage(screenshot);
-            var success = await payload.Commit();
-            Debug.Log($"Successfully shared items: {success}");
+            var shared = await new SharePayload().AddImage(screenshot).Commit();
+            Debug.Log($"Successfully shared items: {shared}");
         }
     }
 }

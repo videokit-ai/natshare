@@ -45,28 +45,16 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\NatShare\Plugins\Managed\Internal\PayloadAndroid.cs" />
-     <Compile Include="Assets\NatShare\Plugins\Managed\Internal\PayloadBridge.cs" />
-     <Compile Include="Assets\NatShare\Plugins\Managed\Internal\PayloadDocs.cs" />
-     <Compile Include="Assets\NatShare\Plugins\Managed\Internal\PayloadiOS.cs" />
+     <Compile Include="Assets\NatShare\Plugins\Managed\Internal\AndroidPayload.cs" />
+     <Compile Include="Assets\NatShare\Plugins\Managed\Internal\Bridge.cs" />
+     <Compile Include="Assets\NatShare\Plugins\Managed\Internal\Docs.cs" />
+     <Compile Include="Assets\NatShare\Plugins\Managed\Internal\NativePayload.cs" />
      <Compile Include="Assets\NatShare\Plugins\Managed\ISharePayload.cs" />
      <Compile Include="Assets\NatShare\Plugins\Managed\PrintPayload.cs" />
      <Compile Include="Assets\NatShare\Plugins\Managed\SavePayload.cs" />
      <Compile Include="Assets\NatShare\Plugins\Managed\SharePayload.cs" />
      <Compile Include="Assets\Tests\SaveTest.cs" />
      <Compile Include="Assets\Tests\ShareTest.cs" />
- <Reference Include="Unity.TextMeshPro.Editor">
- <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.CollabProxy.Editor">
- <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.TextMeshPro">
- <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Analytics.DataPrivacy">
- <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
- </Reference>
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
@@ -76,11 +64,17 @@
  <Reference Include="Unity.VSCode.Editor">
  <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
  </Reference>
+ <Reference Include="Unity.TextMeshPro.Editor">
+ <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Timeline">
  <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.CollabProxy.Editor">
+ <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
  </Reference>
  <Reference Include="com.unity.multiplayer-weaver.Editor">
  <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/com.unity.multiplayer-weaver.Editor.dll</HintPath>
@@ -102,6 +96,12 @@
  </Reference>
  <Reference Include="UnityEngine.SpatialTracking">
  <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.TextMeshPro">
+ <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.Analytics.DataPrivacy">
+ <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.XR.LegacyInputHelpers">
  <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>

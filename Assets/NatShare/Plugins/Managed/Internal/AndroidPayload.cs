@@ -3,7 +3,7 @@
 *   Copyright (c) 2020 Yusuf Olokoba
 */
 
-namespace NatShare.Internal {
+namespace NatSuite.Sharing.Internal {
 
     using UnityEngine;
     using UnityEngine.Scripting;
@@ -19,11 +19,23 @@ namespace NatShare.Internal {
             this.commitTask = new TaskCompletionSource<bool>();
         }
 
-        public void AddText (string text) => payload.Call(@"addText", text);
+        public ISharePayload AddText (string text) {
+            payload.Call(@"addText", text);
+            return this;
+        }
 
-        public void AddImage (Texture2D image) => payload.Call(@"addImage", image.EncodeToPNG());
+        public ISharePayload AddImage (Texture2D image) {
+            if (image.isReadable)
+                payload.Call(@"addImage", ImageConversion.EncodeToPNG(image));
+            else
+                Debug.LogError("NatShare Error: Cannot add non-readable texture to payload");            
+            return this;
+        }
 
-        public void AddMedia (string uri) => payload.Call(@"addMedia", uri);
+        public ISharePayload AddMedia (string uri) {
+            payload.Call(@"addMedia", uri);
+            return this;
+        }
 
         public Task<bool> Commit () {
             payload.Call(@"commit");
