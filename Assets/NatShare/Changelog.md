@@ -1,4 +1,4 @@
-## NatShare 1.2.2
+## NatShare 1.3.0
 + Updated top-level namespace to `NatSuite.Sharing` for parity with other NatSuite API's.
 + Updated `ISharePayload` methods to support chaining, making code easier and more declarative.
 + Implemented `async` pattern for sharing callback using `ISharePayload.Commit` method, further simplifying sharing code.
