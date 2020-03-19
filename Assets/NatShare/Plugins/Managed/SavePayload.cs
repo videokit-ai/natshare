@@ -10,16 +10,16 @@ namespace NatSuite.Sharing {
     using Internal;
 
     /// <summary>
-    /// A payload for saving to the camera roll
+    /// A payload for saving to the camera roll.
     /// </summary>
     [Doc(@"SavePayload")]
     public sealed class SavePayload : ISharePayload {
 
         #region --Client API--
         /// <summary>
-        /// Create a save payload
+        /// Create a save payload.
         /// </summary>
-        /// <param name="album">Optional. Album name in which contents should be saved</param>
+        /// <param name="album">Optional. Album name in which contents should be saved.</param>
         [Doc(@"SavePayloadCtor")]
         public SavePayload (string album = null) {
             switch (Application.platform) {
@@ -30,27 +30,37 @@ namespace NatSuite.Sharing {
         }
 
         /// <summary>
-        /// Nop. No concept as saving text to the gallery
+        /// Nop. No concept as saving text to the gallery.
         /// </summary>
         [Doc(@"AddText")]
-        public void AddText (string text) => payload?.AddText(text);
+        public ISharePayload AddText (string text) {
+            payload?.AddText(text);
+            return this;
+        }
 
         /// <summary>
-        /// Add an image to the payload
+        /// Add an image to the payload.
+        /// Note that the image MUST be readable.
         /// </summary>
-        /// <param name="image">Image</param>
+        /// <param name="image">Image to be added to the gallery.</param>
         [Doc(@"AddImage")]
-        public void AddImage (Texture2D image) => payload?.AddImage(image);
+        public ISharePayload AddImage (Texture2D image) {
+            payload?.AddImage(image);
+            return this;
+        }
 
         /// <summary>
-        /// Add media to the payload
+        /// Add media to the payload.
         /// </summary>
-        /// <param name="path">Path to local media file to be shared</param>
+        /// <param name="path">Path to local media file to be added to the gallery.</param>
         [Doc(@"AddMedia")]
-        public void AddMedia (string path) => payload?.AddMedia(path);
+        public ISharePayload AddMedia (string path) {
+            payload?.AddMedia(path);
+            return this;
+        }
 
         /// <summary>
-        /// Commit the payload and return whether payload was successfully shared
+        /// Commit the payload and return whether payload was successfully shared.
         /// </summary>
         [Doc(@"Commit")]
         public Task<bool> Commit () => payload?.Commit();

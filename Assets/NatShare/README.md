@@ -12,19 +12,17 @@ payload.Commit();
 
 You can share multiple items at once:
 ```csharp
-var payload = new SharePayload()
-payload.AddText("Happy Birthday!");
-payload.AddImage(image);
-payload.AddMedia("/path/to/some/media/file.mp4");
-payload.Commit();
+new SharePayload()
+    .AddText("Happy Birthday!")
+    .AddImage(image)
+    .AddMedia("/path/to/some/media/file.mp4")
+    .Commit();
 ```
 
 The `ISharePayload.Commit` function returns a task which when completed, returns a `bool` indicating whether the sharing operation was successful:
 ```csharp
 async void ShareVideo () {
-    var payload = new SharePayload();
-    payload.AddMedia("/path/to/some/media/file.mp4")
-    var success = await payload.Commit();
+    var success = await new SharePayload().AddMedia("/path/to/some/media/file.mp4").Commit();
     Debug.Log($"Successfully shared items: {success}");
 }    
 ```
@@ -51,7 +49,6 @@ After building an Xcode project from Unity, add the following keys to the `Info.
 - Unity 2018.3+
 - Android API level 22+
 - iOS 9+
-
 
 ## Quick Tips
 - To discuss, report an issue, or request a feature, visit [Unity forums](https://forum.unity.com/threads/natshare-free-sharing-api.527074/) or [GitHub](https://github.com/olokobayusuf/NatShare-API)

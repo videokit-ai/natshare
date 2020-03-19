@@ -19,17 +19,23 @@ namespace NatSuite.Sharing.Internal {
             this.commitTask = new TaskCompletionSource<bool>();
         }
 
-        public void AddText (string text) => payload.Call(@"addText", text);
-
-        public void AddImage (Texture2D image) {
-            if (!image.isReadable) {
-                Debug.LogError("NatShare Error: Cannot add non-readable texture to payload");
-                return;
-            }
-            payload.Call(@"addImage", image.EncodeToPNG());
+        public ISharePayload AddText (string text) {
+            payload.Call(@"addText", text);
+            return this;
         }
 
-        public void AddMedia (string uri) => payload.Call(@"addMedia", uri);
+        public ISharePayload AddImage (Texture2D image) {
+            if (image.isReadable)
+                payload.Call(@"addImage", ImageConversion.EncodeToPNG(image));
+            else
+                Debug.LogError("NatShare Error: Cannot add non-readable texture to payload");            
+            return this;
+        }
+
+        public ISharePayload AddMedia (string uri) {
+            payload.Call(@"addMedia", uri);
+            return this;
+        }
 
         public Task<bool> Commit () {
             payload.Call(@"commit");

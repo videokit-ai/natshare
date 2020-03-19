@@ -10,17 +10,17 @@ namespace NatSuite.Sharing {
     using Internal;
 
     /// <summary>
-    /// EXPERIMENTAL. A payload for printing media
+    /// EXPERIMENTAL. A payload for printing media.
     /// </summary>
     [Doc(@"PrintPayload")]
     public sealed class PrintPayload : ISharePayload {
 
         #region --Client API--
         /// <summary>
-        /// Create a print payload
+        /// Create a print payload.
         /// </summary>
-        /// <param name="greyscale">Optional. Should items be printed in greyscale</param>
-        /// <param name="landscape">Optional. Should items be printed in landscape orientation</param>
+        /// <param name="greyscale">Optional. Should items be printed in greyscale.</param>
+        /// <param name="landscape">Optional. Should items be printed in landscape orientation.</param>
         [Doc(@"PrintPayloadCtor")]
         public PrintPayload (bool greyscale = false, bool landscape = false) {
             switch (Application.platform) {
@@ -31,26 +31,37 @@ namespace NatSuite.Sharing {
         }
 
         /// <summary>
-        /// Nop. No concept as saving text to the gallery
+        /// Add text to the payload.
         /// </summary>
         [Doc(@"AddText")]
-        public void AddText (string text) => payload?.AddText(text);
+        public ISharePayload AddText (string text) {
+            payload?.AddText(text);
+            return this;
+        }
 
         /// <summary>
-        /// Add an image to the payload
+        /// Add an image to the payload.
+        /// Note that the image MUST be readable.
         /// </summary>
+        /// <param name="image">Image to be added to the gallery.</param>
         [Doc(@"AddImage")]
-        public void AddImage (Texture2D image) => payload?.AddImage(image);
+        public ISharePayload AddImage (Texture2D image) {
+            payload?.AddImage(image);
+            return this;
+        }
 
         /// <summary>
-        /// Add media to the payload
+        /// Add media to the payload.
         /// </summary>
-        /// <param name="path">Path to local media file to be shared</param>
+        /// <param name="path">Path to local media file to be shared.</param>
         [Doc(@"AddMedia")]
-        public void AddMedia (string uri) => payload?.AddMedia(uri);
+        public ISharePayload AddMedia (string uri) {
+            payload?.AddMedia(uri);
+            return this;
+        }
 
         /// <summary>
-        /// Commit the payload and return whether payload was successfully shared
+        /// Commit the payload and return whether payload was successfully shared.
         /// </summary>
         [Doc(@"Commit")]
         public Task<bool> Commit () => payload?.Commit();
