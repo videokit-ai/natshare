@@ -1,3 +1,6 @@
+## NatShare 1.2.3
++ Fix compiler errors when building with IL2CPP backend on Android.
+
 ## NatShare 1.2.2
 + Updated top-level namespace to `NatSuite.Sharing` for parity with other NatSuite API's.
 + Updated `ISharePayload` methods to support chaining, making code easier and more declarative.
