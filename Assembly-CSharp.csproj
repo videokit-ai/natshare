@@ -37,9 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets\NatSuite\Plugins\Managed\Sharing\ISharePayload.cs" />
-     <Compile Include="Assets\NatSuite\Plugins\Managed\Sharing\Internal\AndroidPayload.cs" />
      <Compile Include="Assets\NatSuite\Plugins\Managed\Sharing\Internal\Bridge.cs" />
-     <Compile Include="Assets\NatSuite\Plugins\Managed\Sharing\Internal\Docs.cs" />
      <Compile Include="Assets\NatSuite\Plugins\Managed\Sharing\Internal\NativePayload.cs" />
      <Compile Include="Assets\NatSuite\Plugins\Managed\Sharing\PrintPayload.cs" />
      <Compile Include="Assets\NatSuite\Plugins\Managed\Sharing\SavePayload.cs" />
