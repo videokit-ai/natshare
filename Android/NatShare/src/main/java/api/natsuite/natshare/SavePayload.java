@@ -63,7 +63,7 @@ public final class SavePayload implements Payload {
                         Intent scanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file));
                         UnityPlayer.currentActivity.sendBroadcast(scanIntent);
                     } catch (IOException ex) {
-                        Log.e("Unity", "NatShare Error: SavePayload failed to commit image with error: " + ex);
+                        Log.e("NatSuite", "NatShare Error: SavePayload failed to commit image with error: " + ex);
                         success = false;
                     }
                 // Commit media
@@ -79,7 +79,7 @@ public final class SavePayload implements Payload {
                         Intent scanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(ofile));
                         UnityPlayer.currentActivity.sendBroadcast(scanIntent);
                     } catch (IOException ex) {
-                        Log.e("Unity", "NatShare Error: SavePayload failed to commit media with error: " + ex);
+                        Log.e("NatSuite", "NatShare Error: SavePayload failed to commit media with error: " + ex);
                         success = false;
                     }
                 // Invoke callback

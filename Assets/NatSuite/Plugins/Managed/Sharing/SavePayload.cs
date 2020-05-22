@@ -21,7 +21,7 @@ namespace NatSuite.Sharing {
         /// </summary>
         /// <param name="album">Optional. Album name in which contents should be saved.</param>
         [Doc(@"SavePayloadCtor")]
-        public SavePayload (string album = null) {
+        public SavePayload (string album = @"") {
             switch (Application.platform) {
                 case RuntimePlatform.Android: this.payload = new AndroidPayload(callback => new AndroidJavaObject(@"api.natsuite.natshare.SavePayload", album, callback)); break;
                 case RuntimePlatform.IPhonePlayer: this.payload = new NativePayload((callback, context) => Bridge.CreateSavePayload(album, callback, context)); break;

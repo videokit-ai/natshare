@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Android.iml" filepath="$PROJECT_DIR$/Android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/NatShare/NatShare.iml" filepath="$PROJECT_DIR$/NatShare/NatShare.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Unity/Unity.iml" filepath="$PROJECT_DIR$/Unity/Unity.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Android.iml" filepath="$PROJECT_DIR$/Android.iml" group="Android" />
+      <module fileurl="file://$PROJECT_DIR$/NatShare/NatShare.iml" filepath="$PROJECT_DIR$/NatShare/NatShare.iml" group="Android/NatShare" />
+      <module fileurl="file://$PROJECT_DIR$/Unity/Unity.iml" filepath="$PROJECT_DIR$/Unity/Unity.iml" group="Android/Unity" />
     </modules>
   </component>
 </project>

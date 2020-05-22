@@ -26,8 +26,9 @@ dependencies {
 }
 
 task copyToUnity(type: Copy) {
-    from "build/outputs/aar/NatShare-release.aar"
-    into "../../Assets/NatShare/Plugins/Android"
+    from 'build/outputs/aar/NatShare-release.aar'
+    into '../../Assets/NatSuite/Plugins/Android'
+    rename '(.+)-release(.+)', '$1$2'
 }
 
 assemble.finalizedBy (copyToUnity)
