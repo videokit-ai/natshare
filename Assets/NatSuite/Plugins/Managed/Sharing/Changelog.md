@@ -1,5 +1,6 @@
 ## NatShare 1.2.3
 + Fix compiler errors when building with IL2CPP backend on Android.
++ Reduced time taken when adding images to payloads.
 
 ## NatShare 1.2.2
 + Updated top-level namespace to `NatSuite.Sharing` for parity with other NatSuite API's.
