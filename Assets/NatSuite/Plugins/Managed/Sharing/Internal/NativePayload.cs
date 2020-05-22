@@ -27,14 +27,12 @@ namespace NatSuite.Sharing.Internal {
         }
 
         public ISharePayload AddImage (Texture2D image) {
-            if (image.isReadable) {
-                var pixels = image.GetPixels32();
-                var handle = GCHandle.Alloc(pixels, GCHandleType.Pinned);
-                payload.AddImage(handle.AddrOfPinnedObject(), image.width, image.height);
-                handle.Free();
-            }
-            else
+            if (!image.isReadable) {
                 Debug.LogError("NatShare Error: Cannot add non-readable texture to payload");
+                return this;
+            }
+            var jpegData = ImageConversion.EncodeToJPG(image); // Faster than PNG #85
+            payload.AddImage(jpegData, jpegData.Length);
             return this;
         }
 

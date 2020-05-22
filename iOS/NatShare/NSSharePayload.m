@@ -46,13 +46,10 @@
     UIActivityViewController* shareController = [UIActivityViewController.alloc initWithActivityItems:payload applicationActivities:nil];
     shareController.modalPresentationStyle = UIModalPresentationPopover;
     shareController.popoverPresentationController.sourceView = sourceViewController.view;
-    shareController.view.translatesAutoresizingMaskIntoConstraints = NO; // DEPLOY // iOS 13
-    [shareController popoverPresentationController].sourceRect=CGRectMake( 0,200,768,20); // Workaround for iPads complaining about unsatisfied constraints on iPadOS 13
+    //shareController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [shareController popoverPresentationController].sourceRect=CGRectMake(0, 200, 768, 20); // Workaround for iPads complaining about unsatisfied constraints on iPadOS 13
     [shareController setCompletionWithItemsHandler:^(UIActivityType activityType, BOOL completed, NSArray* returnedItems, NSError* activityError) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (completionHandler)
-                completionHandler(completed);
-        });
+        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(completed); });
     }];
     [sourceViewController presentViewController:shareController animated:YES completion:nil];
 }

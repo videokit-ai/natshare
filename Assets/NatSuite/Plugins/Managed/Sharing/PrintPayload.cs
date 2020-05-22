@@ -18,9 +18,9 @@ namespace NatSuite.Sharing {
         /// <summary>
         /// Create a print payload.
         /// </summary>
-        /// <param name="greyscale">Optional. Should items be printed in greyscale.</param>
-        /// <param name="landscape">Optional. Should items be printed in landscape orientation.</param>
-        public PrintPayload (bool greyscale = false, bool landscape = false) => this.payload = new NativePayload((callback, context) => Bridge.CreatePrintPayload(greyscale, landscape, callback, context));
+        /// <param name="greyscale">Should items be printed in color. Defaults to `true`.</param>
+        /// <param name="landscape">Should items be printed in landscape orientation. Defaults to `false`.</param>
+        public PrintPayload (bool color = true, bool landscape = false) => this.payload = new NativePayload((callback, context) => Bridge.CreatePrintPayload(color, landscape, callback, context));
 
         /// <summary>
         /// Add text to the payload.
