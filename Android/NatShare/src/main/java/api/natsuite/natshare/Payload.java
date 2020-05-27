@@ -1,14 +1,16 @@
 package api.natsuite.natshare;
 
+import java.nio.ByteBuffer;
+
 public interface Payload {
 
-    interface CompletionHandler {
+    interface Callback {
         void onCompletion (boolean success);
     }
 
     void addText (String text);
 
-    void addImage (byte[] pngData);
+    void addImage (ByteBuffer jpegData);
 
     void addMedia (String uri);
 

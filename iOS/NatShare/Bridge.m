@@ -10,7 +10,7 @@
 #import "NSPayload.h"
 #import "UnityInterface.h"
 
-void* NSCreateSharePayload (CompletionHandler completionHandler, void* context) {
+void* NSCreateSharePayload (NSShareHandler completionHandler, void* context) {
     id<NSPayload> payload = [NSSharePayload.alloc initWithSourceViewController:UnityGetGLViewController() andCompletionHandler:^(bool success) {
         if (completionHandler)
             completionHandler(context, success);
@@ -18,7 +18,7 @@ void* NSCreateSharePayload (CompletionHandler completionHandler, void* context) 
     return (__bridge_retained void*)payload;
 }
 
-void* NSCreateSavePayload (const char* album, CompletionHandler completionHandler, void* context) {
+void* NSCreateSavePayload (const char* album, NSShareHandler completionHandler, void* context) {
     NSString* albumStr = album ? [NSString stringWithUTF8String:album] : nil;
     id<NSPayload> payload = [NSSavePayload.alloc initWithAlbum:albumStr andCompletionHandler:^(bool success) {
         if (completionHandler)
@@ -27,7 +27,7 @@ void* NSCreateSavePayload (const char* album, CompletionHandler completionHandle
     return (__bridge_retained void*)payload;
 }
 
-void* NSCreatePrintPayload (bool color, bool landscape, CompletionHandler completionHandler, void* context) {
+void* NSCreatePrintPayload (bool color, bool landscape, NSShareHandler completionHandler, void* context) {
     id<NSPayload> payload = [NSPrintPayload.alloc initWithColor:color landscape:landscape andCompletionHandler:^(bool success) {
         if (completionHandler)
             completionHandler(context, success);

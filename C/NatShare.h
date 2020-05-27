@@ -27,7 +27,7 @@
  @param success
  Whether the sharing action was successful.
  */
-typedef void (*CompletionHandler) (void* context, bool success);
+typedef void (*NSShareHandler) (void* context, bool success);
 
 /*!
  @function NSCreateSharePayload
@@ -44,7 +44,7 @@ typedef void (*CompletionHandler) (void* context, bool success);
  
  @returns Opaque pointer to created payload.
  */
-BRIDGE void* NSCreateSharePayload (CompletionHandler completionHandler, void* context);
+BRIDGE void* NSCreateSharePayload (NSShareHandler completionHandler, void* context);
 
 /*!
  @function NSCreateSavePayload
@@ -64,7 +64,7 @@ BRIDGE void* NSCreateSharePayload (CompletionHandler completionHandler, void* co
  
  @returns Opaque pointer to created payload.
  */
-BRIDGE void* NSCreateSavePayload (const char* album, CompletionHandler completionHandler, void* context);
+BRIDGE void* NSCreateSavePayload (const char* album, NSShareHandler completionHandler, void* context);
 
 /*!
  @function NSCreatePrintPayload
@@ -87,7 +87,7 @@ BRIDGE void* NSCreateSavePayload (const char* album, CompletionHandler completio
  
  @returns Opaque pointer to created payload.
  */
-BRIDGE void* NSCreatePrintPayload (bool color, bool landscape, CompletionHandler completionHandler, void* context);
+BRIDGE void* NSCreatePrintPayload (bool color, bool landscape, NSShareHandler completionHandler, void* context);
 
 /*!
  @function NSAddText

@@ -39,7 +39,9 @@
     [items addObject:image];
 }
 
-- (void) addMedia:(NSURL*) url { }
+- (void) addMedia:(NSURL*) url {
+    [items addObject:url];
+}
 
 - (void) commit {
     UIPrintInteractionController* printController = UIPrintInteractionController.sharedPrintController;

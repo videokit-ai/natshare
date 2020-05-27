@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 /**
@@ -20,11 +21,11 @@ import java.util.ArrayList;
 public final class SavePayload implements Payload {
 
     private final File saveRoot;
-    private final CompletionHandler completionHandler;
+    private final Callback completionHandler;
     private final ArrayList<byte[]> images;
     private final ArrayList<String> media;
 
-    public SavePayload (String album, CompletionHandler completionHandler) {
+    public SavePayload (String album, Callback completionHandler) {
         this.saveRoot = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/" + album);
         this.completionHandler = completionHandler;
         this.images = new ArrayList<>();
@@ -36,13 +37,13 @@ public final class SavePayload implements Payload {
     public void addText (String text) { }
 
     @Override
-    public void addImage (final byte[] pngData) {
+    public void addImage (final ByteBuffer jpegData) {
         images.add(pngData);
     }
 
     @Override
-    public void addMedia (String uri) {
-        media.add(uri);
+    public void addMedia (final String path) {
+        media.add(path);
     }
 
     @Override
