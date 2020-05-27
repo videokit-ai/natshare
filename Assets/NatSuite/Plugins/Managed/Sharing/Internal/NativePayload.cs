@@ -57,8 +57,10 @@ namespace NatSuite.Sharing.Internal {
         private static void OnCompletion (IntPtr context, bool success) {
             var handle = (GCHandle)context;
             var commitTask = handle.Target as TaskCompletionSource<bool>;
-            handle.Free();
-            commitTask.SetResult(success);
+            // iOS can invoke this callback more than once, so be cautious :/
+            if (handle.IsAllocated)
+                handle.Free();
+            commitTask?.SetResult(success);
         }
         #endregion
     }
