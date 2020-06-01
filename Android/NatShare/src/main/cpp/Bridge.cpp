@@ -22,24 +22,41 @@ void* NSCreateSharePayload (NSShareHandler completionHandler, void* context) {
     if (!env)
         return nullptr;
     // Create callback
-    jobject callback = CreateCallback(env, completionHandler, context);
+    jobject callback = completionHandler ? CreateCallback(env, completionHandler, context) : nullptr;
     jclass clazz = env->FindClass("api/natsuite/natshare/SharePayload");
     jmethodID constructor = env->GetMethodID(clazz, "<init>", "(Lapi/natsuite/natshare/Payload$Callback;)V");
     // Create payload
     jobject object = env->NewObject(clazz, constructor, callback);
     jobject payload = env->NewGlobalRef(object);
     // Release locals
-    env->DeleteLocalRef(callback);
+    if (callback)
+        env->DeleteLocalRef(callback);
     env->DeleteLocalRef(clazz);
     env->DeleteLocalRef(object);
     return static_cast<void*>(payload);
 }
 
-void* NSCreateSavePayload (const char* album, NSShareHandler completionHandler, void* context) { // INCOMPLETE
+void* NSCreateSavePayload (const char* album, NSShareHandler completionHandler, void* context) {
     // Get Java environment
     JNIEnv* env = GetEnv();
     if (!env)
         return nullptr;
+    // Create callback
+    jstring albumStr = album ? env->NewStringUTF(album) : nullptr;
+    jobject callback = completionHandler ? CreateCallback(env, completionHandler, context) : nullptr;
+    jclass clazz = env->FindClass("api/natsuite/natshare/SavePayload");
+    jmethodID constructor = env->GetMethodID(clazz, "<init>", "(Ljava/lang/String;Lapi/natsuite/natshare/Payload$Callback;)V");
+    // Create payload
+    jobject object = env->NewObject(clazz, constructor, albumStr, callback);
+    jobject payload = env->NewGlobalRef(object);
+    // Release locals
+    if (albumStr)
+        env->DeleteLocalRef(albumStr);
+    if (callback)
+        env->DeleteLocalRef(callback);
+    env->DeleteLocalRef(clazz);
+    env->DeleteLocalRef(object);
+    return static_cast<void*>(payload);
 }
 
 void* NSCreatePrintPayload (bool color, bool landscape, NSShareHandler completionHandler, void* context) {
@@ -48,14 +65,15 @@ void* NSCreatePrintPayload (bool color, bool landscape, NSShareHandler completio
     if (!env)
         return nullptr;
     // Create callback
-    jobject callback = CreateCallback(env, completionHandler, context);
+    jobject callback = completionHandler ? CreateCallback(env, completionHandler, context) : nullptr;
     jclass clazz = env->FindClass("api/natsuite/natshare/PrintPayload");
     jmethodID constructor = env->GetMethodID(clazz, "<init>", "(ZZLapi/natsuite/natshare/Payload$Callback;)V");
     // Create payload
     jobject object = env->NewObject(clazz, constructor, color, landscape, callback);
     jobject payload = env->NewGlobalRef(object);
     // Release locals
-    env->DeleteLocalRef(callback);
+    if (callback)
+        env->DeleteLocalRef(callback);
     env->DeleteLocalRef(clazz);
     env->DeleteLocalRef(object);
     return static_cast<void*>(payload);

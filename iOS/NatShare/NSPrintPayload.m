@@ -48,7 +48,8 @@
     printController.printInfo = printInfo;
     printController.printingItems = items;
     [printController presentAnimated:true completionHandler:^(UIPrintInteractionController* _, BOOL completed, NSError* error) {
-        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(completed); });
+        if (completionHandler)
+            completionHandler(completed);
     }];
 }
 

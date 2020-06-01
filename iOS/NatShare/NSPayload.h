@@ -19,7 +19,7 @@ typedef void (^CompletionBlock) (bool success);
 @end
 
 @interface NSSharePayload : NSObject <NSPayload>
-- (nonnull instancetype) initWithSourceViewController:(nonnull UIViewController*) sourceViewController andCompletionHandler:(nonnull CompletionBlock) completionHandler;
+- (nonnull instancetype) initWithSourceViewController:(nonnull UIViewController*) sourceViewController andCompletionHandler:(nullable CompletionBlock) completionHandler;
 - (void) addText:(nonnull NSString*) text;
 - (void) addImage:(nonnull UIImage*) image;
 - (void) addMedia:(nonnull NSURL*) url;
@@ -28,14 +28,14 @@ typedef void (^CompletionBlock) (bool success);
 
 
 @interface NSSavePayload : NSObject <NSPayload>
-- (nonnull instancetype) initWithAlbum:(nullable NSString*) album andCompletionHandler:(nonnull CompletionBlock) completionHandler;
+- (nonnull instancetype) initWithAlbum:(nullable NSString*) album andCompletionHandler:(nullable CompletionBlock) completionHandler;
 - (void) addImage:(nonnull UIImage*) image;
 - (void) addMedia:(nonnull NSURL*) url;
 - (void) commit;
 @end
 
 @interface NSPrintPayload : NSObject <NSPayload>
-- (nonnull instancetype) initWithColor:(bool) color landscape:(bool) landscape andCompletionHandler:(nonnull CompletionBlock) completionHandler;
+- (nonnull instancetype) initWithColor:(bool) color landscape:(bool) landscape andCompletionHandler:(nullable CompletionBlock) completionHandler;
 - (void) addText:(nonnull NSString*) text;
 - (void) addImage:(nonnull UIImage*) image;
 - (void) addMedia:(nonnull NSURL*) url;

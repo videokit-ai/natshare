@@ -1,11 +1,10 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.natsuite.natshare">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="api.natsuite.natshare">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <application android:requestLegacyExternalStorage="true" >
-        <receiver android:name="api.natsuite.natshare.SharePayload$ShareReceiver" android:exported="false" />
+    <application>
+        <receiver android:name=".SharePayload$ShareReceiver" android:exported="false" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.natshare"

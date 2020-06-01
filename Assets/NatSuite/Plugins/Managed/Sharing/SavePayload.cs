@@ -19,7 +19,7 @@ namespace NatSuite.Sharing {
         /// Create a save payload.
         /// </summary>
         /// <param name="album">Optional. Album name in which contents should be saved.</param>
-        public SavePayload (string album = @"") => this.payload = new NativePayload((callback, context) => Bridge.CreateSavePayload(album, callback, context));
+        public SavePayload (string album = default) => this.payload = new NativePayload((callback, context) => Bridge.CreateSavePayload(album, callback, context));
 
         /// <summary>
         /// Nop. No concept as saving text to the gallery.
