@@ -105,6 +105,7 @@ void NSAddImage (void* payloadPtr, uint8_t* jpegData, int32_t dataSize) {
     jobject payload = static_cast<jobject>(payloadPtr);
     jclass clazz = env->GetObjectClass(payload);
     jmethodID method = env->GetMethodID(clazz, "addImage", "(Ljava/nio/ByteBuffer;)V");
+    env->CallVoidMethod(payload, method, buffer);
     // Release
     env->DeleteLocalRef(buffer);
     env->DeleteLocalRef(clazz);

@@ -13,14 +13,19 @@ namespace NatSuite.Tests {
     public class ShareTest : MonoBehaviour {
 
         async void Start () {
+            Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
             await Task.Delay(2000);
             // Get assets to share
             var screenshot = ScreenCapture.CaptureScreenshotAsTexture();
             var basePath = Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.streamingAssetsPath;
-            var videoPath = Path.Combine(basePath, "pexels_video.mp4");
+            var videoPath = Path.Combine(basePath, "video.mp4");
             // Share
-            var shared = await new SharePayload().AddImage(screenshot).Commit();
-            Debug.Log($"Successfully shared items: {shared}");
+            var result = await new SharePayload()
+                .AddText("Sharing is caring!")
+                //.AddImage(screenshot)
+                //.AddMedia(videoPath)
+                .Commit();
+            Debug.Log($"Successfully shared items: {result}");
         }
     }
 }

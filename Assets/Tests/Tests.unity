@@ -305,8 +305,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1880179976}
-  - component: {fileID: 1880179975}
   - component: {fileID: 1880179974}
+  - component: {fileID: 1880179975}
   m_Layer: 0
   m_Name: Tests
   m_TagString: Untagged

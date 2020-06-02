@@ -25,7 +25,7 @@ namespace NatSuite.Sharing {
         /// Nop. No concept as saving text to the gallery.
         /// </summary>
         public ISharePayload AddText (string text) {
-            payload?.AddText(text);
+            payload.AddText(text);
             return this;
         }
 
@@ -35,7 +35,7 @@ namespace NatSuite.Sharing {
         /// </summary>
         /// <param name="image">Image to be added to the gallery.</param>
         public ISharePayload AddImage (Texture2D image) {
-            payload?.AddImage(image);
+            payload.AddImage(image);
             return this;
         }
 
@@ -44,14 +44,14 @@ namespace NatSuite.Sharing {
         /// </summary>
         /// <param name="path">Path to local media file to be added to the gallery.</param>
         public ISharePayload AddMedia (string path) {
-            payload?.AddMedia(path);
+            payload.AddMedia(path);
             return this;
         }
 
         /// <summary>
         /// Commit the payload and return whether payload was successfully shared.
         /// </summary>
-        public Task<bool> Commit () => payload?.Commit();
+        public Task<bool> Commit () => payload.Commit();
         #endregion
 
         private readonly ISharePayload payload;
