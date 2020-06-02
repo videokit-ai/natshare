@@ -10,7 +10,13 @@ namespace NatSuite.Sharing.Internal {
 
     public static class Bridge {
 
-        private const string Assembly = @"__Internal";
+        private const string Assembly =
+        #if UNITY_IOS && !UNITY_EDITOR
+        @"__Internal";
+        #else
+        @"NatShare";
+        #endif
+
         public delegate void CompletionHandler (IntPtr context, bool success);
 
         [DllImport(Assembly, EntryPoint = @"NSCreateSharePayload")]
@@ -18,11 +24,11 @@ namespace NatSuite.Sharing.Internal {
         [DllImport(Assembly, EntryPoint = @"NSCreateSavePayload")]
         public static extern IntPtr CreateSavePayload (string album, CompletionHandler completionHandler, IntPtr context);
         [DllImport(Assembly, EntryPoint = @"NSCreatePrintPayload")]
-        public static extern IntPtr CreatePrintPayload (bool greyscale, bool landscape, CompletionHandler completionHandler, IntPtr context);
+        public static extern IntPtr CreatePrintPayload (bool color, bool landscape, CompletionHandler completionHandler, IntPtr context);
         [DllImport(Assembly, EntryPoint = @"NSAddText")]
         public static extern void AddText (this IntPtr payload, string text);
         [DllImport(Assembly, EntryPoint = @"NSAddImage")]
-        public static extern void AddImage (this IntPtr payload, IntPtr pixelBuffer, int width, int height);
+        public static extern void AddImage (this IntPtr payload, byte[] jpegData, int dataSize);
         [DllImport(Assembly, EntryPoint = @"NSAddMedia")]
         public static extern void AddMedia (this IntPtr payload, string uri);
         [DllImport(Assembly, EntryPoint = @"NSCommit")]

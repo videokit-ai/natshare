@@ -35,7 +35,7 @@ typedef void (^CompletionBlock) (bool success);
 @end
 
 @interface NSPrintPayload : NSObject <NSPayload>
-- (nonnull instancetype) initWithGreyscale:(bool) greyscale landscape:(bool) landscape andCompletionHandler:(nullable CompletionBlock) completionHandler;
+- (nonnull instancetype) initWithColor:(bool) color landscape:(bool) landscape andCompletionHandler:(nullable CompletionBlock) completionHandler;
 - (void) addText:(nonnull NSString*) text;
 - (void) addImage:(nonnull UIImage*) image;
 - (void) addMedia:(nonnull NSURL*) url;

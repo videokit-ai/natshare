@@ -28,10 +28,8 @@ namespace NatSuite.Sharing.Internal {
 
         public ISharePayload AddImage (Texture2D image) {
             if (image.isReadable) {
-                var pixels = image.GetPixels32();
-                var handle = GCHandle.Alloc(pixels, GCHandleType.Pinned);
-                payload.AddImage(handle.AddrOfPinnedObject(), image.width, image.height);
-                handle.Free();
+                var jpegData = ImageConversion.EncodeToJPG(image); // Faster than PNG #85
+                payload.AddImage(jpegData, jpegData.Length);
             }
             else
                 Debug.LogError("NatShare Error: Cannot add non-readable texture to payload");
@@ -59,8 +57,10 @@ namespace NatSuite.Sharing.Internal {
         private static void OnCompletion (IntPtr context, bool success) {
             var handle = (GCHandle)context;
             var commitTask = handle.Target as TaskCompletionSource<bool>;
-            handle.Free();
-            commitTask.SetResult(success);
+            // iOS can invoke this callback more than once, so be cautious :/
+            if (handle.IsAllocated)
+                handle.Free();
+            commitTask?.SetResult(success);
         }
         #endregion
     }

@@ -8,15 +8,33 @@ android {
         minSdkVersion 22
         versionCode 1
         versionName "1.0"
+        externalNativeBuild {
+            cmake {
+                abiFilters "arm64-v8a", "armeabi-v7a"
+                cppFlags "-std=c++11"
+            }
+        }
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+
     lintOptions {
         abortOnError false
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
     }
 }
 
@@ -26,8 +44,9 @@ dependencies {
 }
 
 task copyToUnity(type: Copy) {
-    from "build/outputs/aar/NatShare-release.aar"
-    into "../../Assets/NatShare/Plugins/Android"
+    from 'build/outputs/aar/NatShare-release.aar'
+    into '../../Assets/NatSuite/Plugins/Android'
+    rename '(.+)-release(.+)', '$1$2'
 }
 
 assemble.finalizedBy (copyToUnity)

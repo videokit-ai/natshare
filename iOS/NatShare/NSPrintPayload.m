@@ -21,14 +21,14 @@
 @synthesize printInfo;
 @synthesize items;
 
-- (instancetype) initWithGreyscale:(bool) greyscale landscape:(bool) landscape andCompletionHandler:(CompletionBlock) completionHandler {
+- (instancetype) initWithColor:(bool) color landscape:(bool) landscape andCompletionHandler:(CompletionBlock) completionHandler {
     self = super.init;
     // Setup state
     self.completionHandler = completionHandler;
     self.printInfo = UIPrintInfo.printInfo;
     self.items = NSMutableArray.array;
     // Set print options
-    printInfo.outputType = greyscale ? UIPrintInfoOutputPhotoGrayscale : UIPrintInfoOutputGeneral;
+    printInfo.outputType = color ? UIPrintInfoOutputGeneral : UIPrintInfoOutputPhotoGrayscale;
     printInfo.orientation = landscape ? UIPrintInfoOrientationLandscape : UIPrintInfoOrientationPortrait;
     return self;
 }
@@ -48,10 +48,8 @@
     printController.printInfo = printInfo;
     printController.printingItems = items;
     [printController presentAnimated:true completionHandler:^(UIPrintInteractionController* _, BOOL completed, NSError* error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (completionHandler)
-                completionHandler(completed);
-        });
+        if (completionHandler)
+            completionHandler(completed);
     }];
 }
 

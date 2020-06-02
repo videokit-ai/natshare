@@ -18,7 +18,7 @@
 		886F16372082484F00C3FA2D /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "$(PROJECT_DIR)/../Assets/NatShare/Plugins/iOS";
+			dstPath = "$(PROJECT_DIR)/../Assets/NatSuite/Plugins/iOS";
 			dstSubfolderSpec = 0;
 			files = (
 				888F3F4A2084E2900019E011 /* libNatShare.a in CopyFiles */,
@@ -37,6 +37,7 @@
 		88A73C5D22FCFED0002A9DC9 /* NSSharePayload.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSSharePayload.m; sourceTree = "<group>"; };
 		88A73C5F22FCFF04002A9DC9 /* NSSavePayload.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSSavePayload.m; sourceTree = "<group>"; };
 		88A73C6122FD0094002A9DC9 /* Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Bridge.m; sourceTree = "<group>"; };
+		88E0BE242478373300CBDDCD /* NatShare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NatShare.h; path = ../../C/NatShare.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +71,7 @@
 		886F163B2082485000C3FA2D /* NatShare */ = {
 			isa = PBXGroup;
 			children = (
+				88E0BE242478373300CBDDCD /* NatShare.h */,
 				88A73C5C22FCFED0002A9DC9 /* NSPayload.h */,
 				88A73C5D22FCFED0002A9DC9 /* NSSharePayload.m */,
 				88A73C5F22FCFF04002A9DC9 /* NSSavePayload.m */,
