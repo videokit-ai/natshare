@@ -1,4 +1,5 @@
 ## NatShare 1.2.3
++ Moved documentation [online](http://docs.natsuite.io/natshare).
 + Fixed compiler errors when building with IL2CPP backend on Android.
 + Fixed "No apps can perform this action" error when sharing text on Android.
 + Reduced time taken when adding images to payloads.
