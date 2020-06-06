@@ -25,13 +25,13 @@ namespace NatSuite.Sharing {
         ISharePayload AddImage (Texture2D image);
 
         /// <summary>
-        /// Add media to the payload.
+        /// Add a media file to the payload.
         /// </summary>
-        /// <param name="path">Path to local media file to be shared.</param>
+        /// <param name="path">Path to media file to be shared.</param>
         ISharePayload AddMedia (string path);
 
         /// <summary>
-        /// Commit the payload and return whether payload was successfully shared.
+        /// Commit the payload and return the success value.
         /// </summary>
         Task<bool> Commit ();
     }

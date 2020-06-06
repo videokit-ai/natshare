@@ -10,7 +10,7 @@ namespace NatSuite.Sharing {
     using Internal;
 
     /// <summary>
-    /// A payload for sharing to available social services.
+    /// Payload for sharing to available social services.
     /// </summary>
     public sealed class SharePayload : ISharePayload {
 
@@ -39,16 +39,16 @@ namespace NatSuite.Sharing {
         }
 
         /// <summary>
-        /// Add media to the payload
+        /// Add a media file to the payload
         /// </summary>
-        /// <param name="path">Path to local media file to be shared.</param>
+        /// <param name="path">Path to media file to be shared.</param>
         public ISharePayload AddMedia (string path) {
             payload.AddMedia(path);
             return this;
         }
 
         /// <summary>
-        /// Commit the payload and return whether payload was successfully shared.
+        /// Commit the payload and return the success value.
         /// </summary>
         public Task<bool> Commit () => payload.Commit();
         #endregion

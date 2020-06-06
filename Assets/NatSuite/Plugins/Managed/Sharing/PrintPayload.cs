@@ -10,7 +10,7 @@ namespace NatSuite.Sharing {
     using Internal;
 
     /// <summary>
-    /// EXPERIMENTAL. A payload for printing media.
+    /// EXPERIMENTAL. Payload for printing media.
     /// </summary>
     public sealed class PrintPayload : ISharePayload {
 
@@ -34,23 +34,23 @@ namespace NatSuite.Sharing {
         /// Add an image to the payload.
         /// Note that the image MUST be readable.
         /// </summary>
-        /// <param name="image">Image to be added to the gallery.</param>
+        /// <param name="image">Image to be printed.</param>
         public ISharePayload AddImage (Texture2D image) {
             payload.AddImage(image);
             return this;
         }
 
         /// <summary>
-        /// Add media to the payload.
+        /// Add an image file to the payload.
         /// </summary>
-        /// <param name="path">Path to local media file to be shared.</param>
+        /// <param name="path">Path to image file to be printed.</param>
         public ISharePayload AddMedia (string uri) {
             payload.AddMedia(uri);
             return this;
         }
 
         /// <summary>
-        /// Commit the payload and return whether payload was successfully shared.
+        /// Commit the payload and return the success value.
         /// </summary>
         public Task<bool> Commit () => payload.Commit();
         #endregion
