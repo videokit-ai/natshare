@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.ParcelFileDescriptor;
@@ -57,6 +58,7 @@ public final class SavePayload implements Payload {
     @Override
     public void commit () {
         final HandlerThread commitThread = new HandlerThread("SavePayload");
+        final String relativePath = Environment.DIRECTORY_DCIM + File.pathSeparator + album;
         commitThread.start();
         new Handler(commitThread.getLooper()).post(() -> {
             try {
@@ -68,7 +70,7 @@ public final class SavePayload implements Payload {
                     values.put(MediaStore.MediaColumns.DATE_ADDED, System.currentTimeMillis() / 1e+3);
                     values.put(MediaStore.MediaColumns.DATE_TAKEN, System.currentTimeMillis());
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
-                        values.put(MediaStore.MediaColumns.RELATIVE_PATH, album);
+                        values.put(MediaStore.MediaColumns.RELATIVE_PATH, relativePath);
                     Uri url = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                     OutputStream stream = resolver.openOutputStream(url);
                     stream.write(jpegData);
@@ -84,7 +86,7 @@ public final class SavePayload implements Payload {
                     values.put(MediaStore.MediaColumns.DATE_ADDED, System.currentTimeMillis() / 1e+3);
                     values.put(MediaStore.MediaColumns.DATE_TAKEN, System.currentTimeMillis());
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
-                        values.put(MediaStore.MediaColumns.RELATIVE_PATH, album);
+                        values.put(MediaStore.MediaColumns.RELATIVE_PATH, relativePath);
                     // Copy file
                     Uri contentURI = mime.startsWith("image") ? MediaStore.Images.Media.EXTERNAL_CONTENT_URI : MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
                     Uri url = resolver.insert(contentURI, values);

@@ -21,8 +21,8 @@ namespace NatSuite.Tests {
             var videoPath = Path.Combine(basePath, "video.mp4");
             // Share
             var result = await new SharePayload()
-                .AddText("Sharing is caring!")
-                //.AddImage(screenshot)
+                //.AddText("Sharing is caring!")
+                .AddImage(screenshot)
                 //.AddMedia(videoPath)
                 .Commit();
             Debug.Log($"Successfully shared items: {result}");
