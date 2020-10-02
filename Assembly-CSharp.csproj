@@ -36,12 +36,12 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\NatSuite\Plugins\Managed\Sharing\ISharePayload.cs" />
-     <Compile Include="Assets\NatSuite\Plugins\Managed\Sharing\Internal\Bridge.cs" />
-     <Compile Include="Assets\NatSuite\Plugins\Managed\Sharing\Internal\NativePayload.cs" />
-     <Compile Include="Assets\NatSuite\Plugins\Managed\Sharing\PrintPayload.cs" />
-     <Compile Include="Assets\NatSuite\Plugins\Managed\Sharing\SavePayload.cs" />
-     <Compile Include="Assets\NatSuite\Plugins\Managed\Sharing\SharePayload.cs" />
+     <Compile Include="Assets\NatSuite\NatShare\Plugins\Managed\ISharePayload.cs" />
+     <Compile Include="Assets\NatSuite\NatShare\Plugins\Managed\Internal\Bridge.cs" />
+     <Compile Include="Assets\NatSuite\NatShare\Plugins\Managed\Internal\NativePayload.cs" />
+     <Compile Include="Assets\NatSuite\NatShare\Plugins\Managed\PrintPayload.cs" />
+     <Compile Include="Assets\NatSuite\NatShare\Plugins\Managed\SavePayload.cs" />
+     <Compile Include="Assets\NatSuite\NatShare\Plugins\Managed\SharePayload.cs" />
      <Compile Include="Assets\Tests\SaveTest.cs" />
      <Compile Include="Assets\Tests\ShareTest.cs" />
     <Reference Include="UnityEngine">
