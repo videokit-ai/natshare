@@ -10,7 +10,6 @@
 
 @interface NSSharePayload ()
 @property UIViewController* sourceViewController;
-@property CompletionBlock completionHandler;
 @property NSMutableArray* payload;
 @end
 
@@ -18,13 +17,11 @@
 @implementation NSSharePayload
 
 @synthesize sourceViewController;
-@synthesize completionHandler;
 @synthesize payload;
 
-- (instancetype) initWithSourceViewController:(UIViewController*) sourceViewController andCompletionHandler:(CompletionBlock) completionHandler {
+- (instancetype) initWithSourceViewController:(UIViewController*) sourceViewController {
     self = super.init;
     self.sourceViewController = sourceViewController;
-    self.completionHandler = completionHandler;
     self.payload = NSMutableArray.array;
     return self;
 }
@@ -41,17 +38,19 @@
     [payload addObject:url];
 }
 
-- (void) commit {
+- (void) commitWithHandler:(NSShareCompletionBlock) completionHandler {
     // Present share view
     UIActivityViewController* shareController = [UIActivityViewController.alloc initWithActivityItems:payload applicationActivities:nil];
-    shareController.modalPresentationStyle = UIModalPresentationPopover;
-    shareController.popoverPresentationController.sourceView = sourceViewController.view;
-    //shareController.view.translatesAutoresizingMaskIntoConstraints = NO;
-    [shareController popoverPresentationController].sourceRect=CGRectMake(0, 200, 768, 20); // Workaround for iPads complaining about unsatisfied constraints on iPadOS 13
-    [shareController setCompletionWithItemsHandler:^(UIActivityType activityType, BOOL completed, NSArray* returnedItems, NSError* activityError) {
+    shareController.completionWithItemsHandler = ^(UIActivityType activityType, BOOL completed, NSArray* returnedItems, NSError* activityError) {
         if (completionHandler)
             completionHandler(completed);
-    }];
+    };
+    /*
+    shareController.modalPresentationStyle = UIModalPresentationPopover;
+    shareController.popoverPresentationController.sourceView = sourceViewController.view;
+    shareController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    shareController.popoverPresentationController.sourceRect = CGRectMake(0, 200, 768, 20); // Workaround for iPads complaining about unsatisfied constraints on iPadOS 13
+     */
     [sourceViewController presentViewController:shareController animated:YES completion:nil];
 }
 

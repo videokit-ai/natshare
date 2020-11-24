@@ -9,35 +9,35 @@
 @import Foundation;
 @import UIKit;
 
-typedef void (^CompletionBlock) (bool success);
+typedef void (^NSShareCompletionBlock) (bool success);
 
 @protocol NSPayload <NSObject>
 - (void) addText:(nonnull NSString*) text;
 - (void) addImage:(nonnull UIImage*) image;
 - (void) addMedia:(nonnull NSURL*) url;
-- (void) commit;
+- (void) commitWithHandler:(NSShareCompletionBlock _Nullable) completionHandler;
 @end
 
 @interface NSSharePayload : NSObject <NSPayload>
-- (nonnull instancetype) initWithSourceViewController:(nonnull UIViewController*) sourceViewController andCompletionHandler:(nullable CompletionBlock) completionHandler;
+- (nonnull instancetype) initWithSourceViewController:(nonnull UIViewController*) sourceViewController;
 - (void) addText:(nonnull NSString*) text;
 - (void) addImage:(nonnull UIImage*) image;
 - (void) addMedia:(nonnull NSURL*) url;
-- (void) commit;
+- (void) commitWithHandler:(NSShareCompletionBlock _Nullable) completionHandler;
 @end
 
 
 @interface NSSavePayload : NSObject <NSPayload>
-- (nonnull instancetype) initWithAlbum:(nullable NSString*) album andCompletionHandler:(nullable CompletionBlock) completionHandler;
+- (nonnull instancetype) initWithAlbum:(nullable NSString*) album;
 - (void) addImage:(nonnull UIImage*) image;
 - (void) addMedia:(nonnull NSURL*) url;
-- (void) commit;
+- (void) commitWithHandler:(NSShareCompletionBlock _Nullable) completionHandler;
 @end
 
 @interface NSPrintPayload : NSObject <NSPayload>
-- (nonnull instancetype) initWithColor:(bool) color landscape:(bool) landscape andCompletionHandler:(nullable CompletionBlock) completionHandler;
+- (nonnull instancetype) initWithColor:(bool) color landscape:(bool) landscape;
 - (void) addText:(nonnull NSString*) text;
 - (void) addImage:(nonnull UIImage*) image;
 - (void) addMedia:(nonnull NSURL*) url;
-- (void) commit;
+- (void) commitWithHandler:(NSShareCompletionBlock _Nullable) completionHandler;
 @end

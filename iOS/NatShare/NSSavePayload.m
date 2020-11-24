@@ -12,7 +12,6 @@
 
 @interface NSSavePayload ()
 @property NSString* album;
-@property CompletionBlock completionHandler;
 @property NSMutableArray<UIImage*>* images;
 @property NSMutableArray<NSURL*>* media;
 @end
@@ -21,14 +20,12 @@
 @implementation NSSavePayload
 
 @synthesize album;
-@synthesize completionHandler;
 @synthesize images;
 @synthesize media;
 
-- (instancetype) initWithAlbum:(NSString*) album andCompletionHandler:(CompletionBlock) completionHandler {
+- (instancetype) initWithAlbum:(NSString*) album {
     self = super.init;
     self.album = album;
-    self.completionHandler = completionHandler;
     self.images = NSMutableArray.array;
     self.media = NSMutableArray.array;
     return self;
@@ -44,7 +41,7 @@
     [media addObject:uri];
 }
 
-- (void) commit {
+- (void) commitWithHandler:(NSShareCompletionBlock) completionHandler {
     // Request permissions if not determined // We need to block until user decides // #69
     if (PHPhotoLibrary.authorizationStatus == PHAuthorizationStatusNotDetermined) {
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);

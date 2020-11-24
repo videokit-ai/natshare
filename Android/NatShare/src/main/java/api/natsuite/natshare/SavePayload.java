@@ -27,19 +27,17 @@ import java.util.ArrayList;
 public final class SavePayload implements Payload {
 
     private final String album;
-    private final Callback completionHandler;
     private final ArrayList<byte[]> images;
     private final ArrayList<File> media;
 
-    public SavePayload (String album, Callback completionHandler) {
+    public SavePayload (String album) {
         this.album = album;
-        this.completionHandler = completionHandler;
         this.images = new ArrayList<>();
         this.media = new ArrayList<>();
     }
 
     @Override
-    public void addText (String text) { }
+    public void addText (final String text) { }
 
     @Override
     public void addImage (final ByteBuffer jpegData) {
@@ -56,9 +54,9 @@ public final class SavePayload implements Payload {
     }
 
     @Override
-    public void commit () {
+    public void commit (final Callback completionHandler) {
         final HandlerThread commitThread = new HandlerThread("SavePayload");
-        final String relativePath = Environment.DIRECTORY_DCIM + File.pathSeparator + album;
+        final String relativePath = album != null ? Environment.DIRECTORY_DCIM + "/" + album : null;
         commitThread.start();
         new Handler(commitThread.getLooper()).post(() -> {
             try {
@@ -69,7 +67,7 @@ public final class SavePayload implements Payload {
                     values.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
                     values.put(MediaStore.MediaColumns.DATE_ADDED, System.currentTimeMillis() / 1e+3);
                     values.put(MediaStore.MediaColumns.DATE_TAKEN, System.currentTimeMillis());
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && relativePath != null)
                         values.put(MediaStore.MediaColumns.RELATIVE_PATH, relativePath);
                     Uri url = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                     OutputStream stream = resolver.openOutputStream(url);
@@ -85,7 +83,7 @@ public final class SavePayload implements Payload {
                     values.put(MediaStore.MediaColumns.MIME_TYPE, mime);
                     values.put(MediaStore.MediaColumns.DATE_ADDED, System.currentTimeMillis() / 1e+3);
                     values.put(MediaStore.MediaColumns.DATE_TAKEN, System.currentTimeMillis());
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && relativePath != null)
                         values.put(MediaStore.MediaColumns.RELATIVE_PATH, relativePath);
                     // Copy file
                     Uri contentURI = mime.startsWith("image") ? MediaStore.Images.Media.EXTERNAL_CONTENT_URI : MediaStore.Video.Media.EXTERNAL_CONTENT_URI;

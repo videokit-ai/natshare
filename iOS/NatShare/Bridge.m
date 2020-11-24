@@ -10,28 +10,19 @@
 #import "NSPayload.h"
 #import "UnityInterface.h"
 
-void* NSCreateSharePayload (NSShareHandler completionHandler, void* context) {
-    id<NSPayload> payload = [NSSharePayload.alloc initWithSourceViewController:UnityGetGLViewController() andCompletionHandler:^(bool success) {
-        if (completionHandler)
-            completionHandler(context, success);
-    }];
+void* NSCreateSharePayload (void) {
+    id<NSPayload> payload = [NSSharePayload.alloc initWithSourceViewController:UnityGetGLViewController()];
     return (__bridge_retained void*)payload;
 }
 
-void* NSCreateSavePayload (const char* album, NSShareHandler completionHandler, void* context) {
+void* NSCreateSavePayload (const char* album) {
     NSString* albumStr = album ? [NSString stringWithUTF8String:album] : nil;
-    id<NSPayload> payload = [NSSavePayload.alloc initWithAlbum:albumStr andCompletionHandler:^(bool success) {
-        if (completionHandler)
-            completionHandler(context, success);
-    }];
+    id<NSPayload> payload = [NSSavePayload.alloc initWithAlbum:albumStr];
     return (__bridge_retained void*)payload;
 }
 
-void* NSCreatePrintPayload (bool color, bool landscape, NSShareHandler completionHandler, void* context) {
-    id<NSPayload> payload = [NSPrintPayload.alloc initWithColor:color landscape:landscape andCompletionHandler:^(bool success) {
-        if (completionHandler)
-            completionHandler(context, success);
-    }];
+void* NSCreatePrintPayload (bool color, bool landscape) {
+    id<NSPayload> payload = [NSPrintPayload.alloc initWithColor:color landscape:landscape];
     return (__bridge_retained void*)payload;
 }
 
@@ -51,8 +42,11 @@ void NSAddMedia (void* payloadPtr, const char* path) {
     [payload addMedia:[NSURL fileURLWithPath:[NSString stringWithUTF8String:path]]];
 }
 
-void NSCommit (void* payloadPtr) {
+void NSCommit (void* payloadPtr, NSShareHandler completionHandler, void* context) {
     id<NSPayload> payload = (__bridge_transfer id<NSPayload>)payloadPtr;
-    [payload commit];
+    [payload commitWithHandler:^(bool success) {
+        if (completionHandler)
+            completionHandler(context, success);
+    }];
     payload = nil;
 }

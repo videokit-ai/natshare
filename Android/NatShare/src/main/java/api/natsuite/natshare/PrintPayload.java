@@ -3,10 +3,8 @@ package api.natsuite.natshare;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-
 import androidx.print.PrintHelper;
 import com.unity3d.player.UnityPlayer;
-
 import java.io.File;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -18,15 +16,13 @@ import java.util.ArrayList;
 public final class PrintPayload implements Payload {
 
     private final PrintHelper printHelper;
-    private final Callback completionHandler;
     private final ArrayList<Bitmap> images;
     private final ArrayList<Uri> files;
     private int remaining;
 
-    public PrintPayload (boolean color, boolean landscape, Callback completionHandler) {
+    public PrintPayload (boolean color, boolean landscape) {
         // Init state
         this.printHelper = new PrintHelper(UnityPlayer.currentActivity);
-        this.completionHandler = completionHandler;
         this.images = new ArrayList<>();
         this.files = new ArrayList<>();
         // Configure printing
@@ -35,10 +31,10 @@ public final class PrintPayload implements Payload {
     }
 
     @Override
-    public void addText (String text) { } // Not implemented
+    public void addText (final String text) { } // Not implemented
 
     @Override
-    public void addImage (ByteBuffer jpegData) {
+    public void addImage (final ByteBuffer jpegData) {
         // Read into managed memory
         final byte[] buffer = new byte[jpegData.capacity()];
         jpegData.clear();
@@ -49,12 +45,14 @@ public final class PrintPayload implements Payload {
     }
 
     @Override
-    public void addMedia (String uri) {
-        files.add(Uri.fromFile(new File(uri)));
+    public void addMedia (final String path) {
+        File file = new File(path);
+        if (file.exists())
+            files.add(Uri.fromFile(file));
     }
 
     @Override
-    public void commit () {
+    public void commit (final Callback completionHandler) {
         // Check if supported
         if (!printHelper.systemSupportsPrint()) {
             completionHandler.onCompletion(false);

@@ -20,12 +20,10 @@ namespace NatSuite.Tests {
             var basePath = Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.streamingAssetsPath;
             var videoPath = Path.Combine(basePath, "video.mp4");
             // Share
-            var result = await new SharePayload()
-                //.AddText("Sharing is caring!")
-                .AddImage(screenshot)
-                //.AddMedia(videoPath)
-                .Commit();
-            Debug.Log($"Successfully shared items: {result}");
+            var payload = new SharePayload();
+            payload.AddImage(screenshot);
+            var success = await payload.Commit();
+            Debug.Log($"Successfully shared items: {success}");
         }
     }
 }

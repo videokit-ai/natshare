@@ -1,3 +1,9 @@
+## NatShare 1.2.4
++ Added `ISharePayload.AddImage` overload which takes in a raw pixel buffer.
++ Fixed `SavePayload` with album name crashing on Android Q+.
++ Removed method chaining support from all payloads. Use multiple invocations instead.
++ NatShare now requires Android API level 24+.
+
 ## NatShare 1.2.3
 + Moved documentation [online](http://docs.natsuite.io/natshare).
 + Fixed compiler errors when building with IL2CPP backend on Android.

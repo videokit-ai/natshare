@@ -20,11 +20,11 @@ namespace NatSuite.Sharing.Internal {
         public delegate void CompletionHandler (IntPtr context, bool success);
 
         [DllImport(Assembly, EntryPoint = @"NSCreateSharePayload")]
-        public static extern IntPtr CreateSharePayload (CompletionHandler completionHandler, IntPtr context);
+        public static extern IntPtr CreateSharePayload ();
         [DllImport(Assembly, EntryPoint = @"NSCreateSavePayload")]
-        public static extern IntPtr CreateSavePayload (string album, CompletionHandler completionHandler, IntPtr context);
+        public static extern IntPtr CreateSavePayload (string album);
         [DllImport(Assembly, EntryPoint = @"NSCreatePrintPayload")]
-        public static extern IntPtr CreatePrintPayload (bool color, bool landscape, CompletionHandler completionHandler, IntPtr context);
+        public static extern IntPtr CreatePrintPayload (bool color, bool landscape);
         [DllImport(Assembly, EntryPoint = @"NSAddText")]
         public static extern void AddText (this IntPtr payload, string text);
         [DllImport(Assembly, EntryPoint = @"NSAddImage")]
@@ -32,6 +32,6 @@ namespace NatSuite.Sharing.Internal {
         [DllImport(Assembly, EntryPoint = @"NSAddMedia")]
         public static extern void AddMedia (this IntPtr payload, string uri);
         [DllImport(Assembly, EntryPoint = @"NSCommit")]
-        public static extern void Commit (this IntPtr payload);
+        public static extern void Commit (this IntPtr payload, CompletionHandler completionHandler, IntPtr context);
     }
 }
