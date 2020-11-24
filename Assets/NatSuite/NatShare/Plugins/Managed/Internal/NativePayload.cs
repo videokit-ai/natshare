@@ -18,7 +18,7 @@ namespace NatSuite.Sharing.Internal {
         /// Add text to the payload.
         /// </summary>
         /// <param name="text">Plain text to add.</param>
-        public virtual void AddText (string text) => payload.AddText(text);
+        public virtual void AddText (string text) => payload?.AddText(text);
 
         /// <summary>
         /// Add an image to the payload from a pixel buffer.
@@ -44,7 +44,7 @@ namespace NatSuite.Sharing.Internal {
         public virtual void AddImage (Texture2D image) {
             if (image.isReadable) {
                 var jpegData = ImageConversion.EncodeToJPG(image); // Faster than PNG #85
-                payload.AddImage(jpegData, jpegData.Length);
+                payload?.AddImage(jpegData, jpegData.Length);
             }
             else
                 Debug.LogError("NatShare Error: Cannot add non-readable texture to payload");
@@ -54,16 +54,20 @@ namespace NatSuite.Sharing.Internal {
         /// Add a media file to the payload.
         /// </summary>
         /// <param name="path">Path to media file to add.</param>
-        public virtual void AddMedia (string uri) => payload.AddMedia(uri);
+        public virtual void AddMedia (string uri) => payload?.AddMedia(uri);
 
         /// <summary>
         /// Commit the payload.
         /// </summary>
         /// <returns>Whether the sharing action was successfully completed.</returns>
         public virtual Task<bool> Commit () {
+            // Check
+            if (payload == null)
+                return Task.FromResult(false);
+            // Commit
             var commitTask = new TaskCompletionSource<bool>();
             var handle = GCHandle.Alloc(commitTask, GCHandleType.Normal);
-            payload.Commit(OnCompletion, (IntPtr)handle);
+            payload?.Commit(OnCompletion, (IntPtr)handle);
             return commitTask.Task;
         }
         #endregion
@@ -71,9 +75,10 @@ namespace NatSuite.Sharing.Internal {
 
         #region --Operations--
 
-        private readonly IntPtr payload;
+        private readonly IntPtr? payload;
+        protected static bool Supported => Application.platform == RuntimePlatform.IPhonePlayer || Application.platform ==  RuntimePlatform.Android;
 
-        protected NativePayload (IntPtr payload) => this.payload = payload;
+        protected NativePayload (IntPtr? payload) => this.payload = payload;
 
         [MonoPInvokeCallback(typeof(Bridge.CompletionHandler))]
         private static void OnCompletion (IntPtr context, bool success) {

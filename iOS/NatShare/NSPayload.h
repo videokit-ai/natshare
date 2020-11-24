@@ -15,7 +15,7 @@ typedef void (^NSShareCompletionBlock) (bool success);
 - (void) addText:(nonnull NSString*) text;
 - (void) addImage:(nonnull UIImage*) image;
 - (void) addMedia:(nonnull NSURL*) url;
-- (void) commitWithHandler:(NSShareCompletionBlock _Nullable) completionHandler;
+- (void) commitWithCompletionHandler:(NSShareCompletionBlock _Nullable) completionHandler;
 @end
 
 @interface NSSharePayload : NSObject <NSPayload>
@@ -23,7 +23,7 @@ typedef void (^NSShareCompletionBlock) (bool success);
 - (void) addText:(nonnull NSString*) text;
 - (void) addImage:(nonnull UIImage*) image;
 - (void) addMedia:(nonnull NSURL*) url;
-- (void) commitWithHandler:(NSShareCompletionBlock _Nullable) completionHandler;
+- (void) commitWithCompletionHandler:(NSShareCompletionBlock _Nullable) completionHandler;
 @end
 
 
@@ -31,7 +31,7 @@ typedef void (^NSShareCompletionBlock) (bool success);
 - (nonnull instancetype) initWithAlbum:(nullable NSString*) album;
 - (void) addImage:(nonnull UIImage*) image;
 - (void) addMedia:(nonnull NSURL*) url;
-- (void) commitWithHandler:(NSShareCompletionBlock _Nullable) completionHandler;
+- (void) commitWithCompletionHandler:(NSShareCompletionBlock _Nullable) completionHandler;
 @end
 
 @interface NSPrintPayload : NSObject <NSPayload>
@@ -39,5 +39,5 @@ typedef void (^NSShareCompletionBlock) (bool success);
 - (void) addText:(nonnull NSString*) text;
 - (void) addImage:(nonnull UIImage*) image;
 - (void) addMedia:(nonnull NSURL*) url;
-- (void) commitWithHandler:(NSShareCompletionBlock _Nullable) completionHandler;
+- (void) commitWithCompletionHandler:(NSShareCompletionBlock _Nullable) completionHandler;
 @end

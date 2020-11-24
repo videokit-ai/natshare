@@ -5,6 +5,7 @@
 
 namespace NatSuite.Sharing {
 
+    using System;
     using Internal;
 
     /// <summary>
@@ -17,7 +18,7 @@ namespace NatSuite.Sharing {
         /// Create a save payload.
         /// </summary>
         /// <param name="album">Optional. Album name in which contents should be saved.</param>
-        public SavePayload (string album = default) : base(Bridge.CreateSavePayload(album)) { }
+        public SavePayload (string album = default) : base(Supported ? (IntPtr?)Bridge.CreateSavePayload(album) : null) { }
 
         /// <summary>
         /// Nop. No concept as saving text to the camera roll.

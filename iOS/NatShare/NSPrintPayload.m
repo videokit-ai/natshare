@@ -40,7 +40,7 @@
     [items addObject:url];
 }
 
-- (void) commitWithHandler:(NSShareCompletionBlock) completionHandler {
+- (void) commitWithCompletionHandler:(NSShareCompletionBlock) completionHandler {
     UIPrintInteractionController* printController = UIPrintInteractionController.sharedPrintController;
     printController.printInfo = printInfo;
     printController.printingItems = items;

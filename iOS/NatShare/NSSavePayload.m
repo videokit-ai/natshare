@@ -41,12 +41,37 @@
     [media addObject:uri];
 }
 
-- (void) commitWithHandler:(NSShareCompletionBlock) completionHandler {
-    // Request permissions if not determined // We need to block until user decides // #69
-    if (PHPhotoLibrary.authorizationStatus == PHAuthorizationStatusNotDetermined) {
-        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) { dispatch_semaphore_signal(semaphore); }];
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+- (void) commitWithCompletionHandler:(NSShareCompletionBlock) completionHandler {
+    // Request write-only permissions on iOS 14 or newer
+    if (@available(iOS 14, *)) {
+        PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelAddOnly];
+        if (status == PHAuthorizationStatusNotDetermined)
+            [PHPhotoLibrary requestAuthorizationForAccessLevel:PHAccessLevelAddOnly handler:^(PHAuthorizationStatus status) {
+                status = status == PHAuthorizationStatusLimited ? PHAuthorizationStatusAuthorized : status; // CHECK
+                [self saveItemsWithAuthorizationStatus:status andCompletionHandler:completionHandler];
+            }];
+        else
+            [self saveItemsWithAuthorizationStatus:status andCompletionHandler:completionHandler];
+    }
+    // Request permissions on iOS 13 or older
+    else {
+        PHAuthorizationStatus status = PHPhotoLibrary.authorizationStatus;
+        if (status == PHAuthorizationStatusNotDetermined)
+            [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+                [self saveItemsWithAuthorizationStatus:status andCompletionHandler:completionHandler];
+            }];
+        else
+            [self saveItemsWithAuthorizationStatus:status andCompletionHandler:completionHandler];
+    }    
+}
+
+- (void) saveItemsWithAuthorizationStatus:(PHAuthorizationStatus) status andCompletionHandler:(NSShareCompletionBlock) completionHandler {
+    // Check auth
+    if (status != PHAuthorizationStatusAuthorized) { // CHECK // Should this also include limited auth?
+        NSLog(@"NatShare Error: Failed to save media because user did not grant authorization: %li", (long)status);
+        if (completionHandler)
+            completionHandler(false);
+        return;
     }
     // Save
     [PHPhotoLibrary.sharedPhotoLibrary performChanges:^{
@@ -62,7 +87,7 @@
             else if (UTTypeConformsTo(fileUTI, kUTTypeMovie))
                 [placeholders addObject:[PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:uri].placeholderForCreatedAsset];
             else
-                NSLog(@"NatShare Error: Failed to commit media at path '%@' to camera roll because media is neither image nor video", uri);
+                NSLog(@"NatShare Error: Failed to save media at path '%@' to camera roll because media is neither image nor video", uri);
         }
         // Add to album if applicable
         if (album)

@@ -5,6 +5,7 @@
 
 namespace NatSuite.Sharing {
 
+    using System;
     using Internal;
 
     /// <summary>
@@ -16,7 +17,7 @@ namespace NatSuite.Sharing {
         /// <summary>
         /// Create a share payload.
         /// </summary>
-        public SharePayload () : base(Bridge.CreateSharePayload()) { }
+        public SharePayload () : base(Supported ? (IntPtr?)Bridge.CreateSharePayload() : null) { }
         #endregion
     }
 }

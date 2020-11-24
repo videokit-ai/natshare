@@ -44,7 +44,7 @@ void NSAddMedia (void* payloadPtr, const char* path) {
 
 void NSCommit (void* payloadPtr, NSShareHandler completionHandler, void* context) {
     id<NSPayload> payload = (__bridge_transfer id<NSPayload>)payloadPtr;
-    [payload commitWithHandler:^(bool success) {
+    [payload commitWithCompletionHandler:^(bool success) {
         if (completionHandler)
             completionHandler(context, success);
     }];

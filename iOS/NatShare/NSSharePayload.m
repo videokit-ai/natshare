@@ -38,7 +38,7 @@
     [payload addObject:url];
 }
 
-- (void) commitWithHandler:(NSShareCompletionBlock) completionHandler {
+- (void) commitWithCompletionHandler:(NSShareCompletionBlock) completionHandler { // TEST // iPad
     // Present share view
     UIActivityViewController* shareController = [UIActivityViewController.alloc initWithActivityItems:payload applicationActivities:nil];
     shareController.completionWithItemsHandler = ^(UIActivityType activityType, BOOL completed, NSArray* returnedItems, NSError* activityError) {
