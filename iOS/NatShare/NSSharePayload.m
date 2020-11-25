@@ -38,19 +38,20 @@
     [payload addObject:url];
 }
 
-- (void) commitWithCompletionHandler:(NSShareCompletionBlock) completionHandler { // TEST // iPad
-    // Present share view
+- (void) commitWithCompletionHandler:(NSShareCompletionBlock) completionHandler {
+    // Create view
     UIActivityViewController* shareController = [UIActivityViewController.alloc initWithActivityItems:payload applicationActivities:nil];
+    shareController.modalPresentationStyle = UIModalPresentationPopover;
     shareController.completionWithItemsHandler = ^(UIActivityType activityType, BOOL completed, NSArray* returnedItems, NSError* activityError) {
         if (completionHandler)
             completionHandler(completed);
     };
-    /*
-    shareController.modalPresentationStyle = UIModalPresentationPopover;
-    shareController.popoverPresentationController.sourceView = sourceViewController.view;
-    shareController.view.translatesAutoresizingMaskIntoConstraints = NO;
-    shareController.popoverPresentationController.sourceRect = CGRectMake(0, 200, 768, 20); // Workaround for iPads complaining about unsatisfied constraints on iPadOS 13
-     */
+    // Present
+    CGSize sourceViewSize = sourceViewController.view.frame.size;
+    UIPopoverPresentationController* presentationController = shareController.popoverPresentationController;
+    presentationController.sourceView = sourceViewController.view;
+    presentationController.sourceRect = CGRectMake(sourceViewSize.width / 2, sourceViewSize.height / 2, 1, 1); // middle of screen
+    presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
     [sourceViewController presentViewController:shareController animated:YES completion:nil];
 }
 
