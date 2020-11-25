@@ -14,5 +14,5 @@ public interface Payload {
 
     void addMedia (String uri);
 
-    void commit ();
+    void commit (Callback completionHandler);
 }

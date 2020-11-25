@@ -20,11 +20,10 @@ namespace NatSuite.Tests {
             var basePath = Application.platform == RuntimePlatform.Android ? Application.persistentDataPath : Application.streamingAssetsPath;
             var videoPath = Path.Combine(basePath, "animation.gif");
             // Save to camera roll
-            var saved = await new SavePayload("NatShare")
-                .AddImage(screenshot)
-                //.AddMedia(videoPath)
-                .Commit();
-            Debug.Log($"Successfully saved items to camera roll: {saved}");
+            var payload = new SavePayload("NatShare");
+            payload.AddImage(screenshot);
+            var success = await payload.Commit();
+            Debug.Log($"Successfully saved items to camera roll: {success}");
         }
     }
 }

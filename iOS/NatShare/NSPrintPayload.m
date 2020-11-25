@@ -9,7 +9,6 @@
 #import "NSPayload.h"
 
 @interface NSPrintPayload ()
-@property CompletionBlock completionHandler;
 @property UIPrintInfo* printInfo;
 @property NSMutableArray* items;
 @end
@@ -17,14 +16,12 @@
 
 @implementation NSPrintPayload
 
-@synthesize completionHandler;
 @synthesize printInfo;
 @synthesize items;
 
-- (instancetype) initWithColor:(bool) color landscape:(bool) landscape andCompletionHandler:(CompletionBlock) completionHandler {
+- (instancetype) initWithColor:(bool) color landscape:(bool) landscape {
     self = super.init;
     // Setup state
-    self.completionHandler = completionHandler;
     self.printInfo = UIPrintInfo.printInfo;
     self.items = NSMutableArray.array;
     // Set print options
@@ -43,7 +40,7 @@
     [items addObject:url];
 }
 
-- (void) commit {
+- (void) commitWithCompletionHandler:(NSShareCompletionBlock) completionHandler {
     UIPrintInteractionController* printController = UIPrintInteractionController.sharedPrintController;
     printController.printInfo = printInfo;
     printController.printingItems = items;

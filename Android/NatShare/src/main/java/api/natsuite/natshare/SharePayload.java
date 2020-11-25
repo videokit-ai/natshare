@@ -26,20 +26,15 @@ import java.util.UUID;
 public final class SharePayload implements Payload {
 
     private final Intent intent;
-    private final Callback completionHandler;
     private final HandlerThread commitThread;
     private final Handler handler;
     private final ArrayList<Uri> uris;
     private final ArrayList<String> mimes;
-
     private static final String authority;
 
-    static { authority = UnityPlayer.currentActivity.getPackageName() + ".natshare"; }
-
-    public SharePayload (Callback completionHandler) {
+    public SharePayload () {
         // Create intent
         this.intent = new Intent();
-        this.completionHandler = completionHandler;
         this.uris = new ArrayList<>();
         this.mimes = new ArrayList<>();
         // Create handler
@@ -52,13 +47,13 @@ public final class SharePayload implements Payload {
     }
 
     @Override
-    public void addText (final String text) {
+    public synchronized void addText (final String text) {
         intent.putExtra(Intent.EXTRA_TEXT, text);
         mimes.add("text/plain");
     }
 
     @Override
-    public void addImage (final ByteBuffer jpegData) {
+    public synchronized void addImage (final ByteBuffer jpegData) { // CHECK
         // Read into managed memory
         final byte[] buffer = new byte[jpegData.limit()];
         jpegData.get(buffer);
@@ -86,8 +81,7 @@ public final class SharePayload implements Payload {
     }
 
     @Override
-    public void commit () {
-        // Check
+    public synchronized void commit (final Callback completionHandler) {
         handler.post(() -> {
             // Finalize intent
             intent.setAction(uris.size() > 1 ? Intent.ACTION_SEND_MULTIPLE : Intent.ACTION_SEND);
@@ -132,4 +126,6 @@ public final class SharePayload implements Payload {
         }
         return mediaTypes.size() > 1 ? "*/*" : mediaTypes.get(0) + "/*";
     }
+
+    static { authority = UnityPlayer.currentActivity.getPackageName() + ".natshare"; }
 }

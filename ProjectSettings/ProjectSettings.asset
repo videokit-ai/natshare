@@ -111,6 +111,8 @@ PlayerSettings:
   switchNVNShaderPoolsGranularity: 33554432
   switchNVNDefaultPoolsGranularity: 16777216
   switchNVNOtherPoolsGranularity: 16777216
+  stadiaPresentMode: 0
+  stadiaTargetFramerate: 0
   vulkanNumSwapchainBuffers: 3
   vulkanEnableSetSRGBWrite: 0
   m_SupportedAspectRatios:
@@ -164,10 +166,10 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: app.natsuite.natshare
-    iPhone: com.yusufolokoba.natshare10
+    iPhone: app.natsuite.natshare
   buildNumber: {}
   AndroidBundleVersionCode: 1
-  AndroidMinSdkVersion: 22
+  AndroidMinSdkVersion: 24
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
   aotOptions: 
@@ -182,7 +184,7 @@ PlayerSettings:
   StripUnusedMeshComponents: 0
   VertexChannelCompressionMask: 214
   iPhoneSdkVersion: 988
-  iOSTargetOSVersionString: 10.0
+  iOSTargetOSVersionString: 11.0
   tvOSSdkVersion: 0
   tvOSRequireExtendedGameController: 0
   tvOSTargetOSVersionString: 10.0
@@ -192,22 +194,6 @@ PlayerSettings:
   uIStatusBarHidden: 1
   uIExitOnSuspend: 0
   uIStatusBarStyle: 0
-  iPhoneSplashScreen: {fileID: 0}
-  iPhoneHighResSplashScreen: {fileID: 0}
-  iPhoneTallHighResSplashScreen: {fileID: 0}
-  iPhone47inSplashScreen: {fileID: 0}
-  iPhone55inPortraitSplashScreen: {fileID: 0}
-  iPhone55inLandscapeSplashScreen: {fileID: 0}
-  iPhone58inPortraitSplashScreen: {fileID: 0}
-  iPhone58inLandscapeSplashScreen: {fileID: 0}
-  iPadPortraitSplashScreen: {fileID: 0}
-  iPadHighResPortraitSplashScreen: {fileID: 0}
-  iPadLandscapeSplashScreen: {fileID: 0}
-  iPadHighResLandscapeSplashScreen: {fileID: 0}
-  iPhone65inPortraitSplashScreen: {fileID: 0}
-  iPhone65inLandscapeSplashScreen: {fileID: 0}
-  iPhone61inPortraitSplashScreen: {fileID: 0}
-  iPhone61inLandscapeSplashScreen: {fileID: 0}
   appleTVSplashScreen: {fileID: 0}
   appleTVSplashScreen2x: {fileID: 0}
   tvOSSmallIconLayers: []
@@ -648,7 +634,7 @@ PlayerSettings:
   webGLWasmStreaming: 0
   scriptingDefineSymbols: {}
   platformArchitecture:
-    iPhone: 2
+    iPhone: 1
   scriptingBackend: {}
   il2cppCompilerConfiguration: {}
   managedStrippingLevel: {}

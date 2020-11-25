@@ -1,1 +1,2 @@
 include ':NatShare', ':Unity'
+rootProject.name = "NatShare"

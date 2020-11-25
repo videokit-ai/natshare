@@ -14,66 +14,56 @@ static JNIEnv* GetEnv ();
 static jobject CreateCallback (JNIEnv* env, NSShareHandler completionHandler, void* context);
 
 
-#pragma region --NatCorder--
+#pragma region --NatShare--
 
-void* NSCreateSharePayload (NSShareHandler completionHandler, void* context) {
+void* NSCreateSharePayload () {
     // Get Java environment
     JNIEnv* env = GetEnv();
     if (!env)
         return nullptr;
-    // Create callback
-    jobject callback = completionHandler ? CreateCallback(env, completionHandler, context) : nullptr;
-    jclass clazz = env->FindClass("api/natsuite/natshare/SharePayload");
-    jmethodID constructor = env->GetMethodID(clazz, "<init>", "(Lapi/natsuite/natshare/Payload$Callback;)V");
     // Create payload
-    jobject object = env->NewObject(clazz, constructor, callback);
+    jclass clazz = env->FindClass("api/natsuite/natshare/SharePayload");
+    jmethodID constructor = env->GetMethodID(clazz, "<init>", "()V");
+    jobject object = env->NewObject(clazz, constructor);
     jobject payload = env->NewGlobalRef(object);
     // Release locals
-    if (callback)
-        env->DeleteLocalRef(callback);
     env->DeleteLocalRef(clazz);
     env->DeleteLocalRef(object);
     return static_cast<void*>(payload);
 }
 
-void* NSCreateSavePayload (const char* album, NSShareHandler completionHandler, void* context) {
+void* NSCreateSavePayload (const char* album) {
     // Get Java environment
     JNIEnv* env = GetEnv();
     if (!env)
         return nullptr;
     // Create callback
     jstring albumStr = album ? env->NewStringUTF(album) : nullptr;
-    jobject callback = completionHandler ? CreateCallback(env, completionHandler, context) : nullptr;
     jclass clazz = env->FindClass("api/natsuite/natshare/SavePayload");
-    jmethodID constructor = env->GetMethodID(clazz, "<init>", "(Ljava/lang/String;Lapi/natsuite/natshare/Payload$Callback;)V");
+    jmethodID constructor = env->GetMethodID(clazz, "<init>", "(Ljava/lang/String;)V");
     // Create payload
-    jobject object = env->NewObject(clazz, constructor, albumStr, callback);
+    jobject object = env->NewObject(clazz, constructor, albumStr);
     jobject payload = env->NewGlobalRef(object);
     // Release locals
     if (albumStr)
         env->DeleteLocalRef(albumStr);
-    if (callback)
-        env->DeleteLocalRef(callback);
     env->DeleteLocalRef(clazz);
     env->DeleteLocalRef(object);
     return static_cast<void*>(payload);
 }
 
-void* NSCreatePrintPayload (bool color, bool landscape, NSShareHandler completionHandler, void* context) {
+void* NSCreatePrintPayload (bool color, bool landscape) {
     // Get Java environment
     JNIEnv* env = GetEnv();
     if (!env)
         return nullptr;
     // Create callback
-    jobject callback = completionHandler ? CreateCallback(env, completionHandler, context) : nullptr;
     jclass clazz = env->FindClass("api/natsuite/natshare/PrintPayload");
-    jmethodID constructor = env->GetMethodID(clazz, "<init>", "(ZZLapi/natsuite/natshare/Payload$Callback;)V");
+    jmethodID constructor = env->GetMethodID(clazz, "<init>", "(ZZ)V");
     // Create payload
-    jobject object = env->NewObject(clazz, constructor, color, landscape, callback);
+    jobject object = env->NewObject(clazz, constructor, color, landscape);
     jobject payload = env->NewGlobalRef(object);
     // Release locals
-    if (callback)
-        env->DeleteLocalRef(callback);
     env->DeleteLocalRef(clazz);
     env->DeleteLocalRef(object);
     return static_cast<void*>(payload);
@@ -127,18 +117,21 @@ void NSAddMedia (void* payloadPtr, const char* pathPtr) {
     env->DeleteLocalRef(clazz);
 }
 
-void NSCommit (void* payloadPtr) {
+void NSCommit (void* payloadPtr, NSShareHandler completionHandler, void* context) {
     // Get Java environment
     JNIEnv* env = GetEnv();
     if (!env)
         return;
     // Invoke method
+    jobject callback = completionHandler ? CreateCallback(env, completionHandler, context) : nullptr;
     jobject payload = static_cast<jobject>(payloadPtr);
     jclass clazz = env->GetObjectClass(payload);
-    jmethodID method = env->GetMethodID(clazz, "commit", "()V");
-    env->CallVoidMethod(payload, method);
+    jmethodID method = env->GetMethodID(clazz, "commit", "(Lapi/natsuite/natshare/Payload$Callback;)V");
+    env->CallVoidMethod(payload, method, callback);
     // Release locals
     env->DeleteLocalRef(clazz);
+    if (callback)
+        env->DeleteLocalRef(callback);
 }
 #pragma endregion
 

@@ -36,15 +36,9 @@ typedef void (*NSShareHandler) (void* context, bool success);
  
  @discussion Create a payload for sharing media.
  
- @param completionHandler
- Completion handler to be invoked with the result of the sharing action. Can be `NULL`.
- 
- @param context
- User context passed to the completion handler. Can be `NULL`.
- 
  @returns Opaque pointer to created payload.
  */
-BRIDGE void* NSCreateSharePayload (NSShareHandler completionHandler, void* context);
+BRIDGE void* NSCreateSharePayload (void);
 
 /*!
  @function NSCreateSavePayload
@@ -56,15 +50,9 @@ BRIDGE void* NSCreateSharePayload (NSShareHandler completionHandler, void* conte
  @param album
  Album in which media should be saved. Pass `NULL` to save directly into camera roll.
  
- @param completionHandler
- Completion handler to be invoked with the result of the sharing action. Can be `NULL`.
- 
- @param context
- User context passed to the completion handler. Can be `NULL`.
- 
  @returns Opaque pointer to created payload.
  */
-BRIDGE void* NSCreateSavePayload (const char* album, NSShareHandler completionHandler, void* context);
+BRIDGE void* NSCreateSavePayload (const char* album);
 
 /*!
  @function NSCreatePrintPayload
@@ -79,15 +67,9 @@ BRIDGE void* NSCreateSavePayload (const char* album, NSShareHandler completionHa
  @param landscape
  Whether the images should be printed in landscape or portrait orientation.
  
- @param completionHandler
- Completion handler to be invoked with the result of the sharing action. Can be `NULL`.
- 
- @param context
- User context passed to the completion handler. Can be `NULL`.
- 
  @returns Opaque pointer to created payload.
  */
-BRIDGE void* NSCreatePrintPayload (bool color, bool landscape, NSShareHandler completionHandler, void* context);
+BRIDGE void* NSCreatePrintPayload (bool color, bool landscape);
 
 /*!
  @function NSAddText
@@ -147,5 +129,11 @@ BRIDGE void NSAddMedia (void* payload, const char* path);
  
  @param payload
  Opaque pointer to a payload.
+
+ @param completionHandler
+ Completion handler to be invoked with the result of the sharing action. Can be `NULL`.
+ 
+ @param context
+ User context passed to the completion handler. Can be `NULL`.
  */
-BRIDGE void NSCommit (void* payload);
+BRIDGE void NSCommit (void* payload, NSShareHandler completionHandler, void* context);
