@@ -26,7 +26,7 @@ namespace NatSuite.Sharing {
         /// <param name="pixelBuffer">Pixel buffer containing image to add.</param>
         /// <param name="width">Image width.</param>
         /// <param name="height">Image height.</param>
-        void AddImage<T> (T[] pixelBuffer, int width, int height) where T : struct;
+        void AddImage<T> (T[] pixelBuffer, int width, int height) where T : unmanaged;
 
         /// <summary>
         /// Add an image to the payload.

@@ -17,7 +17,7 @@ namespace NatSuite.Sharing {
         /// <summary>
         /// Create a share payload.
         /// </summary>
-        public SharePayload () : base(Supported ? (IntPtr?)Bridge.CreateSharePayload() : null) { }
+        public SharePayload () : base(Supported ? Bridge.CreateSharePayload() : IntPtr.Zero) { }
         #endregion
     }
 }
