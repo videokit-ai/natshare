@@ -1,6 +1,6 @@
 /* 
 *   NatShare
-*   Copyright (c) 2020 Yusuf Olokoba.
+*   Copyright (c) 2021 Yusuf Olokoba.
 */
 
 namespace NatSuite.Sharing {
@@ -17,7 +17,7 @@ namespace NatSuite.Sharing {
         /// <summary>
         /// Create a share payload.
         /// </summary>
-        public SharePayload () : base(Supported ? (IntPtr?)Bridge.CreateSharePayload() : null) { }
+        public SharePayload () : base(Supported ? Bridge.CreateSharePayload() : IntPtr.Zero) { }
         #endregion
     }
 }

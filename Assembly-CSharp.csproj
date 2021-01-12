@@ -36,14 +36,9 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\NatSuite\NatShare\Plugins\Managed\ISharePayload.cs" />
-     <Compile Include="Assets\NatSuite\NatShare\Plugins\Managed\Internal\Bridge.cs" />
-     <Compile Include="Assets\NatSuite\NatShare\Plugins\Managed\Internal\NativePayload.cs" />
-     <Compile Include="Assets\NatSuite\NatShare\Plugins\Managed\PrintPayload.cs" />
-     <Compile Include="Assets\NatSuite\NatShare\Plugins\Managed\SavePayload.cs" />
-     <Compile Include="Assets\NatSuite\NatShare\Plugins\Managed\SharePayload.cs" />
      <Compile Include="Assets\Tests\SaveTest.cs" />
      <Compile Include="Assets\Tests\ShareTest.cs" />
+     <Compile Include="Assets\Tests\Utility.cs" />
     <Reference Include="UnityEngine">
         <HintPath>/Applications/Unity/Hub/Editor/2019.4.5f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
