@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{3b4fba57-5c59-4742-86ec-fc01808689b7}</ProjectGuid>
+    <ProjectGuid>{65b5fa1d-ed1e-b0e9-de00-2a693d3e29d5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -222,13 +222,13 @@
         <HintPath>/Applications/Unity/Hub/Editor/2019.4.5f1/Unity.app/Contents/Managed/UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/PackageCache/com.unity.analytics@3.3.5/Unity.Analytics.Tracker.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/PackageCache/com.unity.analytics@3.3.5/Unity.Analytics.Tracker.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Editor">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/PackageCache/com.unity.analytics@3.3.5/Unity.Analytics.Editor.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/PackageCache/com.unity.analytics@3.3.5/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/PackageCache/com.unity.analytics@3.3.5/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/PackageCache/com.unity.analytics@3.3.5/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
         <HintPath>/Applications/Unity/Hub/Editor/2019.4.5f1/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
@@ -582,67 +582,67 @@
         <HintPath>/Applications/Unity/Hub/Editor/2019.4.5f1/Unity.app/Contents/NetStandard/compat/2.0.0/shims/netfx/mscorlib.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline.Editor">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Monetization">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/UnityEngine.Monetization.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/ScriptAssemblies/UnityEngine.Monetization.dll</HintPath>
     </Reference>
     <Reference Include="com.unity.multiplayer-hlapi.Editor">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Editor.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Advertisements">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/UnityEngine.Advertisements.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/ScriptAssemblies/UnityEngine.Advertisements.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="com.unity.multiplayer-weaver.Editor">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/com.unity.multiplayer-weaver.Editor.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/ScriptAssemblies/com.unity.multiplayer-weaver.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.XR.LegacyInputHelpers">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Sprite.Editor">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Tilemap.Editor">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.SpatialTracking">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpatialTracking">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.XR.LegacyInputHelpers">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="com.unity.multiplayer-hlapi.Runtime">
-        <HintPath>/Users/yusuf/Documents/Projects/NatShare-API/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Runtime.dll</HintPath>
+        <HintPath>/Users/yusuf/Documents/Projects/NatShare/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Runtime.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
