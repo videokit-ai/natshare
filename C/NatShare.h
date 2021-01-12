@@ -3,7 +3,7 @@
 //  NatShare
 //
 //  Created by Yusuf Olokoba on 5/22/20.
-//  Copyright © 2020 Yusuf Olokoba. All rights reserved.
+//  Copyright © 2021 Yusuf Olokoba. All rights reserved.
 //
 
 #pragma once
