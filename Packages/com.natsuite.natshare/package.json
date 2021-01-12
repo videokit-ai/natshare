@@ -1,5 +1,5 @@
 {
-    "name": "api.natsuite.natshare",
+    "name": "com.natsuite.natshare",
     "version": "1.2.5",
     "displayName": "NatShare",
     "description": "Cross-platform social sharing for Unity Engine.",

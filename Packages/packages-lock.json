@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "api.natsuite.natshare": {
-      "version": "file:api.natsuite.natshare",
+    "com.natsuite.natshare": {
+      "version": "file:com.natsuite.natshare",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
